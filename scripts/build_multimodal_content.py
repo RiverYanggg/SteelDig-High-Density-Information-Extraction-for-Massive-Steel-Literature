@@ -3,8 +3,9 @@
 
 从 datasets/input_cleaned 读取清洗后的 *_content_list.json，
 按多模态 API 的 content 格式（文本 + 图片/表格/公式）构建传入内容，
-保存到 datasets/multimodal_content。不调用大模型，仅构建并落盘。
-供后续实体提取时直接加载并传入 API。
+保存到 datasets/multimodal_content；同时生成纯文本 LLM 输入 JSON（仅 text 字段，无图像），
+保存到 datasets/text_llm_input，供 paper_entity_extract_text_once 使用。
+不调用大模型，仅构建并落盘。
 """
 
 from __future__ import annotations
@@ -25,6 +26,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 INPUT_CLEANED_DIR = PROJECT_ROOT / "datasets" / "input_cleaned"
 PAPER_PARSERED_DIR = PROJECT_ROOT / "datasets" / "paper_parsered"
 MULTIMODAL_CONTENT_DIR = PROJECT_ROOT / "datasets" / "multimodal_content"
+TEXT_LLM_INPUT_DIR = PROJECT_ROOT / "datasets" / "text_llm_input"
+
+TEXT_LLM_INPUT_SUFFIX = "_text_llm_input.json"
 
 TYPE_TEXT = "text"
 TYPE_IMAGE = "image"
@@ -198,22 +202,85 @@ def build_content_for_api(
     return api_content
 
 
+def iter_text_segments_from_content_list(
+    content_list: List[Dict[str, Any]],
+) -> List[str]:
+    """
+    按阅读顺序从清洗后的 content 列表产出纯文本片段（不含图片）。
+
+    与 build_content_for_api 对齐：正文保留；图/表/公式块仅保留 [caption] / [footnote] /
+    [equation] 等标注与脚注文本，不发送图像。
+    """
+    segments: List[str] = []
+
+    for item in content_list:
+        block_type = item.get("type")
+
+        if block_type == TYPE_TEXT:
+            text = _get_str(item.get("text"))
+            if text:
+                segments.append(text)
+            continue
+
+        if block_type == TYPE_IMAGE:
+            caption = _get_str(item.get("caption"))
+            if caption:
+                segments.append(f"[caption] {caption}")
+            continue
+
+        if block_type == TYPE_TABLE:
+            cap_raw = item.get("table_caption") or []
+            fn_raw = item.get("table_footnote") or []
+            cap_text = (
+                " ".join(cap_raw).strip() if isinstance(cap_raw, list) else _get_str(cap_raw)
+            )
+            fn_text = (
+                " ".join(fn_raw).strip() if isinstance(fn_raw, list) else _get_str(fn_raw)
+            )
+            if cap_text:
+                segments.append(f"[caption] {cap_text}")
+            if fn_text:
+                segments.append(f"[footnote] {fn_text}")
+            continue
+
+        if block_type == TYPE_EQUATION:
+            eq_text = _get_str(item.get("text"))
+            if eq_text:
+                segments.append(f"[equation] {eq_text}")
+            continue
+
+        text = _get_str(item.get("text"))
+        if text:
+            segments.append(text)
+
+    return segments
+
+
+def build_plain_text_from_content_list(content_list: List[Dict[str, Any]]) -> str:
+    """将 content_list 转为单段可送入纯文本模型的论文全文字符串。"""
+    parts = iter_text_segments_from_content_list(content_list)
+    return "\n\n".join(parts)
+
+
 def build_one_file(
     input_path: Path,
     output_dir: Path = MULTIMODAL_CONTENT_DIR,
     *,
     include_base64: bool = False,
+    text_output_dir: Optional[Path] = None,
 ) -> Optional[Path]:
     """
-    对单个清洗后的 content_list JSON 构建多模态 content 并写入 output_dir。
+    对单个清洗后的 content_list JSON 构建多模态 content 并写入 output_dir；
+    同时写入纯文本 LLM 输入 JSON 到 text_output_dir（默认 datasets/text_llm_input）。
 
     Args:
         input_path: 清洗后的 JSON 路径（通常在 input_cleaned 下）
-        output_dir: 输出目录
+        output_dir: 多模态 content 输出目录
         include_base64: 是否将图片转为 base64 写入（默认 False，仅写绝对路径，便于小文件）
+        text_output_dir: 纯文本 LLM 中间 JSON 目录；为 None 时使用 TEXT_LLM_INPUT_DIR
 
     Returns:
-        输出文件路径；失败返回 None
+        多模态输出文件路径；失败返回 None
     """
     try:
         with open(input_path, "r", encoding="utf-8") as f:
@@ -243,6 +310,21 @@ def build_one_file(
         json.dump(content, f, ensure_ascii=False, indent=2)
 
     logger.info("已构建: %s -> %s", input_path.name, output_path)
+
+    text_dir = text_output_dir if text_output_dir is not None else TEXT_LLM_INPUT_DIR
+    text_dir.mkdir(parents=True, exist_ok=True)
+    text_body = build_plain_text_from_content_list(data)
+    text_path = text_dir / input_path.name.replace(
+        "_content_list.json", TEXT_LLM_INPUT_SUFFIX
+    )
+    text_payload: Dict[str, Any] = {
+        "source_content_list": input_path.name,
+        "text": text_body,
+    }
+    with open(text_path, "w", encoding="utf-8") as f:
+        json.dump(text_payload, f, ensure_ascii=False, indent=2)
+    logger.info("已写入纯文本 LLM 输入: %s", text_path)
+
     return output_path
 
 
@@ -251,17 +333,20 @@ def build_all(
     output_dir: Optional[Path] = None,
     *,
     include_base64: bool = False,
+    text_output_dir: Optional[Path] = None,
 ) -> List[Path]:
     """
-    批量构建：遍历 input_dir 下所有 *_content_list.json，生成多模态 content 写入 output_dir。
+    批量构建：遍历 input_dir 下所有 *_content_list.json，生成多模态 content 写入 output_dir，
+    并生成纯文本 LLM 输入 JSON 写入 text_output_dir（默认 datasets/text_llm_input）。
 
     Args:
         input_dir: 清洗结果目录，默认 datasets/input_cleaned
         output_dir: 多模态 content 输出目录，默认 datasets/multimodal_content
         include_base64: 是否在 JSON 中内联图片 base64（默认 False，使用相对路径）
+        text_output_dir: 纯文本 LLM 中间 JSON 目录，默认 TEXT_LLM_INPUT_DIR
 
     Returns:
-        成功写入的输出文件路径列表
+        成功写入的多模态输出文件路径列表
     """
     input_dir = input_dir or INPUT_CLEANED_DIR
     output_dir = output_dir or MULTIMODAL_CONTENT_DIR
@@ -278,7 +363,12 @@ def build_all(
     results: List[Path] = []
     for path in files:
         try:
-            out = build_one_file(path, output_dir, include_base64=include_base64)
+            out = build_one_file(
+                path,
+                output_dir,
+                include_base64=include_base64,
+                text_output_dir=text_output_dir,
+            )
             if out is not None:
                 results.append(out)
         except Exception as e:
