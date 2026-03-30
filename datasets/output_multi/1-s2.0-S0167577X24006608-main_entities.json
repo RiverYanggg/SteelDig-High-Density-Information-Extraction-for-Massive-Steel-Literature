@@ -1,0 +1,343 @@
+{
+  "unmapped_findings": [
+    "SAED analysis in Fig. 1 inset indicates Cu-rich phase has BCC structure, while subsequent HRTEM/IFFT analysis confirms FCC structure with (002) spacing of 0.182 nm, consistent with direct FCC precipitation in austenitic matrix",
+    "Adding Cu increases austenite lattice parameter from 0.3687 nm (0Cu steel) to 0.3689 nm (3Cu steel), promoting κ-carbide precipitation",
+    "Critical lattice parameter for intragranular κ-carbide precipitation is approximately 0.3670 nm",
+    "Precipitation sequence: κ-carbide precipitates first during early aging stage, then promotes Cu-rich phase precipitation by enriching Cu concentration in surrounding matrix",
+    "Cu atoms are excluded from κ-carbide precipitates and migrate to adjacent austenitic matrix, forming Cu-rich clusters upon reaching critical concentration",
+    "Intragranular κ-carbide morphology: dots or bars; Cu-rich phase morphology: spherical or bars (irregular oval ~10 nm diameter, bars ~30 nm length)",
+    "Lattice misfit between κ-carbide and Cu-rich phase is 3.4%, between κ-carbide and austenite is 2.3%, between Cu-rich phase and austenite is 1.0%",
+    "Interfacial energy of κ-carbide with austenite (0.025 J/m²) is lower than Cu-rich phase with austenite (0.086 J/m²), explaining earlier precipitation of κ-carbide"
+  ],
+  "metadata": {
+    "doi": null,
+    "title": "Co-precipitation mechanism of Cu-rich phase and κ-carbide precipitates in Fe-28Mn-10Al-1C-3Cu austenitic low-density steel",
+    "authors": [
+      "Xiqiang Ren",
+      "Yanfei Qi",
+      "Yungang Li",
+      "Jingyi Zhou",
+      "Jiahao Gu"
+    ],
+    "publication_year": null,
+    "journal": null,
+    "keywords": [
+      "Austenitic low-density steel",
+      "Particles",
+      "Nanosize",
+      "Microstructure",
+      "Co-precipitation mechanism"
+    ],
+    "research_type": "Experimental study",
+    "alloy_system": {
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C",
+        "Cu"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Mn",
+          "weight_percent": "28",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "10",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "1",
+          "atomic_percent": null
+        },
+        {
+          "element": "Cu",
+          "weight_percent": "3",
+          "atomic_percent": null
+        },
+        {
+          "element": "Fe",
+          "weight_percent": null,
+          "atomic_percent": null
+        }
+      ]
+    }
+  },
+  "processing": {
+    "synthesis_methods": [],
+    "process_sequence": [
+      {
+        "sequence": "0",
+        "type": "solution treatment",
+        "method": null,
+        "temperature": "1000",
+        "unit": "°C",
+        "duration": "1h",
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": null
+      },
+      {
+        "sequence": "1",
+        "type": "aging treatment",
+        "method": null,
+        "temperature": "550",
+        "unit": "°C",
+        "duration": "3h",
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": null
+      }
+    ],
+    "post_processing": [
+      {
+        "step": "TEM sample preparation",
+        "details": "Mechanically polished to approximately 100 μm thickness, then twin-jet electro-polished in 10% perchloric acid alcohol"
+      }
+    ],
+    "others": {
+      "note": "Samples prepared from Fe-28Mn-10Al-1C-3Cu and Fe-28Mn-10Al-1C-0Cu alloys for comparison"
+    }
+  },
+  "structure": {
+    "overall_structure": "Austenitic matrix with coherent nanoscale precipitates",
+    "number_of_phases": "3",
+    "microstructure_counts": null,
+    "microstructure_list": [
+      {
+        "uuid": "uuid-aged-3cu",
+        "related_sequence": "1",
+        "phases_present": [
+          {
+            "phase_name": "Austenite",
+            "crystal_structure": "FCC",
+            "volume_fraction": null,
+            "morphology": "Matrix",
+            "grain_size": null,
+            "texture": "Cube-on-cube orientation with precipitates"
+          },
+          {
+            "phase_name": "κ-carbide",
+            "crystal_structure": "FCC (Perovskite-like)",
+            "volume_fraction": null,
+            "morphology": "Dots or bars, intragranular",
+            "grain_size": "Nanosize",
+            "texture": "[110]κ//[110]γ, (111)κ//(111)γ"
+          },
+          {
+            "phase_name": "Cu-rich phase",
+            "crystal_structure": "FCC",
+            "volume_fraction": null,
+            "morphology": "Irregular oval (~10 nm) and bars (~30 nm), intragranular",
+            "grain_size": "10-30 nm",
+            "texture": "[110]Cu//[110]γ, (111)Cu//(111)γ"
+          }
+        ],
+        "defects": "Almost no dislocations and stacking faults observed in Cu-rich phase",
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": null,
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "κ-carbide",
+            "size": {
+              "value": "Nanosize",
+              "unit": "nm"
+            },
+            "distribution": "Intragranular",
+            "coherency": "Coherent with austenite matrix (lattice misfit 2.3%)"
+          },
+          {
+            "type": "Cu-rich phase",
+            "size": {
+              "value": "~10 (diameter) or ~30 (length)",
+              "unit": "nm"
+            },
+            "distribution": "Intragranular, often adjacent to κ-carbide",
+            "coherency": "Coherent with austenite matrix (lattice misfit 1.0%)"
+          }
+        ]
+      }
+    ]
+  },
+  "interface": {
+    "phases": [
+      {
+        "phase_1_name": "Austenite",
+        "phase_2_name": "κ-carbide",
+        "coherence": "Coherent (cube-on-cube)"
+      },
+      {
+        "phase_1_name": "Austenite",
+        "phase_2_name": "Cu-rich phase",
+        "coherence": "Coherent (cube-on-cube)"
+      },
+      {
+        "phase_1_name": "κ-carbide",
+        "phase_2_name": "Cu-rich phase",
+        "coherence": "Coherent (lattice misfit 3.4%)"
+      }
+    ],
+    "defect_interaction": [],
+    "others": [
+      {
+        "orientation_relationship": "[110]γ//[110]κ//[110]Cu and (111)γ//(111)κ//(111)Cu"
+      },
+      {
+        "interfacial_energy_kappa_austenite": "0.025 J/m²"
+      },
+      {
+        "interfacial_energy_Cu_austenite": "0.086 J/m²"
+      },
+      {
+        "lattice_parameter_austenite_3Cu": "0.3689 nm"
+      },
+      {
+        "lattice_parameter_austenite_0Cu": "0.3687 nm"
+      },
+      {
+        "lattice_parameter_kappa_carbide": "0.3775 nm"
+      },
+      {
+        "lattice_parameter_Cu_rich": "0.3652 nm"
+      }
+    ],
+    "phase_evolution": "κ-carbide precipitates preferentially in early aging stage, followed by Cu-rich phase precipitation promoted by Cu enrichment near κ-carbide particles"
+  },
+  "properties": {
+    "mechanical": {
+      "tensile_properties": {
+        "yield_strength": [],
+        "ultimate_tensile_strength": [],
+        "elongation": [],
+        "youngs_modulus": null,
+        "stress_strain_curves": null,
+        "stress_strain_distribution": [],
+        "strain_hardening_rate": []
+      },
+      "hardness": [],
+      "fracture_toughness": {
+        "value": null,
+        "unit": null
+      },
+      "fatigue_properties": {
+        "fatigue_limit": null,
+        "cycles_to_failure": null
+      },
+      "creep_properties": {
+        "steady_state_creep_rate": null,
+        "rupture_life": null
+      }
+    },
+    "physical": {
+      "density": {
+        "value": null,
+        "unit": null
+      },
+      "thermal_properties": {
+        "thermal_conductivity": null,
+        "thermal_expansion_coefficient": null,
+        "specific_heat": null
+      },
+      "electrical_properties": {
+        "electrical_conductivity": null,
+        "resistivity": null
+      },
+      "magnetic_properties": {
+        "magnetic_susceptibility": null,
+        "curie_temperature": null
+      }
+    },
+    "chemical": {
+      "corrosion_resistance": {
+        "test_medium": null,
+        "corrosion_rate": null,
+        "passivation_behavior": null
+      },
+      "oxidation_resistance": {
+        "oxidation_rate_constant": null,
+        "protective_scale": null
+      }
+    },
+    "radiation_properties": {
+      "void_swelling": null,
+      "irradiation_hardening": null,
+      "helium_embrittlement": null
+    }
+  },
+  "performance": {
+    "service_conditions": {
+      "operating_temperature": {
+        "min": null,
+        "max": null,
+        "unit": null
+      },
+      "stress_state": null,
+      "environment": null
+    },
+    "lifetime_prediction": {
+      "model_used": null,
+      "predicted_lifetime": null,
+      "confidence_interval": null
+    },
+    "comparative_performance": {
+      "benchmark_alloy": null,
+      "improvement_percentage": null
+    }
+  },
+  "characterization_methods": [
+    {
+      "technique": "HR-TEM (High-Resolution Transmission Electron Microscopy)",
+      "purpose": "Microstructure examination and precipitate morphology observation",
+      "key_findings": "Co-precipitation of κ-carbide and Cu-rich phase with coherent interfaces"
+    },
+    {
+      "technique": "EDS (Energy Dispersive Spectrometer)",
+      "purpose": "Elemental mapping of precipitates",
+      "key_findings": "Fe/Mn/Al enrichment in κ-carbide, Cu enrichment in Cu-rich phase, exclusion of Cu from κ-carbide"
+    },
+    {
+      "technique": "SAED (Selected Area Electron Diffraction)",
+      "purpose": "Crystal structure analysis and orientation relationship determination",
+      "key_findings": "Cube-on-cube orientation relationship between precipitates and austenite matrix"
+    },
+    {
+      "technique": "XRD (X-Ray Diffraction)",
+      "purpose": "Lattice parameter measurement",
+      "key_findings": "Lattice parameters of austenite matrix: 0.3689 nm (3Cu) and 0.3687 nm (0Cu)"
+    },
+    {
+      "technique": "IFFT (Inverse Fast Fourier Transform)",
+      "purpose": "Analysis of crystal structure and defects in Cu-rich phase",
+      "key_findings": "FCC structure confirmed with (002) spacing of 0.182 nm, minimal defects"
+    }
+  ],
+  "computational_details": {
+    "simulation_method": null,
+    "software_used": null,
+    "potential_model": null,
+    "validation_against_experiment": null,
+    "analytical_model": [
+      {
+        "model_name": "Lattice misfit calculation",
+        "equation_role": "Quantify lattice mismatch between phases",
+        "parameters": null,
+        "model_note": "δ = |a₀ - a₁| / a₀, where δ is lattice misfit, a₀ and a₁ are lattice parameters"
+      },
+      {
+        "model_name": "Critical lattice parameter criterion",
+        "equation_role": "Predict precipitation boundary for intragranular κ-carbide",
+        "parameters": null,
+        "model_note": "0.208(wt.%C) + 0.098(wt.%Al) = 1 - 0.0054(wt.%Mn), critical a ≈ 0.3670 nm"
+      }
+    ]
+  }
+}

@@ -1,0 +1,383 @@
+[
+    {
+        "type": "text",
+        "text": "Full length article"
+    },
+    {
+        "type": "text",
+        "text": "On the anisotropic deformation behavior of a low-density medium manganese steel"
+    },
+    {
+        "type": "text",
+        "text": "Shuanghong Lei ${ \\mathfrak { a } } _ { \\oplus }$ , Binhan Sun $\\mathbf { a } , \\mathbf { b } , \\hat { \\mathbf { \\Omega } } ^ { * } \\oplus$ Yu Xuan c , Ran Tian a , Yan Ma ${ \\mathrm { d } } _ { \\oplus }$ , , Mohamed Naguib Elkot e , Huijie Cheng ${ \\mathfrak { a } } _ { \\oplus }$ , Ning Yao a , Tiwen Lu a , Jianping Tan a , Zhenbo Zhang $\\mathrm { c } , { } ^ { * } \\oplus$ , Xian-Cheng Zhang a,b,\\* , Shan-Tung Tu a"
+    },
+    {
+        "type": "text",
+        "text": "a Key Laboratory of Pressure Systems and Safety, Ministry of Education, School of Mechanical and Power Engineering, East China University of Science and Technolog   \nShanghai 200237, China   \nb State Key Laboratory of Chemical Safety, East China University of Science and Technology, Shanghai 200237, China   \nc Center for Adaptive System Engineering, Shanghai Tech University, Shanghai 201210, China   \nd Department of Materials Science and Engineering, Delft University of Technology, Mekelweg 2, 2628 CD Delft, the Netherlands   \ne Max Planck Institute for Sustainable Materials, Max-Planck-Straße 1, Düsseldorf 40237, Germany"
+    },
+    {
+        "type": "text",
+        "text": "A R T I C L E I N F O"
+    },
+    {
+        "type": "text",
+        "text": "A B S T R A C T"
+    },
+    {
+        "type": "text",
+        "text": "Keywords:   \nMedium Mn steels   \nLightweight steels   \nTransformation-induced plasticity   \nStrain partitioning   \nSynchrotron high-energy X-ray diffraction"
+    },
+    {
+        "type": "text",
+        "text": "Medium manganese (Mn) lightweight steel has gained significant attention in the last decade due to its excellent mechanical properties and low mass density. This type of high-strength steel usually shows a complex microstructure composed of banded δ-ferrite and $\\alpha$ -ferrite-austenite aggregates along the rolling direction. The mechanical response of such banded microstructure under different loading directions is crucial for understanding the forming properties of such steels. In this study, we focus on the anisotropic deformation behavior of a medium-Mn lightweight steel, employing various in-situ characterization techniques including synchrotron highenergy X-ray diffraction and high-resolution microscopic digital image correlation to study the evolution of stress/strain in different phases upon loading. We observe that the sample loaded along the rolling direction (parallel to the banding direction) exhibits a notably higher strain hardening capability compared to specimens loaded along the transverse direction. Such difference is due to the different strain distribution patterns that is dependent on the intrinsic mechanical properties of individual phases as well as on the orientation of the layered microstructure relative to the loading direction. This factor results in different kinetics of strain-induced martensitic transformation (i.e., varying transformation-induced plasticity effect) in different tensile directions, which explains the observed different tensile responses. Our study provides important insights into the future design of similar alloys, particularly for improved forming properties."
+    },
+    {
+        "type": "text",
+        "text": "1. Introduction"
+    },
+    {
+        "type": "text",
+        "text": "The automotive industry is actively searching for lightweight solutions to address the global energy crisis and environmental pollution concerns [1]. Studies demonstrate that reducing vehicle weight can have a substantial impact on fuel consumption and $\\mathrm { C O } _ { 2 }$ emissions. In this regard, a promising material that has emerged is medium manganese (Mn) lightweight steel with Al additions (up to $1 2 \\mathrm { w t . } \\%$ [2,3]) that serve to reduce the density of the material (1 wt. $\\%$ Al reduces ${ \\sim } 1 . 2 ~ \\%$ mass density [3,4]). Through optimized alloying and microstructure design, an excellent mechanical property (product of tensile strength and ductility up to $7 0 \\mathrm { G P a \\% }$ [5,6]) can be achieved in this type of materials, rendering them strong candidates for the third-generation advanced high-strength steels used in automotive lightweight body-in-white assemblies [7]."
+    },
+    {
+        "type": "text",
+        "text": "In order to fine-tune the microstructure and mechanical properties of this class of steels, intercritical annealing (IA) treatments are often employed, which generally result in the formation of austenite and $\\alpha$ -ferrite with an ultrafine grain size (as small as $1 \\ \\mu \\mathrm { m } \\ \\left[ 8 - 1 0 \\right] \\mathrm { ) }$ . In addition, the addition of Al in the material also promotes the formation of δ-ferrite [11–13]. Such phase, directly transformed from the liquid phase during casting, largely does not participate in any phase transformation processes during the subsequent thermomechanical processing [14]. Hence, this phase is often banded along the rolling direction and its grain size is often larger (up to $1 5 ~ { \\mu \\mathrm { m } } )$ than the austenite and $\\alpha$ -ferrite phases that are newly transformed during IA process [15]. These features thus give rise to a composite structure with a bimodal grain scale consisting of coarse δ-ferrite and fine reverted $\\gamma { + } \\alpha$ aggregate [15–17]."
+    },
+    {
+        "type": "text",
+        "text": "A variety of deformation mechanisms can be activated in medium Mn steels, which contribute to a notable strain-hardening capacity and great strength-ductility synergy. The most widely reported mechanism is the transformation-induced plasticity (TRIP) effect due to the transformation from softer austenite to harder martensitic microstructure and the associated dislocation accommodation process upon plastic deformation [18–20]. Depending on the stacking fault energy (SFE), the retained austenite may also be twinned upon deformation, resulting in an additional strain-hardening effect known as the twinning-induced plasticity (TWIP). This strain-hardening mechanism is due to the continuous formation of deformation twins that results in the ’dynamic Hall-Petch effect’ and a back stress hardening caused by the accumulation of dislocations at the twin boundaries [21–23]. However, a number of studies have revealed that the TWIP effect in medium Mn steels only plays a minor role in terms of its influence on strain-hardening [6,24]. Instead, a multiphase composite effect can also significantly influence the strain-hardening behavior of such steels [25]. This effect involves the high density of geometrically necessary dislocations (GNDs) formed due to the plastic mismatch between the different phases and the resulting forest dislocation hardening and long-range back-stress hardening [26]. The potency of such composite hardening effect is deemed to be highly influenced by the mechanical characteristics of each phase as well as their mutual interactions, which needs to be studied particularly for medium-Mn lightweight steels with a complex mixture of different phases $( \\alpha , \\delta ,$ , and $\\gamma .$ ) crossing different grain size scales."
+    },
+    {
+        "type": "text",
+        "text": "Extensive research has been conducted on medium lightweight Mn steels, primarily focusing on the impact of alloying elements [27,28] and heat treatment parameters [29–31] on their microstructure and mechanical properties. Much less attention has been paid to the mechanical interaction of different phases in such steels. Particularly for the steel grades with a banded microstructure containing δ-phase and $\\gamma { + } \\alpha$ aggregates, the mechanical response of different phases to the loading direction is very likely to be different, which requires an in-depth study in order to better aid future microstructure design of these steels."
+    },
+    {
+        "type": "text",
+        "text": "The anisotropic deformation behavior in some other multiphase steels (including duplex stainless steels and conventional low-alloy TRIP steels) has been previously studied [32–38]. It is generally observed that the yield strength along the transverse direction (TD) is higher than that along the rolling direction (RD) [36,37,39]. This was often attributed to the crystallographic textures that were developed during the rolling processes [38,39]. For example, Hutchinson et al. [39] reported that the tensile strength along TD of a cold-rolled duplex stainless steel is $1 0 ~ \\%$ higher than that along RD, which was associated to the $\\{ 1 0 0 \\} ~ < 0 1 1 >$ texture of ferrite and the {110} ${ < } 1 1 2 { > }$ texture of austenite. However, the deformation anisotropy can be more complex in medium lightweight Mn steels. Such complexity arises from a) the existence of more types of phase constituents and their more complicated interactions as a response to loading, and b) the occurrence of deformation-induced martensite that can significantly influence the steels’ strain-hardening capability and strain/stress patterning developed during loading. These factors indicate that the underlying mechanisms for the deformation anisotropy in such steels can be different from previous reports, which deserves an in-depth study."
+    },
+    {
+        "type": "text",
+        "text": "In this work, we focus on the anisotropic deformation behavior of a medium Mn lightweight steel with a layered microstructure containing δ-phase and $\\gamma { + } \\alpha$ aggregates. A notable difference in strain-hardening capacity is observed when this steel is subjected to different loading directions. A variety of in-situ characterization techniques including synchrotron high-energy X-ray diffraction (HEXRD) and high-resolution microscopic digital image correlation $\\left( \\vert \\vert - \\mathrm { Ḋ } \\mathrm { Ḋ } \\mathrm { Ḋ } \\mathrm { Ḋ } \\mathrm { Ḋ } \\mathrm { Ḍ C Ḍ }  \\right)$ are employed to disentangle the deformation behavior of individual phases. The acquired information should provide valuable insights into the deformation behavior of medium Mn steels and other steels with similar microstructures, which is useful for the future design of such steels for better mechanical and forming properties of automotive parts."
+    },
+    {
+        "type": "text",
+        "text": "2. Experimental methods"
+    },
+    {
+        "type": "text",
+        "text": "2.1. Material and processing"
+    },
+    {
+        "type": "text",
+        "text": "A lightweight medium Mn steel with the chemical composition of Fe-7.95Mn-0.25C-4.94Al (in wt. $\\%$ was selected for the study. Its mass density was calculated to be ${ \\sim } 7 . 4 0 \\ \\mathrm { g / \\ c m } ^ { 3 }$ based on equations proposed in Ref. [40]. The addition of Al was to reduce the density of the material (by $6 . 2 \\%$ , calculated based on Ref. [3]). It also promotes the formation of δ-ferrite, as illustrated by the phase diagram shown in Fig. 1. The ingots were prepared in a vacuum induction furnace, and then homogenized at 1100◦C before being hot-rolled to a thickness of \\~3 mm. The temperature was maintained above ${ \\sim } 1 0 0 0 ^ { \\circ } \\mathrm { C }$ during hot rolling. The hot-rolled sheets were then cold-rolled to a final thickness of around 1.5 mm. To produce the desired microstructure containing ultrafine γ+α aggregate and δ ferrite, the cold-rolled sheet was subjected to IA at 850◦C for 10 minutes, followed by water quenching to room"
+    },
+    {
+        "type": "text",
+        "text": "temperature."
+    },
+    {
+        "type": "text",
+        "text": "2.2. Microstructure characterization"
+    },
+    {
+        "type": "text",
+        "text": "这里有两个状态ingots 和 轧制钛对应的找组织、性能"
+    },
+    {
+        "type": "text",
+        "text": "The microstructure of undeformed and interrupted tensile specimens was characterized using electron backscatter diffraction (EBSD) in a Zeiss-Crossbeam 340 scanning electron microscopy (SEM). The acquired EBSD data (e.g., phase fraction and grain size) were analyzed using the TSL OIM software package and the AZtecCrystal software package. The equivalent diameter was taken as the grain size for the δ-ferrite phase. Samples for EBSD observations were finally polished with $0 . 0 2 \\mu \\mathrm { m }$ silica suspension. The detailed deformation behavior of interrupted tensile specimens was examined using transmission electron microscopy (TEM, FEI Talos F200X) operated at $2 0 0 \\mathrm { k V } ,$ . Specimens for TEM investigations were prepared through mechanical grinding, followed by twin-jet polishing using a $1 0 ~ \\%$ perchloric acid methanol solution. The hardness at different localized regions of the steel was measured by a Vickers microhardness tester (JMHVS-1000ZDP). The average value was taken from more than five different measurements within each region.  Specimens used for hardness testing were prepared following the same procedures as those for EBSD analysis."
+    },
+    {
+        "type": "image",
+        "img_path": "images/ba9b17bebb12021d18a5abd1c9699f042fab34e6990380d6d062e40927fbb893.jpg",
+        "caption": "组织表征的时候要给出设备信息，或者 Fig. 1. Pseudo-binary equilibrium phase diagram for the $\\mathrm { F e } { \\cdot } 7 . 9 5 \\mathrm { M n } { \\cdot } 0 . 2 5 \\mathrm { C } { \\cdot }$ 4.94Al (wt. $\\%$ ) steel system, calculated by the Thermo-Calc software with the TCFE9 database."
+    },
+    {
+        "type": "text",
+        "text": "2.3. In-situ synchrotron high-energy X-ray diffraction试样的几何信息考虑加到哪里，应该是和力学性能相关"
+    },
+    {
+        "type": "text",
+        "text": "The in-situ synchrotron HEXRD experiments were conducted at  the P02.1 Powder Diffraction and Total Scattering Beamline of PETRA III at Deutsches Elektronen-Synchrotron Center (DESY) in Hamburg, Germany [41]. The experimental setup is shown in Fig. 2(a). The beamline was operated at a fixed energy of $\\sim 6 0 \\mathrm { k e V }$ , corresponding to a monochromatic X-ray with a wavelength of ${ \\sim } 0 . 2 0 7 3 8 \\mathring \\mathrm { A }$ . The beam size is 0.5 $\\times \\ 0 . 5 \\ \\mathrm { m m ^ { 2 } }$ . During HEXRD experiments, quasi-static uniaxial tensile testing was conducted simultaneously using a Kammrath & Weiss stress rig, which maintained a constant crosshead speed corresponding to an initial strain rate of ${ \\sim } 1 \\times { } 1 0 ^ { - 3 } s ^ { - 1 }$ . Tensile specimens with a gauge length of $1 2 { \\mathrm { m m } } ,$ a width of $2 \\mathrm { m m }$ and a thickness of $1 . 2 \\mathrm { m m }$ were employed. Two types of samples taken from different orientations, denoted as RD and TD, were tested. For each orientation, the tests were repeated at least three times. It is noteworthy that the extensometer was not utilized in this study, instead, only the applied tensile load and crosshead displacement were recorded. Two-dimensional diffraction patterns were collected by a Varex XRD 4343CT fast area detector every 1 s during 方式 tensile testing. The detector distance and instrument broadening were calibrated by a standard $\\mathrm { C e O _ { 2 } }$ sample."
+    },
+    {
+        "type": "text",
+        "text": "The deformation behavior including deformation-induced phase transformation, lattice strain and dislocation density was quantitatively assessed through the analysis of Debye-Scherrer diffraction rings. The diffraction intensities over the entire azimuth range $( 0 ^ { \\circ } \\sim 3 6 0 ^ { \\circ } )$ were integrated using the Fit2D software [42]. Fig. 2(b) presents representative diffraction intensity maps as a function of azimuthal angle and 2-Theta angle. The corresponding diffraction profile is shown in Fig. 2(c) and is calculated using the Rietveld refinement method. Five crystallographic reflections of the FCC phase ({111}, {200}, {220}, {311}, {222}) and four reflections of the BCC phase ({110}, {200}, {211}, {220}) were identified. The volume fraction of austenite was analyzed using the Rietveld refinement method with the aid of the MAUD software [43]. The calculated results of the non-deformed and deformed samples at the $3 0 ~ \\%$ applied strain are also shown in Fig. 2(c). It is demonstrated that the calculated diffraction profiles (solid lines) match well with the experimental diffraction data (open dots). To analyze the lattice strain of each phase and its change upon loading, the Debye-Scherrer diffraction ring was divided into 36 sectors $( 1 0 ^ { \\circ }$ each) along the azimuth angle and the sector along the tensile direction (azimuth angle from $\\boldsymbol { - } 5 ^ { \\circ }$ to $5 ^ { \\circ }$ ) was selected for such analysis. Integral diffraction peaks were fitted by the single peak fitting method using the Gaussian function to ascertain the interplanar spacing $( d )$ and the lattice parameter (a) [44]. An example of the fitting result is shown in Fig. 2(d). The lattice strain $( \\varepsilon _ { h k l } )$ for each diffraction plane and the weighted average lattice strain per phase $( \\overline { { \\varepsilon _ { p } } } )$ were calculated using the following equations [44,45]:"
+    },
+    {
+        "type": "image",
+        "img_path": "images/34fdbdb6cebc34e2e1a298b197f3d81b002627fce58cf21f522a3adfbdb1c6f4.jpg",
+        "caption": "试样的种类，需要考虑是加到state子层级还是加到state上一层级  Fig. 2. (a) The setup of the in-situ synchrotron high-energy X-ray diffraction experiment [46]; (b) Diffraction intensity plotted as a function of Azimuth angle and 2-Theta angle for samples that are non-deformed and deformed to $3 0 \\%$ applied strain; (c) Integrated intensity as a function of 2-Theta angle for the samples in (b) (both experimental data (Exp.) and calculated results (Cal.) using the Rietveld refinement method are shown). (d) Integrated diffraction profile (red open dots) over azimuth angle from $\\scriptstyle - 5 ^ { \\circ }$ to $5 ^ { \\circ }$ and the corresponding fitted peaks of FCC and BCC (green and blue solid lines) using the single peak fitting method."
+    },
+    {
+        "type": "equation",
+        "img_path": "images/e762098e9b5c40ab34288011edefcfe11447e6633a31b9ed5b00cb06a1d358cd.jpg",
+        "text": "$$\n\\begin{array} { l } { { \\varepsilon _ { h k l } = \\left( d _ { h k l } ^ { \\sigma } - d _ { h k l } ^ { 0 } \\right) \\Big / d _ { h k l } ^ { 0 } } } \\\\ { { \\qquad } } \\\\ { { \\overline { { { \\varepsilon _ { p } } } } = \\left( \\overline { { { a _ { p } ^ { \\sigma } } } } - \\overline { { { a _ { p } ^ { 0 } } } } \\right) \\Big / \\overline { { { a _ { p } ^ { 0 } } } } } } \\end{array}\n$$"
+    },
+    {
+        "type": "text",
+        "text": "where $d _ { h k l } ^ { \\sigma }$ and $d _ { h k l } ^ { 0 }$ are the interplanar spacings of the sample under tensile load and prior to deformation, respectively; $\\overline { { a _ { p } ^ { \\sigma } } }$ and $\\overline { { a _ { p } ^ { 0 } } }$ are the weighted average lattice parameters of each phase for the loaded and unloaded samples, respectively."
+    },
+    {
+        "type": "text",
+        "text": "组织结构"
+    },
+    {
+        "type": "text",
+        "text": "2.4. High-resolution microscopic DIC"
+    },
+    {
+        "type": "text",
+        "text": "To investigate the strain partitioning between different phases during the deformation process, high-resolution $\\mu$ -DIC tests were performed on the steel samples with two different orientations (RD and TD). For such tests, a Kammrath & Weiss GmbH tensile stage was utilized for insitu testing within a Tescan Mira4 SEM. The dog-bone shape specimens with a gauge length of $2 0 ~ \\mathrm { m m }$ were fine-polished before imaging. The microstructure before in-situ testing was first characterized by EBSD, from which different phases can be identified and subsequently can be used to correlate their respective local strain. Nano-scale gold speckles were applied to the sample through gold sputtering and gold film remodeling [47–49]. Secondary electron imaging, covering a total area of $5 0 0 \\times 5 0 0 \\mu \\mathrm { m } ^ { 2 }$ , was performed at different interrupted strains of the specimen. These images were then processed using the La Vision DaVis software to generate strain field data."
+    },
+    {
+        "type": "text",
+        "text": "3. Results"
+    },
+    {
+        "type": "text",
+        "text": "3.1. Microstructure and tensile properties"
+    },
+    {
+        "type": "text",
+        "text": "The EBSD results of the annealed steel are shown in Fig. 3(a-c), which consist of the microstructure taken from three normal planes. The sample exhibits a banded or layered structure, featuring ultrafinegrained (UFG) γ+α phases that have reversely transformed from martensite during annealing (Fig. 3(a-c)), and a certain fraction of coarse-grained δ-ferrite (grain size above \\~15 μm). The band direction is along RD. The δ-ferrite phase was retained from the hot rolling process and experienced fast recrystallization and grain growth during intercritical annealing [50–52]. The phase superimposed with image quality (IQ) map shown in Fig. 3(b) reveals a uniform contrast of the BCC phase, signifying the absence of martensite in the non-deformed microstructure. The distribution of grain size of different phases is displayed in Fig. 3(d) and (e). Based on such data, the average grain size can be calculated, which is \\~1.8 μm, \\~2 μm, and \\~38 μm for austenite, α-ferrite, and δ-ferrite, respectively. The large difference in grain size between the two types of ferrite (α and δ) allows for differentiation and calculation of their respective volume fractions, which are 25 vol. % and"
+    },
+    {
+        "type": "image",
+        "img_path": "images/97597fc684668c2769d922ba79689d8c4c82d7afc93df8d81c273e4688cd86d9.jpg",
+        "caption": "Fig. 3. EBSD results of the microstructure for the non-deformed sample: (a) 3D reconstruction of Phase $^ +$ IQ mapping (the image is arranged according to three normal planes); (b) Magnified phase $^ +$ IQ local plot of RD-TD plane in (a); (c) 3D reconstruction of IPFs by the same method in (a); The grain size distribution of (d) austenite and (e) $\\delta / \\alpha$ ferrite (generated from EBSD results)."
+    },
+    {
+        "type": "text",
+        "text": "44 vol. %, respectively. The fraction of γ+α aggregate is thus estimated to be 56 vol. %."
+    },
+    {
+        "type": "text",
+        "text": "Fig. 4(a) shows the engineering stress-strain curves of the RD and TD orientated samples tested at room temperature. The intercritically annealed steel demonstrates a great combination of tensile strength (\\~855±35 MPa) and ductility (total elongation $6 5 \\pm 5 ~ \\% )$ . The sample tested along RD has a higher strength (by 864 MPa) and ductility $6 9 \\%$ compared to that tested along TD. The strain-hardening behavior of the two samples, shown in Fig. 4(b), can be categorized into three distinct stages. At stage I, the strain hardening rate drops sharply. Stage II is characterized by an increase in strain-hardening rate, starting from a true strain of ${ \\sim } 0 . 2$ for both samples. As the strain further increases, the strain-hardening rate begins to decrease again, i.e., Stage III, until the occurrence of necking defined by the Consid\\`ere criterion. At these two strain-hardening stages, it is interesting to note that the strain-hardening rate of the RD sample (maximum 2052 MPa) is higher than that of the TD sample (maximum 1828 MPa). This difference is the reason accounting for the different ultimate tensile strength and ductility values between the two samples. 性能解释"
+    },
+    {
+        "type": "text",
+        "text": "3.2. Deformation substructure"
+    },
+    {
+        "type": "text",
+        "text": "To reveal the deformation mechanisms of the investigated samples, detailed EBSD characterizations were conducted on the interrupted tensile samples. Fig. 5(a) illustrates the microstructure of the TD sample strained to $1 5 ~ \\%$ along the loading direction. It is shown that the BCC phase exhibits a large variation in the band slope (BS) values. The regions with a low BS indicate the presence of deformation-induced 释 α’-martensite, due to its much higher dislocation density and lattice 到 distortion compared with the ferrite phase [53]. Fig. 5(b) presents a bimodal distribution of the BS value of the BCC phase obtained using the AZtecCrystal software. This information helps to differentiate ferrite and $\\acute { \\alpha }$ -martensite [54,55]. We apply a BS cut-off point at the intersection of two peaks to aid a better visualization of the two phases. Fig. 5(c) presents the kernel average misorientation (KAM) map corresponding to the phase $^ +$ BS map in Fig. 5(a). The UFG γ+α region has a higher KAM value compared with the δ ferrite due to the strain-induced α’-martensitic transformation. A phase map after applying this threshold of a magnified region is shown in Fig. 5(d), where the nucleation behavior of $\\alpha ^ { \\ast }$ -martensite can be observed. It is shown that α’-martensite nucleation takes place primarily at the phase boundary between austenite and ferrite (α-ferrite or δ-ferrite), as marked by the arrows in Fig. 5(d). This preferable nucleation is due to the large stress and strain concentration developed at the heterointerfaces, which can be revealed from the higher misorientation values (thus higher GNDs [56, 57]) at these locations (see the KAM map in Fig. 5(e)). A similar finding is also observed for the RD sample, which is not shown here for conciseness. The deformation-induced α’-martensite formation (i.e., the TRIP effect) makes a major contribution to the strain-hardening capability of the samples [16,58]."
+    },
+    {
+        "type": "text",
+        "text": "To further investigate the martensite nucleation behavior upon loading, TEM characterizations were performed for the same sample, as shown in Figs. 6 and 7. The results confirm that strain-induced a’- martensite is nucleated at or close to γ/α and γ/δ phase boundaries. This can be rationalized by the following two factors. First, the high strain and stress concentrations at the interface regions, resulting from the strain incapability between adjacent phases [13,18], enhance dislocation activities and thus the interaction between different slipping systems close to these local regions. Second, some defects such as ledges at interfaces can serve as favorable sites for the activation of multiple slip systems [59,60]. These two factors will essentially result in more frequent intersections between different microscopic shear-bands in the form of ε-martensite, deformation twins, or stacking-fault bundles close to the interface regions, which will facilitate the nucleation of a’-martensite therein [13,16,61]. The detailed mechanisms of the $\\alpha ^ { \\ast }$ -martensite nucleation in the investigated steel will be the subject of our future study. For some other austenite grains, $\\alpha ^ { \\ast }$ -martensite has not yet formed (Fig. $7 ( \\mathbf { a } _ { 1 } ) )$ . Dislocation planar slip and dense stacking faults (SFs, marked by the red arrows) are observed in these grains (Fig. $7 ( \\mathbf { a } _ { 1 } ) )$ . The corresponding HR-TEM image of the SFs is shown in Fig. 7(a ). The deformation behavior is different for the ferrite phase. TEM observation taken from the two-beam condition $_ g$ vector ${ \\bf < } 1 1 0 >$ ) reveals the formation of dislocation tangles (Fig. 7(b) and (c)) inside both $\\alpha$ and δ ferrite, indicating the occurrence of dislocation cross-slip [17]. The difference in the deformation mode between austenite and ferrite lies in their different SFE. Austenite generally possesses a lower SFE than the ferrite phase [62], which favors planar dislocation slip and the occurrence of strain-induced martensite [17,63]."
+    },
+    {
+        "type": "text",
+        "text": "3.3. In-situ synchrotron HEXRD results"
+    },
+    {
+        "type": "text",
+        "text": "In order to reveal the underlying mechanisms for the differences in the mechanical behavior of the RD and TD steels, in-situ HEXRD was employed to investigate the microscopic deformation behavior of each phase under tensile testing. The engineering stress-strain curve acquired from the in-situ HEXRD tensile stage is shown in Fig. 4(a). The change of phase fraction and dislocation density of each phase upon deformation can be analyzed. Due to the high angular resolution of HEXRD, overlapping diffraction peaks of ferrite and strain-induced tetragonal $\\alpha ^ { \\ast }$ -martensite can in principle be separated [44,64,65]. For the investigated steel, the asymmetry of the BCC diffraction peaks due to such a peak overlapping effect can indeed be observed at high strain levels (e.g. above 0.3 true strain, Fig. 8(a)). However, this asymmetry is not obvious at lower plastic deformations. In this case, the peak separation for BCC diffraction peaks is prone to error. Therefore, in this study, the increase in the martensite fraction is determined to be equal to the reduction in the austenite fraction. Fig. 8(a) reveals the variation of different diffraction peaks at different true strain levels for both RD and TD samples. It is observed that the intensity of the FCC diffraction peaks decreases with the increase of plastic deformation for both samples, due to the formation of strain-induced $\\alpha ^ { \\ast }$ -martensite. At high strain levels (e. g., above ${ \\sim } 0 . 2 2 )$ , the BCC peaks of the RD sample appear to be clearly higher than that of the TD sample, indicating a higher amount of martensite formation. The calculated deformation-induced martensite as a function of true strain is shown in Fig. 8(b). At the elastic stage (true strain below ${ \\sim } 0 . 0 3 $ , the martensite fraction is negligible (less than 1 vol. $\\%$ ), suggesting that the martensite transformation in the studied steel occurs primarily during the plastic deformation stages (i.e., strain-induced $\\alpha ^ { \\ast }$ -martensite). Upon straining, the martensite fraction increases for both samples. A notable feature is that the RD sample shows higher martensite transformation kinetics compared with the TD sample. At higher strain levels, the difference in the martensite fraction between the two samples becomes more pronounced, which can be as high as 4 vol. $\\%$ at a true strain of \\~0.48 (the uniform elongation of the TD sample). The faster martensite transformation kinetics in the RD sample can explain its higher strain hardening ability, particularly at high strain levels (above ${ \\sim } 0 . 2$ true strain, see the inset in Fig. 8(b))."
+    },
+    {
+        "type": "image",
+        "img_path": "images/9d2146999c2d0d728bd977c3e4caa6c293e547fcd43f3e955c047bb9ae5f028c.jpg",
+        "caption": "Fig. 4. Mechanical behavior of the RD and TD samples: (a) The engineering stress-strain curves of the two samples. (b) The corresponding strain hardening curves and true stress-strain curves of the two samples."
+    },
+    {
+        "type": "image",
+        "img_path": "images/6d1951bde89c63c1045e966f299d3797dbd31e62791788d4975fb9ec36f69f89.jpg",
+        "caption": "Fig. 5. EBSD results of the microstructure at $^ { 1 5 \\% }$ engineering strain in TD sample: (a) Phase $^ +$ BS map (both $\\alpha ^ { \\ast }$ -martensite, $\\delta / \\alpha$ -ferrite and austenite). (b) Distri bution of BS values for BCC. (c) The corresponding KAM map in (a). (d) Phase map of a magnified region in (a). (e) The corresponding KAM map of the FCC in (d)."
+    },
+    {
+        "type": "text",
+        "text": "The evolution of dislocation density within austenite upon straining is also investigated and the results are shown in Fig. 9. Given that the diffraction peaks of ferrite and martensite are highly overlapped and difficult to accurately separate, the dislocation density of the BCC phase is not analyzed in this work. We calculated the dislocation density based on the modified Williamson-Hall method [66], with the following equation:"
+    },
+    {
+        "type": "equation",
+        "img_path": "images/7636bc341ccca33cd6f7e9b9f2cf6cecab3af183d652733ac46eeaa7720a5ed2.jpg",
+        "text": "$$\n\\Delta K - \\beta W _ { h k l } = \\frac { 0 . 9 } { L } + \\bigl ( \\pi A ^ { 2 } b ^ { 2 } \\big / 2 \\bigr ) ^ { 1 / 2 } \\rho ^ { 1 / 2 } \\bigl ( K \\overline { { C } } ^ { 1 / 2 } \\bigr )\n$$"
+    },
+    {
+        "type": "text",
+        "text": "where $\\varDelta K$ is the full width at half maximum (FWHM) of diffraction peaks. The term $\\beta W _ { h k l }$ represents the stacking fault contribution to line broadening. $\\beta = ( 1 . 5 \\varphi _ { s } + \\varphi _ { t } ) / a$ , where $a$ is the lattice constant, $\\varphi _ { s }$ and $\\varphi _ { \\mathrm { t } }$ denote the density of SF and twin boundary, respectively. $W _ { h k l }$ is a factor used to scale the faulting-induced peak broadening at different $h k l$ reflections. The values of $W _ { h k l }$ for FCC crystals are $W _ { 1 1 1 } = 0 . 4 3$ , $W _ { 2 0 0 } = 1$ , $W _ { 2 2 0 } = 0 . 7 1$ , $W _ { 2 2 2 } = 0 . 4 3$ , and $W _ { 3 l 1 } = 0 . 4 5$ [67]. L is average particle size, $A$ is a dimensionless constant that depends on the effective outer cut-off radius of dislocations (taken as 2 [68]), $^ { b }$ is the Burgers vector $( 0 . 2 5 8 \\mathrm { n m }$ for austenite [69]), $\\rho$ is the dislocation density, $K$ is the peak position, $\\overline { { C } }$ is the average contrast factor of dislocations on a specific crystal plane and its value is affected by the elastic constant, dislocation type, and crystal plane index of the crystal [70]."
+    },
+    {
+        "type": "text",
+        "text": "Fig. 9(a) illustrates the relationship between $\\varDelta K - \\beta W _ { h k l }$ and $K C ^ { 1 / 2 }$ calculated for five crystallographic reflections of FCC $( \\{ 1 1 1 \\}$ , $\\{ 2 0 0 \\}$ , {220}, {311}, {222}) in both samples at true strains of ${ \\sim } 0 . 1 4$ and 0.22. A value of $\\beta$ has been determined by trial-and-error by allowing that the quantities of $\\varDelta K - \\beta W _ { h k l }$ follow a smooth quadratic curve according to Eq. (3) [71]. For example, at a true strain of ${ \\sim } 0 . 1 4$ , the values of $\\beta$ are 0.002 and 0.004 for the RD and TD sample, respectively. The values of $\\beta$ at other strains were determined using a similar approach. The dislocation density was obtained from the slope of the $( \\Delta \\bar { K  – \\beta } W _ { h k l } ) – K C ^ { 1 / 2 }$ relation as it exhibits a positive correlation with dislocation density. The RD samples exhibit higher slopes than the TD sample, indicating a higher dislocation density. Fig. 9(b) illustrates the dislocation density of austenite as a function of true strain. The dislocation density of austenite increases with true strain. During deformation, the dislocation density of austenite is obviously higher in the RD sample (by a maximum value of ${ \\sim } 1 . 5 1 \\ \\times \\ 1 0 ^ { 1 4 } \\ \\mathrm { m } ^ { - 2 } )$ . This higher dislocation may be associated with strain-induced $\\alpha ^ { \\ast }$ -martensitic transformation. On the one hand, the volume expansion associated with the martensitic phase transformation generates localized plasticity in the matrix phase adjacent to the newly formed martensite, leading to an enhancement in dislocation activity within the matrix [72,73]. On the other hand, the mechanical contrast among ferrite, austenite and fresh martensite results in distinct stress/- strain partitioning, which consequently induces dislocation accommodation in softer phases (here austenite) [74,75]. At the latest stages of tensile deformation (above 0.35 true strain), the difference in the austenite dislocation density between the two samples becomes smaller, which might be due to the eventual martensite transformation from the austenite with a high dislocation density. Such decay in the rate of dislocation multiplication, particularly for the RD sample, will lead to a decrease in the strain hardening rate, according to the Taylor hardening model [76]. Therefore, the difference in the dislocation multiplication between the two samples should not be the reason accounting for their different strain-hardening ability."
+    },
+    {
+        "type": "image",
+        "img_path": "images/153abcc2bdc396a6f3ef35ddb087e1f04353b3f3e77be927cf4a4fce8f3d7178.jpg",
+        "caption": "Fig. 6. TEM observation of austenite deformation mechanisms in the TD sample (engineering strain $1 5 \\%$ ): ${ \\bf a } _ { 1 }$ and $\\mathbf { b } _ { 1 \\cdot } \\cdot$ ) Bright field (BF) image and $\\mathbf { \\hat { a } } _ { 2 }$ and $\\mathbf { b } _ { 2 } )$ dark field (DF) image and the corresponding diffraction patterns taken from two representative austenite grains, showing the strain-induced $\\alpha ^ { \\ast }$ -martensite nucleation close to $\\gamma / \\alpha$ and $\\gamma / \\delta$ phase boundaries."
+    },
+    {
+        "type": "text",
+        "text": "3.4. Strain partitioning behavior"
+    },
+    {
+        "type": "text",
+        "text": "Due to the multiphase feature of the investigated steel and the strength difference among different phases, the distribution of plastic strain during tensile testing should be non-uniform. This heterogeneous strain distribution was investigated by the in-situ $\\mu$ -DIC technique. The advantage of this technique is the ability to visually observe the strain distribution in a selected microscopic region. Polished and  gold sputtered specimens were subjected to interrupted tensile testing. SEM images at same locations of the tensile specimen were performed at every ${ \\sim } 5 ~ \\%$ engineering strain. It should be noted that the correlative EBSD results were acquired before gold sputtering, thus the analysis does not distinguish strain-induced $\\alpha ^ { \\ast }$ -martensite and austenite. Particular focuses are placed on the straining partitioning behavior between $\\gamma { + } \\alpha$ aggregate and δ-ferrite (Figs. 10(a) and 11(a)) and between γ and $\\alpha$ in the ultrafine-grained region (Figs. 10(b-d) and 11(b-d)). Based on such data, the difference in the deformation behavior between RD and TD samples can be more clearly visualized."
+    },
+    {
+        "type": "text",
+        "text": "Fig. 10 illustrates the distribution of the shear strain in the RD sample upon tensile loading. The EBSD phase plus band contrast (BC) map depicting the non-deformed microstructure of the selected region of this sample is presented in Fig. 10(a1). Fig. $1 0 ( \\mathsf { a } _ { 2 ^ { - } } \\mathsf { a } _ { 5 } )$ show the evolution of the shear strain field in the corresponding region at different engineering strain levels (from $5 \\%$ to $2 0 \\%$ ). The strain distribution is relatively uniform throughout the entire region, indicating that the δ-ferrite and UFG $\\gamma { + } \\alpha$ exhibit similar deformation levels, as also illustrated by the strain profiles taken from two representative regions (Fig. 10(e)). At higher strain values, e.g., $2 0 ~ \\%$ , some deformation slip bands can  be observed, as marked by arrows in Fig. $\\mathbf { 1 0 ( a _ { 5 } ) }$ . Fig. 10(b) provides a representative magnified view of the microstructure and the corresponding strain distribution in the UFG region. Based on the EBSD data, the regions of $\\gamma$ -α’ mixed phase and $\\alpha$ -ferrite can be separated, and their strain maps are shown in Fig. 10(c) and (d), respectively. It can be observed that the UFG region shows a more heterogeneous strain distribution when probed at high magnifications, especially at higher strain levels (above $1 5 \\%$ ). Such heterogeneous strain distribution is related to the different deformation behaviors of austenite and $\\alpha$ -ferrite, attributable to their different mechanical properties, which will be discussed in Section 4.1."
+    },
+    {
+        "type": "image",
+        "img_path": "images/50d2530d2a5656ad7854951f997bdf7210e9756dd79d3d45329a50bae2512868.jpg",
+        "caption": "Fig. 7. TEM observation of the deformation behavior within austenite, $\\alpha$ -ferrite and δ-ferrite for the TD sample (engineering strain $1 5 \\%$ ): $\\mathbf { \\left( a _ { 1 } \\right) }$ BF image and diffraction pattern for an austenite grain in the TD sample, showing the formation of stacking fault (marked by arrows); $\\left( \\mathsf { a } _ { 2 } \\right)$ HR-TEM image taken from a local region within the austenite grain in $\\mathbf { \\Psi } ( \\mathbf { a } _ { 1 } )$ , showing details of SFs; $\\left( \\mathbf { b } _ { 1 } { \\cdot } \\mathbf { b } _ { 2 } \\right)$ BF image and diffraction pattern for a δ-ferrite grain in the TD sample, showing the dislocation tangles (marked by arrow). $\\left( \\mathsf { c } _ { 1 } \\mathsf { - c } _ { 2 } \\right)$ BF image and diffraction pattern for an $\\alpha$ -ferrite grain in the TD sample, showing the dislocation tangles (marked by arrow)."
+    },
+    {
+        "type": "image",
+        "img_path": "images/34245a9d5f8f9a27a202f8c5572a2dbb64bebb9ef5e50b68d130e9154bcfd17e.jpg",
+        "caption": "Fig. 8. (a) The variation of different diffraction peaks with true strain of the two samples; (b) Martensite fraction calculated by the Rietveld refinement method as a function of true strain (the inset shows the corresponding strain hardening rate curves of the two samples)."
+    },
+    {
+        "type": "text",
+        "text": "In contrast to the RD sample, the TD sample demonstrates a more pronounced strain heterogeneity, which can be already observed at a lower magnification (Fig. 11(a)). A detailed strain profile analysis reveals that the higher strain is concentrated in the δ-phase (as shown in Fig. 11(e)), a phenomenon that is not observed in the RD sample. The strain distribution in the UFG $\\gamma { + } \\alpha$ region of the TD sample closely resembles that observed in the RD sample. Fig. 11(c) and (d) illustrate the strain distribution in the $\\gamma \\mathbf { - } \\mathbf { \\alpha } \\mathbf { \\alpha }$ mixed phase and $\\alpha$ -ferrite regions, respectively, revealing a relatively higher strain inside the $\\gamma$ -α’ mixed phase. At higher plastic deformation levels (above $1 5 ~ \\%$ ), strain concentration near the phase boundaries is also observed (as marked by arrows in Figs. $1 0 ( \\mathsf { d } _ { 5 } )$ and $\\mathrm { 1 1 ( d _ { 5 } ) ) }$ , which matches well with the KAM data shown in Fig. 5(e). This phenomenon is due to the strain incompatibility between the two phases (austenite and ferrite) during plastic deformation, which essentially increases the number of GNDs at the phase boundaries."
+    },
+    {
+        "type": "image",
+        "img_path": "images/831f2eabecbcd8e3ff4f799b00979dd84a5eda9e020833bbd5ddfbadd6a7fbc3.jpg",
+        "caption": "Fig. 9. (a) The relationship between $\\Delta K _ { \\mathcal { \\parallel } } W _ { h k l }$ and $K C ^ { 1 / 2 }$ determined using the modified Williamson-Hall method across five crystallographic reflections of FCC: {111}, {200}, {220}, {311}, and $\\lbrace 2 2 2 \\rbrace$ for both RD and TD samples at two different strain levels. (b) Dislocation density of austenite as a function of true strain for the two samples."
+    },
+    {
+        "type": "image",
+        "img_path": "images/aafc70f172d757a9c04c8ef49842ad1237db3bd92d4522d50560f0fdb6da1980.jpg",
+        "caption": "Fig. 10. Strain partitioning behavior in the RD sample: EBSD phase $^ +$ BC map for $\\mathbf { \\left( a _ { 1 } \\right) }$ the entire probed area and $\\mathbf { ( b _ { 1 } ) }$ the UFG $\\gamma { + } \\alpha$ region (red rectangular frame in $\\left( \\mathbf { a } _ { 1 } \\right) )$ . Single-phase maps of the area in $\\mathbf { ( b _ { 1 } ) }$ are shown in $\\left( \\mathbf { c } _ { 1 } \\right)$ for FCC phase and $( \\mathsf { d } _ { 1 } )$ for BCC phase. $\\left( \\mathsf { a } _ { 2 } \\mathsf { a } _ { 5 } \\right)$ , $\\left( \\mathbf { b } _ { 2 } { \\cdot } \\mathbf { b } _ { 5 } \\right)$ , $\\left( \\mathsf { c } _ { 2 } \\mathsf { - c } _ { 5 } \\right)$ and $( \\mathsf { d } _ { 2 } \\mathsf { - } \\mathsf { d } _ { 5 } )$ show the shear strain distribution of the areas in $\\mathbf { \\Pi } ( \\mathbf { a } _ { 1 } )$ , $( \\mathbf { b } _ { 1 } )$ , $\\left( \\mathbf { c } _ { 1 } \\right)$ and $( \\mathsf { d } _ { 1 } )$ , respectively, at engineering strains from $5 \\%$ to $2 0 \\%$ . (e) Local strain across different representative phase regions (along the arrow marked in the inset strain maps)."
+    },
+    {
+        "type": "image",
+        "img_path": "images/8c930848cbfdda702ec0a66039eff376378f59956e765cf2b23d0d46d2d74d3d.jpg",
+        "caption": "Fig. 11. Strain partitioning behavior in the TD sample: EBSD phase $^ +$ BC map for (a1) the entire probed area and $\\mathbf { ( b _ { 1 } ) }$ the UFG $\\gamma { + } \\alpha$ region (red rectangular frame in $\\mathbf { ( a _ { 1 } ) } )$ ). Single-phase maps of the area in $\\mathbf { ( b _ { 1 } ) }$ are shown in $\\left( \\mathbf { c } _ { 1 } \\right)$ for FCC phase and $( \\mathsf { d } _ { 1 } )$ for BCC phase. $\\mathbf { ( a _ { 2 } - a _ { 5 } ) }$ , $\\mathbf { ( b _ { 2 } - b _ { 5 } ) }$ , $\\left( \\mathsf { c } _ { 2 } \\mathsf { - c } _ { 5 } \\right)$ and $( { \\bf d } _ { 2 } { \\bf - d } _ { 5 } )$ show the shear strain distribution of the areas in $\\mathbf { \\Pi } ( \\mathbf { a } _ { 1 } )$ , $( \\mathbf { b } _ { 1 } )$ , $\\left( \\mathbf { c } _ { 1 } \\right)$ and $( \\mathsf { d } _ { 1 } )$ , respectively, at engineering strains from $5 \\%$ to $2 0 \\%$ . (e) Local strain across different representative phase regions (along the arrow marked in the inset strain maps)."
+    },
+    {
+        "type": "text",
+        "text": "To better understand the strain partitioning behavior of the two samples upon tensile loading, the statistical average strain value of different phases $( \\delta , \\alpha ,$ and $\\gamma \\mathbf { - } \\mathbf { \\alpha } \\mathbf { \\alpha }$ mixed phase) was quantified and the results are shown in Fig. 12. In the RD sample, the average strain values remain quite similar between the δ-ferrite and UFG $\\gamma { + } \\alpha$ aggregates (Fig. 12(a)). In contrast to the TD sample, the average strain value of δ-ferrite is about 1.26 times higher than that of the $\\gamma { + } \\alpha$ aggregates (Fig. 12(b)), revealing a strain concentration within the δ-ferrite. This observation is consistent with the results presented in Figs 10 and 11. Pertaining to the strain partitioning between $\\alpha$ and $\\gamma \\mathbf { - } \\mathbf { \\alpha } \\mathbf { \\alpha }$ within the UFG region, it is shown that for both samples, more strain is concentrated within the γ-α’ mixed phase, which is up to 1.3 times higher than that of the $\\alpha$ phase (Fig. 12(c) and (d)). It should be noted that the volume expansion associated with the $\\gamma$ to $\\alpha ^ { \\ast }$ -martensitic transformation (around $2 \\sim 4 ~ \\%$ [77]) is also likely to contribute to an increase in local plastic strain in the $\\gamma \\mathbf { - } \\mathbf { \\alpha } \\mathbf { \\alpha }$ mixed phase [78]. However, the strain partitioning between $\\alpha$ and $\\gamma \\mathbf { - } \\mathbf { \\alpha } \\mathbf { \\alpha } ^ { \\prime }$ is already notable at small strains $( 5 ~ \\% )$ where martensite formation is relatively limited. This indicates that the observed strain concentration within the $\\gamma$ -α’ mixed phase is more due to the mechanical contrast between the two phases. Nevertheless, it is shown from this statistical analysis that the plastic strain concentrated in the austenite phase appears to be smaller in the TD sample in comparison to that of the RD sample (Fig. 12(c) and (d)). This can well explain the lower kinetics of strain-induced martensite transformation of the TD sample observed in Fig. 8 and the lower strain-hardening capability. Given that the strain partitioning ratio between austenite $\\alpha$ and $\\gamma$ -α’ is similar between the two samples, the lower austenite strain in the TD sample should be derived from the higher strain concentration within the δ-ferrite phase (Fig. 12(b)). The underlying reasons for the different strain partitioning behavior will be discussed in Section 4."
+    },
+    {
+        "type": "text",
+        "text": "4. Discussion"
+    },
+    {
+        "type": "text",
+        "text": "Results of Section 3 demonstrate that the investigated medium Mn lightweight steel with a layered microstructure containing δ-phase and $\\gamma { + } \\alpha$ aggregates show different strain-hardening abilities when loaded under different directions (RD and TD). Such difference might be related to the texture (especially of δ-phase) developed during thermomechanical processing and/or the different kinetics of strain-induced martensite transformation under different loading directions (as demonstrated in Fig. 8). To investigate the influence of the former factor, we conducted texture analysis on the δ-phase; the results are shown in Supplementary Fig. S1. A typical rolling texture with a major rotated cube texture component $\\{ 1 0 0 \\} < 0 1 1 >$ , i.e., $< 0 1 1 > / / \\mathrm { R D }$ and $\\lbrace 1 0 0 \\rbrace / /$ normal direction (ND), is formed after thermomechanical processing and annealing. Because the texture is not pronounced (maximum intensity of 2.57), its effect on the anisotropic strain hardening behavior is supposed to be insignificant. In addition, Taylor factors are determined to be quite similar between samples loaded along different directions (2.83 for RD and 2.78 for TD), which further indicates a similar mechanical response of the δ-phase upon different loading directions [79]. Therefore, we mainly contemplate on the latter factor, i.e., different kinetics of strain-induced martensite transformation. This is related to the different strain partitioning behavior observed in TD and RD samples developed upon loading (Section 3.4), which requires comprehensive discussion. In this section, we first unravel the underlying reasons for the different strain partitioning behavior in the two samples. The impact of strain distribution on strain-induced martensitic transformation is then discussed."
+    },
+    {
+        "type": "image",
+        "img_path": "images/fdecdec1738b9f7301fefa83a3c6efa40e774ec95479754265cd77debecc54c1.jpg",
+        "caption": "Fig. 12. The average shear strain of δ-ferrite and UFG $\\gamma { + } \\alpha$ regions in (a) RD and (b) TD as a function of engineering strain; The average shear strain of $\\gamma$ -α’ mixed phase and $\\alpha$ phase in UFG $\\gamma { + } \\alpha$ regions in (c) RD and (d) TD as a function of engineering strain."
+    },
+    {
+        "type": "text",
+        "text": "4.1. Strain partitioning"
+    },
+    {
+        "type": "text",
+        "text": "The results presented in Section 3.4 reveal significant differences in strain distribution in the two samples. More specifically, a pronounced strain partitioning between δ-ferrite and $\\gamma { + } \\alpha$ aggregates is observed in the TD sample, whereas such partitioning is not found in the RD sample. For both samples, more strain is concentrated within the $\\gamma \\mathbf { - } \\mathbf { \\alpha } \\mathbf { \\alpha } ^ { \\prime }$ mixed phase compared with the $\\alpha$ -ferrite phase. These behaviors are likely related to a) the intrinsic mechanical properties of different phases and b) the deformation anisotropy as a response to different loading directions. We study the former point based on the HEXRD data. Fig. 13(a) and (b) reveal the change in lattice strain along the loading direction for each crystallographic reflection of different phases in the RD and TD samples as a function of applied engineering strain. The lattice strain data plotted as a function of engineering stress are also included in Supplementary Fig. S2. The lattice strain changes of five planes for austenite (γ111, γ200, γ220, γ331, γ222) and four planes for ferrite $( \\alpha _ { 1 1 0 } ,$ α , α , α ) are presented. The evolution of lattice strain of different crystallographic planes exhibits different behavior within the elastic regime. These differences can be attributed to the elastic anisotropy inherent in the cubic crystallographic structure [44]. However, they all show a common characteristic in both samples, namely, the lattice strain of all crystallographic planes in austenite shows an earlier change in slope in comparison to the lattice strain in ferrite (Fig. 13(a) and (b)). The earlier deviation from linearity in austenite indicates an earlier initiation of plastic deformation in this phase. The weighted average lattice strain of the two phases for the RD and TD samples is presented in Fig. 13(c) and (d), respectively. The onset of plastic deformation identified by the initial deviation from linearity in the curve, was determined for each phase in both samples. The weighted average lattice strain of austenite shows a change in slope at the applied strain of $1 . 8 ~ \\%$ for the RD sample and $2 . 1 ~ \\%$ for the TD sample. These values are smaller than those of ferrite in the respective samples $2 . 3 \\%$ for the RD sample and $2 . 9 \\%$ for the TD sample). This further demonstrates that austenite is the phase that yields first, which is consistent with observations from other medium Mn steels with similar microstructural characteristics [57,80]. It should also be noted that both austenite [81,82] and ferrite [83,84] have been found as the softer phase in medium Mn steels, depending on the specific alloy composition and processing routes. A slight reduction in the lattice strain of austenite was observed following macroscopic yielding in both samples. This result indicates a stress relaxation in the austenite, which might be due to the strain redistribution between the ferrite/martensite and austenite [85] or the formation of deformation-induced martensite [45]. Nevertheless, the softer nature of austenite, suggested from the above results, can well explain the higher strain concentration in the austenite phase within the UFG $\\gamma { + } \\alpha$ observed in both RD and TD samples upon loading (Fig. 12(c) and (d))."
+    },
+    {
+        "type": "image",
+        "img_path": "images/eaa3ded89aeaf38ed1bba2a76c8a7f7efacb612f16b938c46fc48980e5149bdb.jpg",
+        "caption": "Fig. 13. Lattice strain of individual lattice planes as a function of applied engineering strain in the (a) RD and (b) TD samples; The weighted average lattice strains for the FCC and BCC phases of (c) RD and (d) TD samples (arrows indicate the starting point at which the curve deviates from linearity)."
+    },
+    {
+        "type": "text",
+        "text": "The $\\mathsf { \\Pi } \\mathsf { H } \\mathrm { - D I C }$ results presented in Section 3.4 suggest that δ-ferrite carries a higher plastic strain than the UFG $\\gamma { + } \\alpha$ aggregates for the TD sample, despite the fact that austenite is an intrinsically softer phase. To understand this, we measure the Vickers hardness of the two regions $( \\gamma + \\alpha$ aggregates and δ-ferrite). The results show that the UFG $\\gamma { + } \\alpha$ region exhibits a higher hardness $( 2 2 1 { \\pm } 3 . 0 \\ \\mathrm { H V } )$ compared with the δ-ferrite $( 2 0 5 { \\pm } 1 . 5 \\mathrm { H V } )$ . These results suggest that although austenite is the phase that yields first, its aggregated microstructure with $\\alpha$ -ferrite appears to be overall stronger than δ-ferrite, which should be due to the ultrafine grain size within the $\\gamma { + } \\alpha$ regions as well as the high density of phase boundaries that serve to block dislocations. Therefore, it becomes possible that δ-ferrite is more plastically deformed when the sample is loaded under certain orientations. The remaining question is thus why the δ-ferrite phase and $\\gamma { + } \\alpha$ aggregates show different strain partitioning spectrums under different loading directions (TD and RD). We attribute this difference to the varying orientation of the layered microstructure relative to the loading direction. More specifically, when the layered structure is aligned in parallel with the loading direction (RD sample), the two microstructure constitutes (δ-ferrite and $\\gamma { + } \\alpha$ aggregates) are more likely to be deformed in an iso-strain condition, based on plastic deformation theories of composite materials [86]. In contrast, for the TD sample where the layer direction is perpendicular to the loading direction, an iso-stress deformation condition is more prevailed [86]. In such a scenario, strain partitioning will naturally occur between δ-ferrite and $\\gamma { + } \\alpha$ aggregates, and more strains will be concentrated into the softer region (i.e., the δ-ferrite phase)."
+    },
+    {
+        "type": "text",
+        "text": "4.2. Influence of heterogeneous strain distribution on martensite formation"
+    },
+    {
+        "type": "text",
+        "text": "Previous studies mainly concentrated on the influence of intrinsic characteristics of metastable austenite (e.g., composition, SFE, grain size, and morphology) on the kinetics of deformation-induced martensite transformation [27,28,87,88]. Here in this work, we demonstrate that the studied medium Mn lightweight steel with a banded microstructure exhibits significantly different kinetics of strain-induced martensite under different loading directions. More specifically, the RD sample demonstrates a higher martensite transformation kinetics compared with the TD sample (Fig. 8(b)), which is the major reason resulting in the higher strain-hardening ability observed in this sample. Hu et al. [89] also discovered that the more pronounced TRIP effect of residual austenite can contribute a sustained work hardening rate up to high strain. Results in Section 3.4 have shown that the plastic strain concentrated in the austenite phase for the RD sample is higher than that for the TD sample by a factor of ${ \\sim } 1 . 1 5$ (Fig. 12 (c) and (d)). This difference is primarily due to the different strain partitioning behavior between the banded δ-phase and the $\\gamma { + } \\alpha$ aggregates, which is dependent on the loading direction and the associated iso-strain or iso-stress conditions. Taking the different strain concentration within austenite into account, the martensite transformation kinetics of the RD sample can be calculated based on the behavior of the TD sample and the Olson-Cohen (OC) model [61], which is depicted as follows:"
+    },
+    {
+        "type": "equation",
+        "img_path": "images/c34b2e1795a2172f9037843b8d37c571012b55a7fdfa0665cf2fec9ce31013b9.jpg",
+        "text": "$$\nF _ { m } = F _ { \\gamma _ { 0 } } \\times \\{ 1 - e x p [ - \\beta [ 1 - e x p ( - \\alpha \\varepsilon ) ] ^ { n } ] \\}\n$$"
+    },
+    {
+        "type": "text",
+        "text": "Here, the constants $\\alpha , \\beta$ and $n$ are closely related to the shear band formation rate and the SFE of austenite, and $F _ { \\gamma O }$ is the initial austenite fraction $( 4 6 . 5 ~ \\mathrm { v o l } . \\% )$ . The parameters used in the OC model equations are summarized in Table 1. It is assumed that martensite nucleation occurs randomly, with a value of $\\scriptstyle n = 2$ [61]. We first apply the OC model to the TD sample (the plastic strain is $\\varepsilon _ { T D } .$ ). Subsequently, the fitting parameters obtained from the TD sample are utilized to fit the RD sample, where the plastic strain of austenite is taken as $\\varepsilon _ { R D } = 1 . 1 5 \\varepsilon _ { T D }$ (determined by comparing the micro-DIC data, Fig. 12(c) and (d)). Fig. 14 illustrates the accuracy of the OC model in predicting the martensite fraction, as compared with the HEXRD experimental data. This observation suggests that loading direction-dependent strain distribution plays a key role in the kinetics of strain-induced martensite transformation."
+    },
+    {
+        "type": "text",
+        "text": "From the microscopic perspective, different phases and microstructure constituents (e.g., austenite, ferrite, and martensite) have different intrinsic properties, such as strength and strain-hardening capability. These differences lead to their different mechanical response upon mechanical loading, resulting in complex stress/strain redistribution patterns among them. Particularly, the mechanical contrast among different phases and the resulting strain incompatibility will result in an increase of GNDs at the phase boundary regions (as observed in Fig. 5 (e)). This can be supported by the work of Hu et al. [90], who also found that a heterogeneous distribution of hardness in a stainless steel with a dual-phase heterogeneous lamellar structure can lead to a higher amount of GNDs. For the RD sample, the δ-ferrite phase and UFG $\\alpha \\cdot \\gamma$ aggregates are deformed to the same level to comply with the iso-strain condition. In order to maintain this condition, a high density of GNDs has to be produced to accommodate the difference in the hardness and stiffness between the two microstructure constituents. Additionally, strain concentrations are present at the phase boundary between the δ-ferrite phase and UFG $\\alpha \\cdot \\gamma$ aggregate region, analogous to those observed in composite materials [91,92]. This can be well supported by our $\\mathsf { \\mu - D I C }$ data (as observed in Fig. 15). The higher amount of GNDs and the associated stress concentrations at the phase boundary regions provide more nucleation sites as well as increases the local driving force for martensite formation, which could be another reason accounting for the higher martensite transformation kinetics observed in the RD sample."
+    },
+    {
+        "type": "text",
+        "text": "The above findings and discussions reveal an anisotropy behavior in terms of martensite transformation and strain hardening ability of banded medium-Mn lightweight steel, which is due to the distinctly different strain partitioning developed upon loading at different directions. This anisotropic behavior is anticipated to influence the materials’ formability under multi-axial loading conditions, which will require future studies and needs to be considered for future development of this type of steels or other AHSSs with a similar microstructure."
+    },
+    {
+        "type": "text",
+        "text": "5. Conclusions"
+    },
+    {
+        "type": "text",
+        "text": "In conclusion, we utilized in-situ synchrotron HEXRD and highresolution $\\mu$ -DIC techniques to investigate the deformation behavior of a medium-Mn lightweight steel with a banded microstructure consisting of δ-ferrite and UFG $_ { ( \\mathsf { X } + \\mathsf { Y } }$ aggregates. Particular focuses were placed on the deformation anisotropy behavior of the steel, and the following conclusions can be drawn:"
+    },
+    {
+        "type": "table",
+        "img_path": "images/6275f1562eaf6f2369d557ef86bd1482fa4a96da9f523535b54b21f4b5859de6.jpg",
+        "table_caption": [
+            "Table 1 Summary of parameters of the OC model in different tensile directions. "
+        ]
+    },
+    {
+        "type": "image",
+        "img_path": "images/4c1af2f7ee89498d87bab75d2d456c5c8f59ce49d87ebf3e6c1cbc96e9b827d3.jpg",
+        "caption": "Fig. 14. Deformation induced martensitic transformation kinetics of steel in two tensile directions (dashed lines are fitted curves based on the OC model)."
+    },
+    {
+        "type": "text",
+        "text": "1) The steel samples that were deformed along the rolling direction (parallel to the banding direction) exhibited a higher tensile strength and ductility compared with those stretched in the transverse direction. This difference was due to the different strain-hardening capabilities between the RD and TD samples. In-situ synchrotron HEXRD experiments revealed a faster kinetics of strain-induced $\\alpha ^ { \\ast }$ -martensite and a higher dislocation density within the austenite phase for the RD sample, which can explain its higher strainhardening rate."
+    },
+    {
+        "type": "text",
+        "text": "2) A complex strain distribution behavior among austenite, $\\alpha$ -ferrite and δ-ferrite was observed by $\\mu { - } \\mathrm { D I C }$ experiments. Within the UFG $_ { \\mathfrak { X } + \\gamma }$ region, both samples showed a heterogenous strain distribution and more strain was concentrated in the softer austenite phase compared with $\\alpha$ -ferrite. The two samples showed markedly different strain partitioning behavior between δ-ferrite and UFG $\\gamma + \\alpha$ aggregates. For the RD sample, the two regions exhibit similar deformation levels, whereas the TD sample showed a more pronounced strain partitioning between these two banded regions with a higher strain concentrated in the δ-ferrite phase. This resulted in an overall higher local strain within the austenite phase for the RD sample, which was the main factor accounting for the higher kinetics of strain-induced $\\alpha ^ { \\ast }$ -martensite formation and thus higher strain hardening in this sample."
+    },
+    {
+        "type": "text",
+        "text": "3) The difference in the strain partitioning behavior was due to the varying orientation of the layered microstructure relative to the loading direction. When the layered structure is aligned in parallel with the loading direction (RD sample), the two microstructure constituents (δ-ferrite and $\\gamma { + } \\alpha$ aggregates) are more likely to be deformed in an iso-strain condition. In contrast, in the TD sample where the layer direction is perpendicular to the loading direction, an iso-stress deformation condition is more prevalent. Such dependence of stress/strain state on the loading direction and its associated influence on martensite transformation kinetics must be considered for the design of similar alloys, particularly for improving forming properties."
+    },
+    {
+        "type": "text",
+        "text": "CRediT authorship contribution statement"
+    },
+    {
+        "type": "text",
+        "text": "Shuanghong Lei: Writing – original draft, Validation, Methodology,"
+    },
+    {
+        "type": "image",
+        "img_path": "images/03174dbe7684bb299e8609d5c3c92f6211f022cb7a428153b8174b1436692030.jpg",
+        "caption": "Fig. 15. Local strain distribution close to the phase boundary of δ-ferrite and UFG $\\gamma { + } \\alpha$ aggregates of the RD sample: (a) Representative region 1 and (b) Repre sentative region 2."
+    },
+    {
+        "type": "text",
+        "text": "Investigation, Formal analysis, Data curation. Binhan Sun: Writing – review & editing, Writing – original draft, Supervision, Resources, Project administration, Investigation, Funding acquisition, Conceptualization. Yu Xuan: Software, Data curation. Ran Tian: Visualization, Software. Yan Ma: Writing – review & editing, Methodology, Data curation. Mohamed Naguib Elkot: Writing – review & editing, Methodology. Huijie Cheng: Writing – review & editing, Formal analysis. Ning Yao: Writing – review & editing, Formal analysis. Tiwen Lu: Writing – review & editing. Jianping Tan: Writing – review & editing. Zhenbo Zhang: Formal analysis, Investigation, Writing – review & editing. Xian-Cheng Zhang: Investigation, Supervision, Resources. Shan-Tung Tu: Supervision, Resources, Writing – review & editing."
+    },
+    {
+        "type": "text",
+        "text": "Declaration of competing interest"
+    },
+    {
+        "type": "text",
+        "text": "The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper."
+    },
+    {
+        "type": "text",
+        "text": "Acknowledgments"
+    },
+    {
+        "type": "text",
+        "text": "This work was financially supported by the National Key Research and Development Project (No. 2023YFB3712103), National Natural Science Foundation of China (Grant No. 52275147, 52075174), Key Research and Development Program of Shandong Province (No. 2024CXPT064) and Shanghai Gaofeng Project for University Academic Program Development. We acknowledge DESY (Hamburg, Germany), a member of the Helmholtz Association HGF, for the provision of experimental facilities. Parts of this research were carried out at the P02.1 Powder Diffraction and Total Scattering Beamline and we would like to thank Dr. Alexander Schokel ¨ for assistance in HEXR The influence of silicon additions on the deformation behavior of austenite-ferrite duplex medium manganese steelsD experiments. Beamtime was allocated for proposal I-20191072."
+    },
+    {
+        "type": "text",
+        "text": "Supplementary materials"
+    },
+    {
+        "type": "text",
+        "text": "Supplementary material associated with this article can be found, in the online version, at doi:10.1016/j.actamat.2025.121060."
+    }
+]

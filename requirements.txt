@@ -1,0 +1,6 @@
+# 文献实体抽取脚本（scripts/paper_entity_extract_once.py 等）
+openai>=1.0.0
+json5>=0.9.0
+python-dotenv>=1.0.0
+# Neo4j 知识图谱导入（scripts/json_entities_to_neo4j.py）
+neo4j>=5.0.0

@@ -1,0 +1,310 @@
+{
+  "papers": [
+    {
+      "paper_id": null,
+      "doi": null,
+      "title": null,
+      "authors": [],
+      "publication_year": null,
+      "journal": null,
+      "keywords": [],
+      "research_type": null,
+      "paper_scope": null
+    }
+  ],
+  "alloys": [
+    {
+      "alloy_id": null,
+      "paper_id": null,
+      "alloy_name": null,
+      "aliases": [],
+      "base_element": null,
+      "alloying_elements": [],
+      "nominal_composition": [
+        {
+          "element": null,
+          "weight_percent": null,
+          "atomic_percent": null
+        }
+      ],
+      "alloys_notes": null
+    }
+  ],
+  "processes": [
+    {
+      "process_id": null,
+      "paper_id": null,
+      "alloy_id": null,
+      "description": null,
+      "processes_notes": null
+    }
+  ],
+  "processing_steps": [
+    {
+      "paper_id": null,
+      "sequence": null,
+      "type": null,
+      "method": null,
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    }
+  ],
+  "samples": [
+    {
+      "sample_id": null,
+      "paper_id": null,
+      "alloy_id": null,
+      "process_id": null
+    }
+  ],
+  "structures": [
+    {
+      "structure_id": null,
+      "sample_id": null,
+      "overall_structure": null,
+      "number_of_phases": null,
+      "microstructure_counts": null,
+      "microstructure_list": [
+        {
+          "uuid": null,
+          "related_sequence": null,
+          "phases_present": [
+            {
+              "phase_name": null,
+              "crystal_structure": null,
+              "volume_fraction": null,
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            }
+          ],
+          "defects": [
+            {
+              "type": null,
+              "porosity": null,
+              "inclusions": [],
+              "dislocation_density": null,
+              "lattice_distortion": null
+            }
+          ],
+          "grain_structure": {
+            "average_grain_size": {
+              "value": null,
+              "unit": null
+            },
+            "grain_size_distribution": null,
+            "texture": null
+          },
+          "precipitates": [
+            {
+              "precipitate_id": null,
+              "type": null,
+              "size": {
+                "value": null,
+                "unit": null
+              },
+              "distribution": null,
+              "coherency": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_set_id": null,
+      "sample_id": null,
+      "phases": [
+        {
+          "interface_id": null,
+          "microstructure_uuid": null,
+          "phase_1_name": null,
+          "phase_2_name": null,
+          "coherence": null
+        }
+      ],
+      "defect_interaction": [
+        {
+          "interaction_id": null,
+          "microstructure_uuid": null,
+          "interaction_type": null,
+          "quality_description": null
+        }
+      ],
+      "interface_notes": [
+        {
+          "stress_strain_distribution": null
+        },
+        {
+          "slippage_situation": null
+        }
+      ],
+      "phase_evolution": null
+    }
+  ],
+  "properties": [
+    {
+      "property_set_id": null,
+      "sample_id": null,
+      "mechanical": {
+        "tensile_properties": {
+          "yield_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ],
+          "ultimate_tensile_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null,
+              "others": {
+                "uncertainty": null
+              }
+            }
+          ],
+          "elongation": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ],
+          "youngs_modulus": null,
+          "stress_strain_curves": null,
+          "stress_strain_distribution": [
+            {
+              "direction": null,
+              "distribution": null
+            }
+          ],
+          "strain_hardening_rate": [
+            {
+              "property_id": null,
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ]
+        },
+        "hardness": [
+          {
+            "region": null,
+            "value": null,
+            "scale": null,
+            "unit": null
+          }
+        ],
+        "fracture_toughness": {
+          "value": null,
+          "unit": null
+        },
+        "fatigue_properties": {
+          "fatigue_limit": null,
+          "cycles_to_failure": null
+        },
+        "creep_properties": {
+          "steady_state_creep_rate": null,
+          "rupture_life": null
+        }
+      },
+      "physical": {
+        "density": {
+          "value": null,
+          "unit": null
+        },
+        "thermal_properties": {
+          "thermal_conductivity": null,
+          "thermal_expansion_coefficient": null,
+          "specific_heat": null
+        },
+        "electrical_properties": {
+          "electrical_conductivity": null,
+          "resistivity": null
+        },
+        "magnetic_properties": {
+          "magnetic_susceptibility": null,
+          "curie_temperature": null
+        }
+      },
+      "chemical": {
+        "corrosion_resistance": {
+          "test_medium": null,
+          "corrosion_rate": null,
+          "passivation_behavior": null
+        },
+        "oxidation_resistance": {
+          "oxidation_rate_constant": null,
+          "protective_scale": null
+        }
+      },
+      "radiation_properties": {
+        "void_swelling": null,
+        "irradiation_hardening": null,
+        "helium_embrittlement": null
+      }
+    }
+  ],
+  "performance": [
+    {
+      "performance_id": null,
+      "sample_id": null,
+      "service_conditions": {
+        "operating_temperature": {
+          "min": null,
+          "max": null,
+          "unit": null
+        },
+        "stress_state": null,
+        "environment": null
+      },
+      "lifetime_prediction": {
+        "model_used": null,
+        "predicted_lifetime": null,
+        "confidence_interval": null
+      },
+      "comparative_performance": {
+        "benchmark_alloy": null,
+        "benchmark_process_id": null,
+        "benchmark_sample_id": null,
+        "improvement_percentage": null
+      }
+    }
+  ],
+  "characterization_methods": [
+    {
+      "characterization_id": null,
+      "sample_id": null,
+      "microstructure_uuid": null,
+      "technique": null,
+      "purpose": null,
+      "key_findings": null
+    }
+  ],
+  "computational_details": [
+    {
+      "computation_id": null,
+      "sample_id": null,
+      "simulation_method": null,
+      "software_used": null,
+      "potential_model": null,
+      "validation_against_experiment": null,
+      "analytical_model": [
+        {
+          "model_name": null,
+          "equation_role": null,
+          "parameters": null,
+          "model_note": null
+        }
+      ]
+    }
+  ],
+  "unmapped_findings": []
+}

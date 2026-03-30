@@ -1,0 +1,290 @@
+{
+  // 【类型约定】全文件所有叶子字段只能是：null、字符串、或数组（数组元素为字符串或对象；对象继续递归本规则）。
+  // 禁止 JSON number / boolean。数值、序号、比例等一律用字符串，如 "2025"、"0"、"38.8"、"true"。
+  // ========== 根级扩展：承接 Schema 未覆盖的原文要点 ==========
+  "unmapped_findings": [], // 字符串数组；每条一句或一段摘录，Schema 无槽位时仍保留信息
+
+  // ========== 文献与材料元数据 ==========
+  "metadata": {
+    "doi": null, // 数字对象唯一标识，字符串；未报道填 null
+    "title": null, // 论文题目，与原文一致
+    "authors": [], // 作者姓名，字符串数组，顺序与原文作者列表一致
+    "publication_year": null, // 发表年，字符串如 "2025"
+    "journal": null, // 期刊全名或缩写，按原文
+    "keywords": [], // 关键词或主题词，字符串数组
+    "research_type": null, // 研究类型：如 "experimental" / "computational" / "mixed" / "review"
+    "alloy_system": {
+      "base_element": null, // 基体/主元素符号，如 "Fe"
+      "alloying_elements": [], // 合金化元素列表（字符串数组），是否含基体按原文
+      "nominal_composition": [
+        // 名义/标称成分：一行一元素；可多行
+        {
+          "element": null, // 元素符号
+          "weight_percent": null, // 质量分数，字符串如 "7.95"
+          "atomic_percent": null // 原子分数，字符串；未给出填 null
+        }
+      ]
+    }
+  },
+
+  // ========== 制备与工艺 ==========
+  "processing": {
+    "synthesis_methods": [
+      // 熔炼/合成/粉末制备等初始制备步骤，可多条
+      {
+        "method": null, // 方法名称，如真空感应熔炼、电弧熔炼
+        "parameters": {
+          "temperature": null, // 温度，字符串；可与单位同字段如 "1100 °C"
+          "atmosphere": null, // 气氛：真空、Ar、空气等
+          "cooling_rate": null, // 冷却速率或凝固条件，字符串
+          "others": null // 其余工艺参数或备注，长字符串；可另增字段细分
+        }
+      }
+    ],
+    "process_sequence": [
+      // 按时间顺序排列的热机械处理步骤；sequence 与文中顺序一致
+      {
+        "sequence": null, // 步骤序号，字符串 "0"、"1"、"2"…
+        "type": null, // 步骤大类：如 "heat_treatment"、"thermomechanical_processing"、"mechanical_processing"
+        "method": null, // 具体工艺名：均质化、热轧、冷轧、退火等
+        "temperature": null, // 该步骤温度，字符串
+        "unit": null, // 温度单位，如 "°C"、"K"
+        "duration": null, // 保温/持续时间，字符串如 "10 min"
+        "cooling_medium": null, // 冷却介质：空冷、水淬、炉冷等
+        "reduction_ratio": null, // 压下量或变形量，字符串如 "50.0%"
+        "others": null // 该步其它参数（厚度、道次等），字符串或另增并列键
+      }
+    ],
+    "post_processing": [], // 取样后处理：抛光、镀膜、腐蚀等，字符串数组
+    "others": {
+      "note": null // 工艺路线设计目的、与显微组织对应关系等补充说明
+    }
+  },
+
+  // ========== 显微组织与结构 ==========
+  "structure": {
+    "overall_structure": null, // 宏观组织一段话：带状/等轴/分层等
+    "number_of_phases": null, // 相的个数或表述，字符串如 "3"
+    "microstructure_counts": null, // 文中区分的显微区域/组织类型数量，字符串如 "2"
+    "microstructure_list": [
+      // 多个显微组织子区域或代表性描述单元
+      {
+        "uuid": null, // 本单元唯一标识，字符串（如 "1" 或 UUID）
+        "related_sequence": null, // 与 processing.process_sequence 某步对应，填该步 sequence 字符串；无则 null
+        "phases_present": [
+          // 该区域存在的相及其信息
+          {
+            "phase_name": null, // 相名称：奥氏体、铁素体、马氏体等（可用原文符号 γ/α）
+            "crystal_structure": null, // 晶体结构：FCC、BCC、HCP 等
+            "volume_fraction": null, // 体积分数，字符串；百分数或小数按原文 "38.8" 或 "0.388"
+            "morphology": null, // 形貌：等轴、片状、带状等
+            "grain_size": null, // 晶粒尺寸，带单位字符串如 "~1.8 μm"
+            "texture": null // 织构或取向信息；无则 null
+          }
+        ],
+        // defects：null | 一段概括字符串 | 对象数组（缺陷分条）；叶子仍为字符串/null
+        "defects": null,
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null, // 平均晶粒尺寸数值，字符串
+            "unit": null // 单位：μm、nm 等
+          },
+          "grain_size_distribution": null, // 尺寸分布描述（宽化、双峰等）
+          "texture": null // 该区域 EBSD/织构相关叙述
+        },
+        "precipitates": [
+          // 析出相列表；无析出可空数组 []
+          {
+            "type": null, // 析出相名称或类型
+            "size": {
+              "value": null, // 尺寸数值，字符串
+              "unit": null // nm、μm 等
+            },
+            "distribution": null, // 晶界/晶内/均匀等
+            "coherency": null // 与基体共格性：coherent / semi-coherent / incoherent 等，字符串
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========== 界面与演化（相间关系、缺陷在界面行为、组织演变）==========
+  "interface": {
+    "phases": [
+      // 两相或多相界面：两两成对列出
+      {
+        "phase_1_name": null, // 第一相名称
+        "phase_2_name": null, // 第二相名称
+        "coherence": null // 界面共格/半共格等（与 precipitates.coherency 区分：此处为相间界面）
+      }
+    ],
+    "defect_interaction": [
+      // 缺陷与界面/相间的相互作用
+      {
+        "interaction_type": null, // 作用类型：GND、应力集中、形变诱导相变等
+        "quality_description": null // 定性/定量描述或「未定量」说明
+      }
+    ],
+    "others": [
+      // 不便归入上类的关键句；每项一个对象、单键=语义标签
+      {
+        "stress_strain_distribution": null // 应变/应力分配、分区变形等
+      },
+      {
+        "slippage_situation": null // 滑移系、滑移模式、平面滑移等
+      }
+    ],
+    "phase_evolution": null // 加载/热处理过程中相变、组织演化总述
+  },
+
+  // ========== 性能（力学、物理、化学、辐照）==========
+  "properties": {
+    "mechanical": {
+      "tensile_properties": {
+        "yield_strength": [
+          // 屈服强度；多方向则多条
+          {
+            "direction": null, // RD、TD、ND、overall 等
+            "value": null, // 数值字符串如 "420"
+            "unit": null // 通常为 "MPa"
+          }
+        ],
+        "ultimate_tensile_strength": [
+          {
+            "direction": null,
+            "value": null,
+            "unit": null,
+            "others": {
+              "uncertainty": null // 误差带，字符串如 "±35 MPa"
+            }
+          }
+        ],
+        "elongation": [
+          {
+            "direction": null,
+            "value": null, // 延伸率，字符串如 "69"
+            "unit": null // 通常为 "%"
+          }
+        ],
+        "youngs_modulus": null, // 杨氏模量及单位，一句字符串；未报道 null
+        "stress_strain_curves": null, // 是否给出曲线、见哪张图/补充材料
+        "stress_strain_distribution": [
+          {
+            "direction": null,
+            "distribution": null // 应力应变分布的文字或要点
+          }
+        ],
+        "strain_hardening_rate": [
+          {
+            "direction": null,
+            "value": null, // 应变硬化率或相关指标，字符串
+            "unit": null
+          }
+        ]
+      },
+      "hardness": [
+        // 硬度；多区域多测则多条
+        {
+          "region": null, // 测试区域或相区名称
+          "value": null, // 硬度值，字符串如 "221"
+          "scale": null, // 标尺：Vickers、Rockwell 等
+          "unit": null // 如 "HV"
+        }
+      ],
+      "fracture_toughness": {
+        "value": null, // 断裂韧性数值，字符串
+        "unit": null // 如 "MPa·m^1/2"
+      },
+      "fatigue_properties": {
+        "fatigue_limit": null, // 疲劳极限或条件，字符串
+        "cycles_to_failure": null // 周次或寿命，字符串
+      },
+      "creep_properties": {
+        "steady_state_creep_rate": null, // 稳态蠕变速率
+        "rupture_life": null // 蠕变断裂寿命
+      }
+    },
+    "physical": {
+      "density": {
+        "value": null, // 密度数值，字符串如 "7.40"
+        "unit": null // 如 "g/cm³"
+      },
+      "thermal_properties": {
+        "thermal_conductivity": null, // 热导率
+        "thermal_expansion_coefficient": null, // 热膨胀系数
+        "specific_heat": null // 比热容
+      },
+      "electrical_properties": {
+        "electrical_conductivity": null, // 电导率
+        "resistivity": null // 电阻率
+      },
+      "magnetic_properties": {
+        "magnetic_susceptibility": null, // 磁化率等
+        "curie_temperature": null // 居里温度
+      }
+    },
+    "chemical": {
+      "corrosion_resistance": {
+        "test_medium": null, // 腐蚀试验介质
+        "corrosion_rate": null, // 腐蚀速率
+        "passivation_behavior": null // 钝化行为描述
+      },
+      "oxidation_resistance": {
+        "oxidation_rate_constant": null, // 氧化速率常数等
+        "protective_scale": null // 氧化膜/保护层描述
+      }
+    },
+    "radiation_properties": {
+      "void_swelling": null, // 空洞肿胀等
+      "irradiation_hardening": null, // 辐照硬化
+      "helium_embrittlement": null // 氦脆等
+    }
+  },
+
+  // ========== 服役条件、寿命预测、与对比合金性能 ==========
+  "performance": {
+    "service_conditions": {
+      "operating_temperature": {
+        "min": null, // 最低工作温度，字符串
+        "max": null, // 最高工作温度，字符串
+        "unit": null // "°C" 等
+      },
+      "stress_state": null, // 服役应力状态简述
+      "environment": null // 服役环境：气氛、介质等
+    },
+    "lifetime_prediction": {
+      "model_used": null, // 所用寿命/损伤模型名称
+      "predicted_lifetime": null, // 预测寿命或指标，字符串
+      "confidence_interval": null // 置信区间或不确定度说明
+    },
+    "comparative_performance": {
+      "benchmark_alloy": null, // 对比基准合金名称或牌号
+      "improvement_percentage": null // 提升幅度等，字符串（可含 %）
+    }
+  },
+
+  // ========== 表征手段（实验技术及其在本文中的结论）==========
+  "characterization_methods": [
+    {
+      "technique": null, // 技术简称：EBSD、TEM、XRD、SEM 等
+      "purpose": null, // 本文用该技术要回答的问题
+      "key_findings": null // 与该技术直接相关的主要发现（精炼）
+    }
+  ],
+
+  // ========== 计算、热力学与解析/经验模型 ==========
+  "computational_details": {
+    "simulation_method": null, // 计算方法类型：CALPHAD、MD、FEM 等
+    "software_used": null, // 软件与数据库版本，一句字符串
+    "potential_model": null, // 势函数、数据库、边界条件等补充
+    "validation_against_experiment": null, // 是否与实验对比：字符串 "true"/"false" 或简述；勿用 JSON 布尔
+    "analytical_model": [
+      {
+        "model_name": null, // 模型名称，如 Olson-Cohen
+        "equation_role": null, // 模型在文中作用：拟合 TRIP 动力学等
+        "parameters": null, // 无参数填 null；若有则为对象，键值均为字符串，如 {"alpha": "1.35"}
+        "model_note": null // 拟合范围、假设、与实验偏差说明
+      }
+    ]
+  }
+}

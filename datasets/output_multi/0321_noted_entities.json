@@ -1,0 +1,421 @@
+{
+  "unmapped_findings": [
+    "The δ-ferrite phase exhibits a rotated cube texture component {100}<011> with maximum intensity of 2.57, but its effect on anisotropic strain hardening is deemed insignificant due to similar Taylor factors (2.83 for RD and 2.78 for TD).",
+    "Austenite yields first at engineering strains of ~1.8% (RD) and ~2.1% (TD), while ferrite yields at ~2.3% (RD) and ~2.9% (TD), as determined from lattice strain deviation from linearity in HEXRD data.",
+    "Strain-induced α'-martensite nucleation occurs primarily at γ/α and γ/δ phase boundaries due to high stress/strain concentrations and geometrically necessary dislocations at these interfaces.",
+    "The difference in martensite fraction between RD and TD samples reaches ~4 vol.% at a true strain of ~0.48.",
+    "Volume expansion associated with γ to α'-martensitic transformation (2~4%) contributes to local plastic strain in the γ-α' mixed phase."
+  ],
+  "metadata": {
+    "doi": null,
+    "title": "On the anisotropic deformation behavior of a low-density medium manganese steel",
+    "authors": [
+      "Shuanghong Lei",
+      "Binhan Sun",
+      "Yu Xuan",
+      "Ran Tian",
+      "Yan Ma",
+      "Mohamed Naguib Elkot",
+      "Huijie Cheng",
+      "Ning Yao",
+      "Tiwen Lu",
+      "Jianping Tan",
+      "Zhenbo Zhang",
+      "Xian-Cheng Zhang",
+      "Shan-Tung Tu"
+    ],
+    "publication_year": "2025",
+    "journal": null,
+    "keywords": [
+      "Medium Mn steels",
+      "Lightweight steels",
+      "Transformation-induced plasticity",
+      "Strain partitioning",
+      "Synchrotron high-energy X-ray diffraction"
+    ],
+    "research_type": "Experimental",
+    "alloy_system": {
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "C",
+        "Al"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Fe",
+          "weight_percent": "balance",
+          "atomic_percent": null
+        },
+        {
+          "element": "Mn",
+          "weight_percent": "7.95",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "0.25",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "4.94",
+          "atomic_percent": null
+        }
+      ]
+    }
+  },
+  "processing": {
+    "synthesis_methods": [
+      {
+        "method": "Vacuum induction melting",
+        "parameters": {
+          "temperature": null,
+          "atmosphere": null,
+          "cooling_rate": null,
+          "others": null
+        }
+      }
+    ],
+    "process_sequence": [
+      {
+        "sequence": "0",
+        "type": "Homogenization",
+        "method": "Heat treatment",
+        "temperature": "1100",
+        "unit": "°C",
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": null
+      },
+      {
+        "sequence": "1",
+        "type": "Hot rolling",
+        "method": "Rolling",
+        "temperature": ">1000",
+        "unit": "°C",
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": "Reduced to thickness of ~3 mm"
+      },
+      {
+        "sequence": "2",
+        "type": "Cold rolling",
+        "method": "Rolling",
+        "temperature": "Room temperature",
+        "unit": null,
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": "Reduced to final thickness of ~1.5 mm"
+      },
+      {
+        "sequence": "3",
+        "type": "Intercritical annealing",
+        "method": "Heat treatment",
+        "temperature": "850",
+        "unit": "°C",
+        "duration": "10 minutes",
+        "cooling_medium": "Water",
+        "reduction_ratio": null,
+        "others": "Produced ultrafine γ+α aggregate and δ-ferrite microstructure"
+      }
+    ],
+    "post_processing": [],
+    "others": {
+      "note": null
+    }
+  },
+  "structure": {
+    "overall_structure": "Banded/layered microstructure consisting of coarse δ-ferrite bands and ultrafine-grained γ+α aggregates aligned along the rolling direction",
+    "number_of_phases": "3",
+    "microstructure_counts": "2",
+    "microstructure_list": [
+      {
+        "uuid": "micro-001",
+        "related_sequence": "3",
+        "phases_present": [
+          {
+            "phase_name": "δ-ferrite",
+            "crystal_structure": "BCC",
+            "volume_fraction": "44%",
+            "morphology": "Coarse-grained, banded along rolling direction",
+            "grain_size": "~38 μm",
+            "texture": "{100}<011> rotated cube"
+          }
+        ],
+        "defects": null,
+        "grain_structure": {
+          "average_grain_size": {
+            "value": "38",
+            "unit": "μm"
+          },
+          "grain_size_distribution": null,
+          "texture": "{100}<011>"
+        },
+        "precipitates": []
+      },
+      {
+        "uuid": "micro-002",
+        "related_sequence": "3",
+        "phases_present": [
+          {
+            "phase_name": "α-ferrite",
+            "crystal_structure": "BCC",
+            "volume_fraction": "25%",
+            "morphology": "Ultrafine-grained, part of γ+α aggregate",
+            "grain_size": "~2 μm",
+            "texture": null
+          },
+          {
+            "phase_name": "γ-austenite",
+            "crystal_structure": "FCC",
+            "volume_fraction": "31%",
+            "morphology": "Ultrafine-grained, part of γ+α aggregate",
+            "grain_size": "~1.8 μm",
+            "texture": null
+          }
+        ],
+        "defects": null,
+        "grain_structure": {
+          "average_grain_size": {
+            "value": "~1.8-2",
+            "unit": "μm"
+          },
+          "grain_size_distribution": "Ultrafine grained (bimodal with coarse δ-ferrite)",
+          "texture": null
+        },
+        "precipitates": []
+      }
+    ]
+  },
+  "interface": {
+    "phases": [
+      {
+        "phase_1_name": "δ-ferrite",
+        "phase_2_name": "γ+α aggregate",
+        "coherence": "Incoherent phase boundaries with high strain concentration"
+      }
+    ],
+    "defect_interaction": [
+      {
+        "interaction_type": "Strain-induced martensite nucleation at phase boundaries",
+        "quality_description": "α'-martensite nucleates preferentially at γ/α and γ/δ phase boundaries due to high stress/strain concentrations and geometrically necessary dislocations accumulated at interfaces"
+      }
+    ],
+    "others": [
+      {
+        "strain_partitioning_RD": "Iso-strain condition between δ-ferrite and γ+α aggregates when loaded parallel to banding direction"
+      },
+      {
+        "strain_partitioning_TD": "Iso-stress condition with pronounced strain concentration in softer δ-ferrite when loaded perpendicular to banding direction"
+      },
+      {
+        "GND_accumulation": "High density of geometrically necessary dislocations at phase boundaries to accommodate strain incompatibility between phases"
+      }
+    ],
+    "phase_evolution": "Strain-induced transformation of γ-austenite to α'-martensite during plastic deformation, with faster kinetics in RD (rolling direction) compared to TD (transverse direction)"
+  },
+  "properties": {
+    "mechanical": {
+      "tensile_properties": {
+        "yield_strength": [
+          {
+            "direction": "RD",
+            "value": null,
+            "unit": "MPa"
+          },
+          {
+            "direction": "TD",
+            "value": null,
+            "unit": "MPa"
+          }
+        ],
+        "ultimate_tensile_strength": [
+          {
+            "direction": "RD",
+            "value": "864",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "TD",
+            "value": "820",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": "±35"
+            }
+          }
+        ],
+        "elongation": [
+          {
+            "direction": "RD",
+            "value": "69",
+            "unit": "%",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "TD",
+            "value": "65",
+            "unit": "%",
+            "others": {
+              "uncertainty": "±5"
+            }
+          }
+        ],
+        "youngs_modulus": null,
+        "stress_strain_curves": "Engineering stress-strain curves show higher strength and ductility for RD compared to TD (Fig. 4a)",
+        "stress_strain_distribution": [
+          {
+            "direction": "RD",
+            "distribution": "Uniform strain distribution between δ-ferrite and γ+α aggregates (iso-strain)"
+          },
+          {
+            "direction": "TD",
+            "distribution": "Heterogeneous strain with concentration in δ-ferrite; lower strain in austenite compared to RD"
+          }
+        ],
+        "strain_hardening_rate": [
+          {
+            "direction": "RD",
+            "value": "2052",
+            "unit": "MPa"
+          },
+          {
+            "direction": "TD",
+            "value": "1828",
+            "unit": "MPa"
+          }
+        ]
+      },
+      "hardness": [
+        {
+          "region": "γ+α aggregate",
+          "value": "221",
+          "scale": "HV",
+          "unit": null
+        },
+        {
+          "region": "δ-ferrite",
+          "value": "205",
+          "scale": "HV",
+          "unit": null
+        }
+      ],
+      "fracture_toughness": {
+        "value": null,
+        "unit": null
+      },
+      "fatigue_properties": {
+        "fatigue_limit": null,
+        "cycles_to_failure": null
+      },
+      "creep_properties": {
+        "steady_state_creep_rate": null,
+        "rupture_life": null
+      }
+    },
+    "physical": {
+      "density": {
+        "value": "7.40",
+        "unit": "g/cm³"
+      },
+      "thermal_properties": {
+        "thermal_conductivity": null,
+        "thermal_expansion_coefficient": null,
+        "specific_heat": null
+      },
+      "electrical_properties": {
+        "electrical_conductivity": null,
+        "resistivity": null
+      },
+      "magnetic_properties": {
+        "magnetic_susceptibility": null,
+        "curie_temperature": null
+      }
+    },
+    "chemical": {
+      "corrosion_resistance": {
+        "test_medium": null,
+        "corrosion_rate": null,
+        "passivation_behavior": null
+      },
+      "oxidation_resistance": {
+        "oxidation_rate_constant": null,
+        "protective_scale": null
+      }
+    },
+    "radiation_properties": {
+      "void_swelling": null,
+      "irradiation_hardening": null,
+      "helium_embrittlement": null
+    }
+  },
+  "performance": {
+    "service_conditions": {
+      "operating_temperature": {
+        "min": null,
+        "max": null,
+        "unit": null
+      },
+      "stress_state": null,
+      "environment": null
+    },
+    "lifetime_prediction": {
+      "model_used": null,
+      "predicted_lifetime": null,
+      "confidence_interval": null
+    },
+    "comparative_performance": {
+      "benchmark_alloy": null,
+      "improvement_percentage": null
+    }
+  },
+  "characterization_methods": [
+    {
+      "technique": "EBSD (Electron Backscatter Diffraction)",
+      "purpose": "Microstructure characterization, phase identification, grain size measurement, and texture analysis",
+      "key_findings": "Banded structure with δ-ferrite (44 vol.%, ~38 μm) and γ+α aggregate (56 vol.%, ~1.8-2 μm); FCC fraction 38.8%, BCC fraction 61.2%"
+    },
+    {
+      "technique": "TEM (Transmission Electron Microscopy)",
+      "purpose": "Deformation substructure analysis and dislocation observation",
+      "key_findings": "α'-martensite nucleation at γ/α and γ/δ phase boundaries; stacking faults in austenite; dislocation tangles in ferrite"
+    },
+    {
+      "technique": "Synchrotron HEXRD (High-Energy X-ray Diffraction)",
+      "purpose": "In-situ phase transformation, lattice strain, and dislocation density analysis during tensile testing",
+      "key_findings": "Faster martensite transformation kinetics in RD vs TD (25% vs 20% at true strain 0.48); higher dislocation density in austenite for RD (max ~1.51×10¹⁴ m⁻²); austenite yields before ferrite"
+    },
+    {
+      "technique": "μ-DIC (Microscopic Digital Image Correlation)",
+      "purpose": "High-resolution strain partitioning analysis between phases",
+      "key_findings": "RD: iso-strain condition between δ and γ+α; TD: strain concentration in δ-ferrite (1.26× higher than γ+α); higher austenite strain in RD promotes TRIP effect"
+    },
+    {
+      "technique": "Vickers microhardness testing",
+      "purpose": "Local hardness measurement of different microstructural regions",
+      "key_findings": "γ+α aggregate: 221±3.0 HV; δ-ferrite: 205±1.5 HV"
+    }
+  ],
+  "computational_details": {
+    "simulation_method": "Olson-Cohen model for martensite transformation kinetics; Thermo-Calc for phase diagram calculation",
+    "software_used": "Thermo-Calc (TCFE9 database), MAUD (Rietveld refinement), Fit2D (diffraction analysis), La Vision DaVis (DIC analysis), AZtecCrystal and TSL OIM (EBSD analysis)",
+    "potential_model": null,
+    "validation_against_experiment": "Olson-Cohen model predictions match experimental martensite fraction data from HEXRD when accounting for strain partitioning factor of 1.15 between RD and TD",
+    "analytical_model": [
+      {
+        "model_name": "Olson-Cohen model",
+        "equation_role": "Predict volume fraction of deformation-induced martensite as function of plastic strain",
+        "parameters": "α=1.35, β=2, n=2, initial austenite fraction F_γ0=46.5 vol.%",
+        "model_note": "Applied with strain correction factor ε_RD = 1.15 × ε_TD to account for strain partitioning differences between loading directions"
+      }
+    ]
+  }
+}

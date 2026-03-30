@@ -1,0 +1,466 @@
+{
+  "unmapped_findings": [
+    "The addition of 1 wt% Al leads to a 1.3% reduction in density and a 2% reduction in Young's modulus",
+    "Density reduction formula for ferritic steels: ρ_ferritic (g/cm³) = 7.874 - 0.098 (wt% Al)",
+    "Density reduction formula for austenitic steels: ρ_austenitic (g/cm³) = 8.15 - 0.101 (wt% Al) - 0.41 (wt% C) - 0.0085 (wt% Mn)",
+    "Critical Al content > 7% and C > 0.7% required for intragranular κ'-carbide precipitation",
+    "Al extends the δ-ferrite phase field and suppresses γ single phase region",
+    "Mn restrains κ phase formation while Al restrains formation of M₃C and M₂₃C₆ carbides",
+    "Processing challenges include: nozzle clogging during continuous casting, surface oxide formation, cracking during hot/cold forming, and reduced solidus temperatures",
+    "Specific stiffness comparison shows low density steels are not higher than HSLA steels and aluminium alloys",
+    "Strain hardening mechanisms include TWIP, TRIP, MBIP (microband induced plasticity), DSBR (dynamic slip band refinement), and SIP (shear band induced plasticity)",
+    "Impact toughness of solution treated austenitic steels is slightly lower than Cr-Ni stainless steels but higher than conventional high strength steels",
+    "Corrosion resistance is not improved compared to conventional high strength steels; coating is necessary",
+    "Weldability issues include parting in weld centreline, lower hardness in parting, peak hardness in HAZ, and reduced creep rupture life in weldments",
+    "Fatigue behavior data is conflicting and insufficient for definitive conclusions",
+    "Formability data is limited; hole expansion ratio comparable to DP600 but bending angle and dome expansion lower than conventional AHSS"
+  ],
+  "metadata": {
+    "doi": null,
+    "title": "Current state of Fe-Mn-Al-C low density steels",
+    "authors": [
+      "Shangping Chen",
+      "Radhakanta Rana",
+      "Arunansu Haldar",
+      "Ranjit Kumar Ray"
+    ],
+    "publication_year": "2017",
+    "journal": null,
+    "keywords": [
+      "Low density steels",
+      "Deformation mechanisms",
+      "Phase transformation",
+      "Short-range ordering",
+      "κ-carbide",
+      "Planar glide",
+      "TRIP steel",
+      "TWIP steel",
+      "Stacking fault energy"
+    ],
+    "research_type": "Review",
+    "alloy_system": {
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": []
+    }
+  },
+  "processing": {
+    "synthesis_methods": [
+      {
+        "method": "Melting and ingot casting",
+        "parameters": {
+          "temperature": null,
+          "atmosphere": null,
+          "cooling_rate": null,
+          "others": "Laboratory scale ingots (~50 kg)"
+        }
+      }
+    ],
+    "process_sequence": [
+      {
+        "sequence": "0",
+        "type": "Homogenization",
+        "method": null,
+        "temperature": "1100-1250",
+        "unit": "°C",
+        "duration": "1-3 h",
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": null
+      },
+      {
+        "sequence": "1",
+        "type": "Hot rolling",
+        "method": null,
+        "temperature": "850-1000",
+        "unit": "°C",
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": "Rolled to 2-5 mm thickness; reheating between passes may be required to avoid cracking"
+      },
+      {
+        "sequence": "2",
+        "type": "Coiling simulation",
+        "method": null,
+        "temperature": "500-650",
+        "unit": "°C",
+        "duration": "1-5 h",
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": "Alternative to direct cooling or water quenching to room temperature"
+      },
+      {
+        "sequence": "3",
+        "type": "Cold rolling",
+        "method": null,
+        "temperature": null,
+        "unit": null,
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": "For ferritic and duplex steels; for austenitic steels prior to solution treatment"
+      },
+      {
+        "sequence": "4",
+        "type": "Solution treatment",
+        "method": null,
+        "temperature": "900-1100",
+        "unit": "°C",
+        "duration": "1 h",
+        "cooling_medium": "Water, oil or other quench media",
+        "reduction_ratio": null,
+        "others": "Performed in single austenite phase area"
+      },
+      {
+        "sequence": "5",
+        "type": "Aging",
+        "method": null,
+        "temperature": "500-700",
+        "unit": "°C",
+        "duration": "5-20 h",
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": "For age-hardenable austenitic steels to produce κ'-carbide precipitation hardening"
+      }
+    ],
+    "post_processing": [],
+    "others": {
+      "note": "For ferritic steels: cold rolling and recrystallization annealing at 700-1000°C required. For duplex steels: intercritical annealing at 700-900°C followed by austempering."
+    }
+  },
+  "structure": {
+    "overall_structure": "Four categories: (1) Ferritic steels (δ-ferrite with possible A2, B2, DO3 ordering), (2) Ferrite-based duplex steels (δ + γ), (3) Austenite-based duplex steels (γ + δ + κ'), (4) Austenitic steels (γ with κ'-carbide precipitates)",
+    "number_of_phases": "Multiple",
+    "microstructure_counts": null,
+    "microstructure_list": [
+      {
+        "uuid": "ferritic-microstructure",
+        "related_sequence": "0",
+        "phases_present": [
+          {
+            "phase_name": "δ-ferrite",
+            "crystal_structure": "BCC (A2, B2 or DO3 ordered)",
+            "volume_fraction": null,
+            "morphology": "Elongated band-like structures, columnar in as-cast state",
+            "grain_size": "40-90 μm after recrystallization annealing",
+            "texture": "Strong Cube fibre {001}<110>"
+          },
+          {
+            "phase_name": "κ-carbide",
+            "crystal_structure": "Perovskite (E2₁)",
+            "volume_fraction": null,
+            "morphology": "Thick elongated rod-like shape, semicoherent",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": null,
+        "grain_structure": {
+          "average_grain_size": {
+            "value": "40-90",
+            "unit": "μm"
+          },
+          "grain_size_distribution": null,
+          "texture": "Random with higher intensity of Cube fibre"
+        },
+        "precipitates": [
+          {
+            "type": "κ-carbide",
+            "size": {
+              "value": "Coarse",
+              "unit": null
+            },
+            "distribution": "Along original δ-ferrite grain boundaries during slow cooling",
+            "coherency": "Semicoherent"
+          }
+        ]
+      },
+      {
+        "uuid": "austenitic-microstructure",
+        "related_sequence": "4",
+        "phases_present": [
+          {
+            "phase_name": "γ-austenite",
+            "crystal_structure": "FCC",
+            "volume_fraction": null,
+            "morphology": "Equiaxed grain structure with annealing twins",
+            "grain_size": "Variable, 3-80 μm depending on processing",
+            "texture": null
+          },
+          {
+            "phase_name": "κ'-carbide",
+            "crystal_structure": "Perovskite (E2₁), metastable (Fe,Mn)₃AlCₓ",
+            "volume_fraction": "0.05-0.35",
+            "morphology": "Nano-sized cuboidal precipitates, coherent",
+            "grain_size": "2-20 nm",
+            "texture": null
+          }
+        ],
+        "defects": null,
+        "grain_structure": {
+          "average_grain_size": {
+            "value": "38-80",
+            "unit": "μm"
+          },
+          "grain_size_distribution": null,
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "κ'-carbide (intragranular)",
+            "size": {
+              "value": "2-20",
+              "unit": "nm"
+            },
+            "distribution": "Homogeneous within austenite matrix",
+            "coherency": "Coherent (lattice mismatch <3%)"
+          },
+          {
+            "type": "κ*-carbide (intergranular)",
+            "size": {
+              "value": "Coarse, 3-6 times larger than intragranular",
+              "unit": null
+            },
+            "distribution": "Along austenite grain boundaries, initially discrete then continuous",
+            "coherency": null
+          }
+        ]
+      },
+      {
+        "uuid": "duplex-microstructure",
+        "related_sequence": "1",
+        "phases_present": [
+          {
+            "phase_name": "δ-ferrite",
+            "crystal_structure": "BCC",
+            "volume_fraction": "5-50%",
+            "morphology": "Elongated stringers parallel to rolling direction",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "γ-austenite",
+            "crystal_structure": "FCC",
+            "volume_fraction": "Variable",
+            "morphology": "Bands between ferrite stringers",
+            "grain_size": "Refined through recrystallization",
+            "texture": null
+          },
+          {
+            "phase_name": "α-ferrite",
+            "crystal_structure": "BCC (B2 or DO3 ordered)",
+            "volume_fraction": null,
+            "morphology": "Fine stringers along grain boundaries or shear bands",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": null,
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": "Bimodal structure with coarse δ-ferrite and fine austenite",
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "κ-carbide",
+            "size": {
+              "value": "Thicker, rod-type",
+              "unit": null
+            },
+            "distribution": "At δ/γ interfaces or within transformed regions",
+            "coherency": "Semicoherent in ferrite (mismatch ~6%)"
+          }
+        ]
+      }
+    ]
+  },
+  "interface": {
+    "phases": [
+      {
+        "phase_1_name": "γ-austenite",
+        "phase_2_name": "κ'-carbide",
+        "coherence": "Coherent, cube-on-cube orientation relationship [100]κ//[100]γ, lattice mismatch <3%"
+      },
+      {
+        "phase_1_name": "α-ferrite",
+        "phase_2_name": "κ-carbide",
+        "coherence": "Semicoherent, lattice mismatch ~6%"
+      },
+      {
+        "phase_1_name": "δ-ferrite",
+        "phase_2_name": "γ-austenite",
+        "coherence": null
+      }
+    ],
+    "defect_interaction": [
+      {
+        "interaction_type": "Dislocation-SRO interaction",
+        "quality_description": "Glide plane softening due to short-range ordering leads to planar glide"
+      },
+      {
+        "interaction_type": "Dislocation-κ' carbide interaction",
+        "quality_description": "Shearing of nano-sized κ' carbides by dislocations, contributing to planar slip"
+      },
+      {
+        "interaction_type": "Dislocation-B2 particle interaction",
+        "quality_description": "Dislocations pile up or bow out at B2 phase boundaries, particles not sheared"
+      }
+    ],
+    "others": [
+      {
+        "phase_evolution": "γ → γ' + γ'' (spinodal) → γ' + L1₂ (SRO) → γ' + κ' during aging"
+      }
+    ],
+    "phase_evolution": "Sequence: Spinodal decomposition → SRO formation → κ'-carbide precipitation → possible transformation to equilibrium κ + DO₃/B2 + β-Mn at prolonged aging"
+  },
+  "properties": {
+    "mechanical": {
+      "tensile_properties": {
+        "yield_strength": [
+          {
+            "direction": null,
+            "value": "0.4-1.0",
+            "unit": "GPa"
+          }
+        ],
+        "ultimate_tensile_strength": [
+          {
+            "direction": null,
+            "value": "0.6-2.0",
+            "unit": "GPa",
+            "others": {
+              "uncertainty": null
+            }
+          }
+        ],
+        "elongation": [
+          {
+            "direction": null,
+            "value": "30-100",
+            "unit": "%"
+          }
+        ],
+        "youngs_modulus": null,
+        "stress_strain_curves": null,
+        "stress_strain_distribution": null,
+        "strain_hardening_rate": null
+      },
+      "hardness": [],
+      "fracture_toughness": {
+        "value": null,
+        "unit": null
+      },
+      "fatigue_properties": {
+        "fatigue_limit": null,
+        "cycles_to_failure": null
+      },
+      "creep_properties": {
+        "steady_state_creep_rate": null,
+        "rupture_life": null
+      }
+    },
+    "physical": {
+      "density": {
+        "value": "7.874-0.098(wt%Al) for ferritic; 8.15-0.101(wt%Al)-0.41(wt%C)-0.0085(wt%Mn) for austenitic",
+        "unit": "g/cm³"
+      },
+      "thermal_properties": {
+        "thermal_conductivity": null,
+        "thermal_expansion_coefficient": null,
+        "specific_heat": null
+      },
+      "electrical_properties": {
+        "electrical_conductivity": null,
+        "resistivity": null
+      },
+      "magnetic_properties": {
+        "magnetic_susceptibility": null,
+        "curie_temperature": null
+      }
+    },
+    "chemical": {
+      "corrosion_resistance": {
+        "test_medium": null,
+        "corrosion_rate": null,
+        "passivation_behavior": "Not improved compared to conventional high strength steels; inferior to 304 stainless steel"
+      },
+      "oxidation_resistance": {
+        "oxidation_rate_constant": null,
+        "protective_scale": null
+      }
+    },
+    "radiation_properties": {
+      "void_swelling": null,
+      "irradiation_hardening": null,
+      "helium_embrittlement": null
+    }
+  },
+  "performance": {
+    "service_conditions": {
+      "operating_temperature": {
+        "min": null,
+        "max": null,
+        "unit": null
+      },
+      "stress_state": null,
+      "environment": "Automotive structural applications"
+    },
+    "lifetime_prediction": {
+      "model_used": null,
+      "predicted_lifetime": null,
+      "confidence_interval": null
+    },
+    "comparative_performance": {
+      "benchmark_alloy": "High Mn TWIP steels, conventional HSLA, DP600, 304 stainless steel",
+      "improvement_percentage": null
+    }
+  },
+  "characterization_methods": [
+    {
+      "technique": "Transmission electron microscopy (TEM)",
+      "purpose": "Microstructure observation, precipitate identification, dislocation structure analysis",
+      "key_findings": "κ-carbide crystal structure, L1₂ ordering, planar dislocation glide structures"
+    },
+    {
+      "technique": "Scanning electron microscopy (SEM)",
+      "purpose": "Microstructure imaging, precipitate morphology",
+      "key_findings": "κ'-carbide growth features, lamellar colony formation"
+    },
+    {
+      "technique": "X-ray diffraction",
+      "purpose": "Phase identification",
+      "key_findings": "Phase constitution determination"
+    },
+    {
+      "technique": "Atom probe tomography",
+      "purpose": "Chemical composition analysis at atomic scale",
+      "key_findings": "Off-stoichiometric composition of κ-carbide with depletion of C and Al"
+    },
+    {
+      "technique": "FactSage 6.4 thermodynamic software",
+      "purpose": "Phase diagram calculation and thermodynamic modeling",
+      "key_findings": "Phase equilibria predictions, deviation from experimental data at high Mn/Al contents"
+    },
+    {
+      "technique": "CALPHAD approach",
+      "purpose": "Thermodynamic database development",
+      "key_findings": "Phase boundary calculations"
+    }
+  ],
+  "computational_details": {
+    "simulation_method": "CALPHAD approach",
+    "software_used": "FactSage 6.4",
+    "potential_model": null,
+    "validation_against_experiment": "Calculated phase diagrams compared with experimental data; deviations observed at high Mn (>20%) and high Al contents requiring improved databases",
+    "analytical_model": []
+  }
+}

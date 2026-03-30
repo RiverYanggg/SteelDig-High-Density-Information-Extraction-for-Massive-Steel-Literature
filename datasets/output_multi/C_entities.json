@@ -1,0 +1,532 @@
+{
+  "unmapped_findings": [
+    "The fracture morphology of H90 steel shows common features of quasi-cleavage fracture with flat 'class cleavage' facets, micropores, tear edges, secondary cracks and dimples.",
+    "The work hardening behavior exhibits three-stage characteristics: stage 1 (rapid decrease associated with ferrite deformation), stage 2 (slight decrease linked to TRIP effect, where WH rate increased with strain in range 0.03-0.15), and stage 3 (rapid decrease associated with deformation localization).",
+    "Two types of retained austenite were identified: blocky austenite positioned at ferrite triple edges with high Schmid factors (0.45-0.48), and lath-like austenite located between ferrite laths or embedded in single ferrite grains with lower Schmid factors.",
+    "Retained austenite with relatively small Schmid factors (<0.34) tends to remain untransformed during tensile deformation, while those with high Schmid factors transform first.",
+    "The volume fraction of small angle grain boundaries increased with strain: 26% at ε=0.03, 31% at ε=0.10, 45% at ε=0.20, and over 51% at ε=0.27.",
+    "Discrepancy noted: UTS of H90 reported as 846.4 MPa in Results section but as 836.4 MPa in Conclusions section.",
+    "Martensitic transformation ratios after deformation: 63.1% for H70, 71.9% for H80, and 89.9% for H90.",
+    "The M_s and M_d30 temperatures vary with solution temperature: H70 (33°C, 168°C), H80 (67°C, 204°C), H90 (120°C, 249°C)."
+  ],
+  "metadata": {
+    "doi": null,
+    "title": "Microstructure and tensile behavior of Fe-8Mn-6Al-0.2C low density steel",
+    "authors": [
+      "Xuan Li",
+      "Renbo Song",
+      "Naipeng Zhou",
+      "Jiajia Li"
+    ],
+    "publication_year": null,
+    "journal": null,
+    "keywords": [
+      "Fe-Mn-Al-C steel",
+      "Microstructure",
+      "Tensile behavior",
+      "TRIP effect"
+    ],
+    "research_type": "experimental",
+    "alloy_system": {
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": [
+        {
+          "element": "C",
+          "weight_percent": "0.15",
+          "atomic_percent": null
+        },
+        {
+          "element": "Mn",
+          "weight_percent": "7.35",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "6.00",
+          "atomic_percent": null
+        },
+        {
+          "element": "P",
+          "weight_percent": "<0.005",
+          "atomic_percent": null
+        },
+        {
+          "element": "S",
+          "weight_percent": "0.01",
+          "atomic_percent": null
+        },
+        {
+          "element": "Fe",
+          "weight_percent": "Bal.",
+          "atomic_percent": null
+        }
+      ]
+    }
+  },
+  "processing": {
+    "synthesis_methods": [
+      {
+        "method": "vacuum induction melting",
+        "parameters": {
+          "temperature": null,
+          "atmosphere": "vacuum",
+          "cooling_rate": null,
+          "others": null
+        }
+      }
+    ],
+    "process_sequence": [
+      {
+        "sequence": "0",
+        "type": "heating",
+        "method": null,
+        "temperature": "1150",
+        "unit": "°C",
+        "duration": "2h",
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": null
+      },
+      {
+        "sequence": "1",
+        "type": "hot forging",
+        "method": null,
+        "temperature": null,
+        "unit": null,
+        "duration": null,
+        "cooling_medium": "air",
+        "reduction_ratio": null,
+        "others": "forged to rods with section 35 mm × 70 mm × 100 mm"
+      },
+      {
+        "sequence": "2",
+        "type": "homogenization",
+        "method": null,
+        "temperature": "1200",
+        "unit": "°C",
+        "duration": "2h",
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": null
+      },
+      {
+        "sequence": "3",
+        "type": "hot rolling",
+        "method": null,
+        "temperature_start": "1150",
+        "temperature_end": "850",
+        "unit": "°C",
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "passes": "6",
+        "final_thickness": "3mm",
+        "others": "6 passes to 3 mm thickness"
+      },
+      {
+        "sequence": "4",
+        "type": "quenching",
+        "method": "water quenching",
+        "temperature": "550",
+        "unit": "°C",
+        "duration": null,
+        "cooling_medium": "water",
+        "reduction_ratio": null,
+        "others": "quenched to 550°C followed by air cooling"
+      },
+      {
+        "sequence": "5",
+        "type": "solution treatment",
+        "method": null,
+        "temperature": "700-1000",
+        "unit": "°C",
+        "duration": "1h",
+        "cooling_medium": "water",
+        "reduction_ratio": null,
+        "others": "specimens designated as H70 (700°C), H80 (800°C), H90 (900°C), H100 (1000°C)"
+      }
+    ],
+    "post_processing": [],
+    "others": {
+      "note": "The hot-rolled steel was water quenched to 550°C before air cooling to room temperature, followed by solution treatment."
+    }
+  },
+  "structure": {
+    "overall_structure": "duplex microstructure consisting of ferrite and austenite, with deformation-induced martensite",
+    "number_of_phases": "3",
+    "microstructure_counts": null,
+    "microstructure_list": [
+      {
+        "uuid": "h90-microstructure",
+        "related_sequence": "5",
+        "phases_present": [
+          {
+            "phase_name": "α-ferrite",
+            "crystal_structure": "BCC",
+            "volume_fraction": null,
+            "morphology": "fine blocky",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "δ-ferrite",
+            "crystal_structure": "BCC",
+            "volume_fraction": null,
+            "morphology": null,
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "austenite",
+            "crystal_structure": "FCC",
+            "volume_fraction": "33.8",
+            "morphology": "blocky and lath-like",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "martensite",
+            "crystal_structure": "BCT",
+            "volume_fraction": "increases with strain from 0 to ~89.9% transformation",
+            "morphology": "lath-like",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": [
+          {
+            "defect_type": "dislocation",
+            "description": "high dislocation density in ferrite and martensite",
+            "density": "high"
+          },
+          {
+            "defect_type": "grain boundary",
+            "description": "small angle grain boundaries",
+            "fraction_at_strain_0.27": "over 51%"
+          }
+        ],
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": null,
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "M5C2 carbide",
+            "size": null,
+            "distribution": "at δ-ferrite grain boundaries and among martensite laths in H70, absent in H80-H100",
+            "coherency": null
+          }
+        ]
+      }
+    ]
+  },
+  "interface": {
+    "phases": [
+      {
+        "phase_1_name": "ferrite",
+        "phase_2_name": "austenite",
+        "coherence": null
+      },
+      {
+        "phase_1_name": "austenite",
+        "phase_2_name": "martensite",
+        "coherence": "coherent transformation during deformation"
+      }
+    ],
+    "defect_interaction": [
+      {
+        "interaction_type": "dislocation-phase boundary interaction",
+        "quality_description": "martensite acts as barrier for dislocation glide and site for dislocation accumulation"
+      },
+      {
+        "interaction_type": "TRIP effect",
+        "quality_description": "stress relaxation induced by transformation-induced plasticity"
+      }
+    ],
+    "others": [
+      {
+        "stress_strain_distribution": "triaxial state of stress at grain boundaries and phase boundaries favors martensitic transformation"
+      },
+      {
+        "slippage_situation": "slip occurs first in softest phase (austenite), wavy glide in ferrite leading to complicated dislocation structure"
+      }
+    ],
+    "phase_evolution": "austenite transforms to martensite during tensile deformation; blocky austenite at triple junctions transforms first, lath-like austenite undergoes rotation initially"
+  },
+  "properties": {
+    "mechanical": {
+      "tensile_properties": {
+        "yield_strength": [
+          {
+            "direction": "longitudinal",
+            "value": "473.6",
+            "unit": "MPa",
+            "condition": "H90 (900°C solution treatment)"
+          },
+          {
+            "direction": "longitudinal",
+            "value": "642.1",
+            "unit": "MPa",
+            "condition": "H70 (700°C solution treatment)"
+          },
+          {
+            "direction": "longitudinal",
+            "value": "587.8",
+            "unit": "MPa",
+            "condition": "H80 (800°C solution treatment)"
+          },
+          {
+            "direction": "longitudinal",
+            "value": "398.3",
+            "unit": "MPa",
+            "condition": "H100 (1000°C solution treatment)"
+          }
+        ],
+        "ultimate_tensile_strength": [
+          {
+            "direction": "longitudinal",
+            "value": "846.4",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            },
+            "condition": "H90 (900°C solution treatment)"
+          },
+          {
+            "direction": "longitudinal",
+            "value": "778.3",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            },
+            "condition": "H70 (700°C solution treatment)"
+          },
+          {
+            "direction": "longitudinal",
+            "value": "724.5",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            },
+            "condition": "H80 (800°C solution treatment)"
+          },
+          {
+            "direction": "longitudinal",
+            "value": "860.3",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            },
+            "condition": "H100 (1000°C solution treatment)"
+          }
+        ],
+        "elongation": [
+          {
+            "direction": "longitudinal",
+            "value": "32.0",
+            "unit": "%",
+            "condition": "H90 (900°C solution treatment)"
+          },
+          {
+            "direction": "longitudinal",
+            "value": "23.0",
+            "unit": "%",
+            "condition": "H70 (700°C solution treatment)"
+          },
+          {
+            "direction": "longitudinal",
+            "value": "30.5",
+            "unit": "%",
+            "condition": "H80 (800°C solution treatment)"
+          },
+          {
+            "direction": "longitudinal",
+            "value": "15.0",
+            "unit": "%",
+            "condition": "H100 (1000°C solution treatment)"
+          }
+        ],
+        "youngs_modulus": null,
+        "stress_strain_curves": "true stress-strain curves show no yield point phenomenon; H90 shows abrupt stress increase at true strain ~0.03",
+        "stress_strain_distribution": [
+          {
+            "direction": null,
+            "distribution": "three-stage work hardening: stage 1 (rapid decrease), stage 2 (TRIP effect, slight decrease or increase in WH rate), stage 3 (rapid decrease)"
+          }
+        ],
+        "strain_hardening_rate": [
+          {
+            "direction": null,
+            "value": "peaks at 3000 MPa range in stage 2 for H90",
+            "unit": "MPa"
+          }
+        ]
+      },
+      "hardness": [
+        {
+          "region": "austenite",
+          "value": "275 ± 10",
+          "scale": "HV",
+          "unit": null
+        },
+        {
+          "region": "δ-ferrite",
+          "value": "314 ± 15",
+          "scale": "HV",
+          "unit": null
+        },
+        {
+          "region": "α-ferrite",
+          "value": "374 ± 10",
+          "scale": "HV",
+          "unit": null
+        },
+        {
+          "region": "martensite",
+          "value": "438 ± 15",
+          "scale": "HV",
+          "unit": null
+        }
+      ],
+      "fracture_toughness": {
+        "value": null,
+        "unit": null
+      },
+      "fatigue_properties": {
+        "fatigue_limit": null,
+        "cycles_to_failure": null
+      },
+      "creep_properties": {
+        "steady_state_creep_rate": null,
+        "rupture_life": null
+      }
+    },
+    "physical": {
+      "density": {
+        "value": "6.95",
+        "unit": "g/cm³"
+      },
+      "thermal_properties": {
+        "thermal_conductivity": null,
+        "thermal_expansion_coefficient": null,
+        "specific_heat": null
+      },
+      "electrical_properties": {
+        "electrical_conductivity": null,
+        "resistivity": null
+      },
+      "magnetic_properties": {
+        "magnetic_susceptibility": null,
+        "curie_temperature": null
+      }
+    },
+    "chemical": {
+      "corrosion_resistance": {
+        "test_medium": null,
+        "corrosion_rate": null,
+        "passivation_behavior": null
+      },
+      "oxidation_resistance": {
+        "oxidation_rate_constant": null,
+        "protective_scale": null
+      }
+    },
+    "radiation_properties": {
+      "void_swelling": null,
+      "irradiation_hardening": null,
+      "helium_embrittlement": null
+    }
+  },
+  "performance": {
+    "service_conditions": {
+      "operating_temperature": {
+        "min": null,
+        "max": null,
+        "unit": null
+      },
+      "stress_state": null,
+      "environment": null
+    },
+    "lifetime_prediction": {
+      "model_used": null,
+      "predicted_lifetime": null,
+      "confidence_interval": null
+    },
+    "comparative_performance": {
+      "benchmark_alloy": "pure iron",
+      "improvement_percentage": "11% lower density than pure iron"
+    }
+  },
+  "characterization_methods": [
+    {
+      "technique": "SEM",
+      "purpose": "microstructure analysis and fracture morphology observation",
+      "key_findings": "duplex microstructure, quasi-cleavage fracture features"
+    },
+    {
+      "technique": "TEM",
+      "purpose": "dislocation structure and phase identification near fracture area",
+      "key_findings": "high dislocation density in ferrite and martensite, retained austenite observed after deformation"
+    },
+    {
+      "technique": "EBSD",
+      "purpose": "phase distribution, grain orientation, and Schmid factor analysis",
+      "key_findings": "austenite volume fraction changes with strain, small angle grain boundary evolution, orientation dependence of transformation"
+    },
+    {
+      "technique": "EDS",
+      "purpose": "element distribution in austenite and ferrite",
+      "key_findings": "Mn and Al partitioning between phases"
+    },
+    {
+      "technique": "XRD",
+      "purpose": "phase identification and austenite volume fraction measurement",
+      "key_findings": "integrated intensities of (200)α, (211)α for ferrite and (220)γ, (311)γ for austenite; C content measurement via lattice parameter"
+    },
+    {
+      "technique": "densitometry",
+      "purpose": "density measurement",
+      "key_findings": "density of 6.95 g/cm³ using Archimedes Principle"
+    },
+    {
+      "technique": "Vickers microhardness",
+      "purpose": "hardness of different phases",
+      "key_findings": "austenite 275±10 HV, δ-ferrite 314±15 HV, α-ferrite 374±10 HV, martensite 438±15 HV"
+    }
+  ],
+  "computational_details": {
+    "simulation_method": null,
+    "software_used": null,
+    "potential_model": null,
+    "validation_against_experiment": null,
+    "analytical_model": [
+      {
+        "model_name": "austenite lattice parameter equation",
+        "equation_role": "calculate carbon content in austenite",
+        "parameters": "α_γ = 3.578 + 0.0330X_C + 0.0056X_Al + 0.00095X_Mn, where X is wt%",
+        "model_note": "lattice parameter determined from d-spacing of (220)γ"
+      },
+      {
+        "model_name": "martensite start temperature (M_s)",
+        "equation_role": "calculate M_s based on composition",
+        "parameters": "M_s (°C) = 539 - 423C - 30.4Mn - 12.1Cr - 17.7Ni - 7.5Mo + 10Co - 7.3Si",
+        "model_note": "H70: 33°C, H80: 67°C, H90: 120°C"
+      },
+      {
+        "model_name": "M_d30 temperature",
+        "equation_role": "temperature at which 50% austenite transforms at 30% true strain",
+        "parameters": "M_d30 (°C) = 497 - 462(C+N) - 20Ni - 18.5Mo - 13.7Cr - 8.1Mn - 9.2Si",
+        "model_note": "H70: 168°C, H80: 204°C, H90: 249°C"
+      }
+    ]
+  }
+}

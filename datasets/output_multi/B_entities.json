@@ -1,0 +1,513 @@
+{
+  "unmapped_findings": [
+    "The densities of three steels were calculated as 6.92, 6.88 and 6.78 g/cm^3 for 0.5C, 0.8C and 1.2C steels respectively.",
+    "The stacking fault energy (SFE) values of austenite in 0.5C and 0.8C steels are 73.4 and 77.9 mJ/m^2 and that of 1.2C steel is 84.5 mJ/m^2.",
+    "Specific strength of 0.8C steel is 142.3 MPa cm^3/g.",
+    "Table 1 chemical compositions (mass %): 0.5C: Al 9.90, Mn 17.71, C 0.48; 0.8C: Al 9.91, Mn 17.14, C 0.77; 1.2C: Al 10.19, Mn 17.45, C 1.16; all balanced with Fe."
+  ],
+  "metadata": {
+    "doi": null,
+    "title": "Tensile deformation behavior analysis of low density Fe–18Mn–10Al–xC steels",
+    "authors": [
+      "Hua Ding",
+      "Dong Han",
+      "Jun Zhang",
+      "Zhihui Cai",
+      "Zhiqiang Wu",
+      "Minghui Cai"
+    ],
+    "publication_year": "2015",
+    "journal": null,
+    "keywords": [
+      "Fe–Mn–Al–C steels",
+      "Strain hardening",
+      "Ordered phase",
+      "C concentration",
+      "Crussard–Jaoul (C–J) analysis"
+    ],
+    "research_type": "Experimental",
+    "alloy_system": {
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Mn",
+          "weight_percent": "18",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "10",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "0.5/0.8/1.2",
+          "atomic_percent": null
+        },
+        {
+          "element": "Fe",
+          "weight_percent": "balance",
+          "atomic_percent": null
+        }
+      ]
+    }
+  },
+  "processing": {
+    "synthesis_methods": [
+      {
+        "method": "Induction melting",
+        "parameters": {
+          "temperature": null,
+          "atmosphere": "Argon",
+          "cooling_rate": null,
+          "others": "50 kg ingots"
+        }
+      }
+    ],
+    "process_sequence": [
+      {
+        "sequence": "0",
+        "type": "Melting",
+        "method": "Induction melting",
+        "temperature": null,
+        "unit": null,
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": "50 kg ingots under argon atmosphere"
+      },
+      {
+        "sequence": "1",
+        "type": "Forging",
+        "method": "Hot forging",
+        "temperature": "1200",
+        "unit": "°C",
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": null
+      },
+      {
+        "sequence": "2",
+        "type": "Homogenization",
+        "method": "Heat treatment",
+        "temperature": "1200",
+        "unit": "°C",
+        "duration": "3",
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": null
+      },
+      {
+        "sequence": "3",
+        "type": "Hot rolling",
+        "method": "Rolling",
+        "temperature": null,
+        "unit": null,
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": "90",
+        "others": "Rolled to thickness of 3.5 mm"
+      },
+      {
+        "sequence": "4",
+        "type": "Annealing",
+        "method": "Heat treatment",
+        "temperature": "1000",
+        "unit": "°C",
+        "duration": "1",
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": "Hot-rolled strips annealing"
+      },
+      {
+        "sequence": "5",
+        "type": "Cold rolling",
+        "method": "Rolling",
+        "temperature": null,
+        "unit": null,
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": "Rolled to thickness of 1 mm"
+      },
+      {
+        "sequence": "6",
+        "type": "Solution treatment",
+        "method": "Heat treatment",
+        "temperature": "1000",
+        "unit": "°C",
+        "duration": null,
+        "cooling_medium": "Water",
+        "reduction_ratio": null,
+        "others": "Annealing followed by water quenching to room temperature"
+      }
+    ],
+    "post_processing": [],
+    "others": {
+      "note": null
+    }
+  },
+  "structure": {
+    "overall_structure": "Duplex ferritic-austenitic for 0.5C and 0.8C steels; fully austenitic for 1.2C steel",
+    "number_of_phases": "2",
+    "microstructure_counts": "3",
+    "microstructure_list": [
+      {
+        "uuid": "0.5c-as-quenched",
+        "related_sequence": "6",
+        "phases_present": [
+          {
+            "phase_name": "Austenite",
+            "crystal_structure": "FCC",
+            "volume_fraction": "59.2",
+            "morphology": "Equiaxed grains",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "Ferrite",
+            "crystal_structure": "BCC",
+            "volume_fraction": "40.8",
+            "morphology": "Equiaxed grains",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": null,
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": null,
+          "texture": null
+        },
+        "precipitates": []
+      },
+      {
+        "uuid": "0.8c-as-quenched",
+        "related_sequence": "6",
+        "phases_present": [
+          {
+            "phase_name": "Austenite",
+            "crystal_structure": "FCC",
+            "volume_fraction": "84.8",
+            "morphology": "Equiaxed grains",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "Ferrite",
+            "crystal_structure": "BCC",
+            "volume_fraction": "15.2",
+            "morphology": "Equiaxed grains",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": [
+          "Ordered phases B2 and DO3 in ferrite",
+          "Kappa carbide in austenite"
+        ],
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": null,
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "Kappa carbide [(Fe,Mn)3AlCx] in austenite",
+            "size": {
+              "value": null,
+              "unit": null
+            },
+            "distribution": null,
+            "coherency": null
+          },
+          {
+            "type": "B2 domains [(Fe,Mn)Al] in ferrite",
+            "size": {
+              "value": null,
+              "unit": null
+            },
+            "distribution": null,
+            "coherency": null
+          },
+          {
+            "type": "DO3 particles [(Fe,Mn)3Al] in ferrite",
+            "size": {
+              "value": null,
+              "unit": null
+            },
+            "distribution": null,
+            "coherency": null
+          }
+        ]
+      },
+      {
+        "uuid": "1.2c-as-quenched",
+        "related_sequence": "6",
+        "phases_present": [
+          {
+            "phase_name": "Austenite",
+            "crystal_structure": "FCC",
+            "volume_fraction": "100",
+            "morphology": "Equiaxed grains with annealing twins",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": [
+          "Annealing twins"
+        ],
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": null,
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "Kappa carbides",
+            "size": {
+              "value": null,
+              "unit": null
+            },
+            "distribution": "Uniformly distributed",
+            "coherency": null
+          }
+        ]
+      }
+    ]
+  },
+  "interface": {
+    "phases": [
+      {
+        "phase_1_name": "Ferrite",
+        "phase_2_name": "Austenite",
+        "coherence": null
+      }
+    ],
+    "defect_interaction": [
+      {
+        "interaction_type": "Dislocation-ordered phase interaction",
+        "quality_description": "Ordered phases make dislocation multiplication difficult; paired superdislocations observed in ferrite"
+      }
+    ],
+    "others": [
+      {
+        "strain_partitioning": "Between ferrite and austenite in duplex steels"
+      },
+      {
+        "microband_interaction": "Observed in 1.2C steel at high strain"
+      }
+    ],
+    "phase_evolution": "As deformation proceeds: planar slip → Taylor lattice → microbands → microband interaction"
+  },
+  "properties": {
+    "mechanical": {
+      "tensile_properties": {
+        "yield_strength": [
+          {
+            "direction": "0.5C steel",
+            "value": "614.9",
+            "unit": "MPa"
+          },
+          {
+            "direction": "0.8C steel",
+            "value": "711.2",
+            "unit": "MPa"
+          },
+          {
+            "direction": "1.2C steel",
+            "value": "735.1",
+            "unit": "MPa"
+          }
+        ],
+        "ultimate_tensile_strength": [
+          {
+            "direction": "0.5C steel",
+            "value": "856.7",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": "±0.7"
+            }
+          },
+          {
+            "direction": "0.8C steel",
+            "value": "979.1",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": "±1.0"
+            }
+          },
+          {
+            "direction": "1.2C steel",
+            "value": "946.7",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": "±4.5"
+            }
+          }
+        ],
+        "elongation": [
+          {
+            "direction": "0.5C steel",
+            "value": "32.8",
+            "unit": "%"
+          },
+          {
+            "direction": "0.8C steel",
+            "value": "38.4",
+            "unit": "%"
+          },
+          {
+            "direction": "1.2C steel",
+            "value": "56.2",
+            "unit": "%"
+          }
+        ],
+        "youngs_modulus": null,
+        "stress_strain_curves": "Fig. 3",
+        "stress_strain_distribution": [
+          {
+            "direction": "Duplex steels",
+            "distribution": "Strain partitioning between ferrite and austenite"
+          }
+        ],
+        "strain_hardening_rate": [
+          {
+            "direction": "0.5C steel",
+            "value": "Two-stage hardening",
+            "unit": null
+          },
+          {
+            "direction": "0.8C steel",
+            "value": "Two-stage hardening",
+            "unit": null
+          },
+          {
+            "direction": "1.2C steel",
+            "value": "Three-stage hardening",
+            "unit": null
+          }
+        ]
+      },
+      "hardness": [],
+      "fracture_toughness": {
+        "value": null,
+        "unit": null
+      },
+      "fatigue_properties": {
+        "fatigue_limit": null,
+        "cycles_to_failure": null
+      },
+      "creep_properties": {
+        "steady_state_creep_rate": null,
+        "rupture_life": null
+      }
+    },
+    "physical": {
+      "density": {
+        "value": "6.92/6.88/6.78",
+        "unit": "g/cm^3"
+      },
+      "thermal_properties": {
+        "thermal_conductivity": null,
+        "thermal_expansion_coefficient": null,
+        "specific_heat": null
+      },
+      "electrical_properties": {
+        "electrical_conductivity": null,
+        "resistivity": null
+      },
+      "magnetic_properties": {
+        "magnetic_susceptibility": null,
+        "curie_temperature": null
+      }
+    },
+    "chemical": {
+      "corrosion_resistance": {
+        "test_medium": null,
+        "corrosion_rate": null,
+        "passivation_behavior": null
+      },
+      "oxidation_resistance": {
+        "oxidation_rate_constant": null,
+        "protective_scale": null
+      }
+    },
+    "radiation_properties": {
+      "void_swelling": null,
+      "irradiation_hardening": null,
+      "helium_embrittlement": null
+    }
+  },
+  "performance": {
+    "service_conditions": {
+      "operating_temperature": {
+        "min": null,
+        "max": null,
+        "unit": null
+      },
+      "stress_state": null,
+      "environment": null
+    },
+    "lifetime_prediction": {
+      "model_used": null,
+      "predicted_lifetime": null,
+      "confidence_interval": null
+    },
+    "comparative_performance": {
+      "benchmark_alloy": "Fe-20Mn-10Al-1.2C steel from Ref [7] and Fe-27Mn-12Al-0.8C steel from Ref [10]",
+      "improvement_percentage": "Comparable strength with lower Mn or C content"
+    }
+  },
+  "characterization_methods": [
+    {
+      "technique": "Optical microscopy",
+      "purpose": "Microstructure observation and phase fraction measurement",
+      "key_findings": "Duplex structure for 0.5C and 0.8C, fully austenitic for 1.2C; volume fractions determined"
+    },
+    {
+      "technique": "Transmission electron microscopy (TEM)",
+      "purpose": "Detailed microstructure analysis including precipitates and deformation mechanisms",
+      "key_findings": "No precipitates in 0.5C; kappa carbides and ordered phases (B2, DO3) in 0.8C; kappa carbides in 1.2C; dislocation structures and microbands observed during deformation"
+    },
+    {
+      "technique": "Tensile testing",
+      "purpose": "Mechanical property evaluation",
+      "key_findings": "Strength and ductility measured; strain hardening behavior analyzed"
+    },
+    {
+      "technique": "Image analysis",
+      "purpose": "Phase volume fraction measurement",
+      "key_findings": "Austenite fractions: 59.2% (0.5C), 84.8% (0.8C)"
+    }
+  ],
+  "computational_details": {
+    "simulation_method": null,
+    "software_used": null,
+    "potential_model": null,
+    "validation_against_experiment": null,
+    "analytical_model": [
+      {
+        "model_name": "Crussard-Jaoul (C-J) analysis",
+        "equation_role": "Differential analysis of strain hardening behavior via ln(dσ/dε) versus ln(ε) plots to identify multi-stage hardening",
+        "parameters": null,
+        "model_note": "Revealed two-stage strain hardening for 0.5C and 0.8C steels, and three-stage strain hardening for 1.2C steel"
+      }
+    ]
+  }
+}

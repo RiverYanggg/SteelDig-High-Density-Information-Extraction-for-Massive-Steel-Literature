@@ -3,7 +3,7 @@ from openai import OpenAI
 import base64
 
 client = OpenAI(
-    api_key=os.getenv("KIMI_API_KEY"),
+    api_key="sk-EB6KoAilA7WwElAC3ZeHui4zVavcoraWXNbDRAEnFaRMv2o2",
     base_url="https://api.moonshot.cn/v1"
 )
 

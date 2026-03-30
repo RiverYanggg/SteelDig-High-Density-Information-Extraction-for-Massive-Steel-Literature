@@ -1,0 +1,56 @@
+/* Neo4j Browser: Settings -> Graph style -> Import / paste
+   Node caption: property `display`. Edge: relationship `label` for HAS_FIELD / AT_INDEX. */
+
+node.SourceFile {
+  color: #2563eb;
+  size: 30px;
+  caption: '{display}';
+  border-color: #1e40af;
+}
+
+node.JsonObject {
+  color: #d97706;
+  size: 26px;
+  caption: '{display}';
+  border-color: #b45309;
+}
+
+node.JsonArray {
+  color: #16a34a;
+  size: 26px;
+  caption: '{display}';
+  border-color: #15803d;
+}
+
+node.JsonScalar {
+  color: #9333ea;
+  size: 22px;
+  caption: '{display}';
+  border-color: #7e22ce;
+}
+
+relationship.HAS_METADATA,
+relationship.HAS_PROCESSING,
+relationship.HAS_STRUCTURE,
+relationship.HAS_INTERFACE,
+relationship.HAS_PROPERTIES,
+relationship.HAS_PERFORMANCE,
+relationship.HAS_CHARACTERIZATION,
+relationship.HAS_COMPUTATIONAL,
+relationship.HAS_UNMAPPED,
+relationship.HAS_TOP {
+  width: 3px;
+  color: #94a3b8;
+}
+
+relationship.HAS_FIELD {
+  width: 2px;
+  color: #94a3b8;
+  caption: '{label}';
+}
+
+relationship.AT_INDEX {
+  width: 2px;
+  color: #22c55e;
+  caption: '{label}';
+}

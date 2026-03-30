@@ -1,0 +1,242 @@
+[
+    {
+        "type": "text",
+        "text": "Microstructure and tensile behavior of Fe-8Mn-6Al-0.2C low density steel"
+    },
+    {
+        "type": "text",
+        "text": "Xuan Li, Renbo Song⁎ , Naipeng Zhou, Jiajia Li"
+    },
+    {
+        "type": "text",
+        "text": "School of Materials Science and Engineering, University of Science and Technology Beijing, Beijing 100083, China"
+    },
+    {
+        "type": "text",
+        "text": "A R T I C L E I N F O"
+    },
+    {
+        "type": "text",
+        "text": "A B S T R A C T"
+    },
+    {
+        "type": "text",
+        "text": "Keywords: Fe-Mn-Al-C steel Microstructure Tensile behavior TRIP effect"
+    },
+    {
+        "type": "text",
+        "text": "The microstructure and tensile behavior of Fe-8Mn-6Al-0.2C low density steel were investigated in the present study. The results show that, after being solution treated at $9 0 0 ^ { \\circ } \\mathrm { C }$ for $^ { 1 \\mathrm { h } }$ , the steel has a duplex microstructure consisting of ferrite and $\\sim 3 0 \\%$ austenite, and it exhibits an excellent combination in mechanical properties, with a tensile strength of $8 4 6 ~ \\mathrm { M P a }$ and a total elongation of $3 2 \\%$ , which were attributed to significant contribution of TRIP effect and three stages work hardening behavior. During tensile test, the work hardening behavior can be defined as three-stage characteristics, in which the stage 2(S2) was linked to the TRIP effect. In S2, with the increase of tensile strain, austenite volume fraction decreased while martensite volume fraction increased gradually. During this process, some austenite grains, positioned at grain boundaries among multiple ferrite grains, were the first ones to transform, while, some austenite grains, located between ferrite laths or embedded in large ferrite grains were often found to undergo rotations. The TRIP effect and the high dislocation density in ferrite and martensite significantly contributed to the excellent mechanical property. In addition, the volume fraction of small angle grain boundaries increased greatly, with a value of over $5 1 \\%$ being observed at the true strain of 0.27. The steel possessed a density of $6 . 9 5 { \\mathrm { g } } / { \\mathrm { c m } } ^ { 3 }$ , which is about $1 1 \\%$ lower than pure iron."
+    },
+    {
+        "type": "text",
+        "text": "1. Introduction"
+    },
+    {
+        "type": "text",
+        "text": "The Fe-Mn-Al-C system was recently studied as a promising automotive steel because of its low density, high strength and extended ductility [1,2]. The extraordinary comprehensive performance was contributed to the microstructural evolution, mechanical performance as well as the deformation mechanism. It is generally acknowledged that, the dominant deformation mechanisms of Fe-Mn-Al-C low density steels can be classified to transformation-induced plasticity (TRIP), twining-induced plasticity (TWIP) and dislocation gliding (DG) [3–12]."
+    },
+    {
+        "type": "text",
+        "text": "As for medium Mn $( 5 - 1 2 \\% )$ , medium Al $( 1 - 8 \\% )$ Fe-Mn-Al-C steel, a duplex phase of ferrite $^ +$ austenite has been obtained due to the addition of Al, while austenite is utilized as a secondary phase in ferrite matrix. Thus, the excellent mechanical properties are largely attributed to the TRIP effect of retained austenite. It has been reported that such hardening mechanism is determined by reactions with the adjacent ferrite and mechanical stability [13,14], and the austenite stability was associated with element composition, grain size, grain morphology and so on [15,16]. Moreover, the orientation of retained austenite (Schmid factors) was proved an important factor in determining the mechanical stability of retained austenite upon deformation, in addition to the heterogeneity of grain size [11]. Besides, deformation mechanism can be changed by the increasing of strain rate [12]."
+    },
+    {
+        "type": "text",
+        "text": "From the perspective of med-Mn, med-Al Fe-Mn-Al-C steel, much research has been focused on the evaluation of alloy design, microstructural evolution and process control, emphasizing the improvement of properties that TRIP effect has bring for it. For example, Li et al. [17] reported that, because of significant contribution of TRIP effect and high dislocation density in austenite, Fe-6.1Mn-1.6Al-0.2 C steel can achieve a tensile strength of $1 0 3 8 \\mathrm { M P a }$ and a total elongation of $4 2 \\%$ after water quenching from $6 2 5 ^ { \\circ } \\mathrm { C }$ Park et al. [18] compared the microstructure and tensile behavior of two duplex low-density steel containing different Mn content, an alloy obtained under a specific heat treatment condition showed TRIP effect, which yielded excellent mechanical properties of a high tensile strength of $> 9 0 0 \\mathrm { M P a }$ and a high total elongation of $> 5 0 \\%$ ."
+    },
+    {
+        "type": "text",
+        "text": "However, few studies have been carried out to reveal the austenite/ martensite transformation rule retained austenite during the deformation in Fe-Mn-Al-C TRIP steels [19,20]. In general, types of retained austenite grains can be divided into three kinds. The first type of austenite grains were positioned at the ferrite triple edges. The second type contained twin faults, and the third type was completely embedded in a single ferrite grain [21]."
+    },
+    {
+        "type": "text",
+        "text": "In this study, the microstructure and tensile behavior of Fe-8Mn-6Al-0.2C low density steel were investigated with respect to transformation characteristic and mechanical stability of retained austenite. Additionally, the work hardening behavior and fracture mechanism were analyzed here."
+    },
+    {
+        "type": "table",
+        "img_path": "images/4d67292d67e4f13e18e73059607bf61b88ea1d5a35a6e0a6ee0e874c4de89e95.jpg",
+        "table_caption": [
+            "Table 1 Chemical composition of the investigated alloys $\\textstyle \\left( \\operatorname { w t } ^ { 0 } / 0 \\right)$ . "
+        ]
+    },
+    {
+        "type": "text",
+        "text": "2. Experimental"
+    },
+    {
+        "type": "text",
+        "text": "The chemical composition of the steel used in this study is listed in Table 1. The steel was casted using a vacuum induction furnace and heated at $1 1 5 0 ~ ^ { \\circ } \\mathrm { C }$ for $^ { 2 \\mathrm { h } }$ , and then hot forged to rods with a section plane of $3 5 \\ : \\mathrm { m m } \\times 7 0 \\ : \\mathrm { m m } \\times 1 0 0 \\ : \\mathrm { m m }$ , which is followed by air cooling to room temperature. Then, was after being homogenized at $1 2 0 0 ^ { \\circ } \\mathrm { C }$ for $^ { 2 \\mathrm { h } }$ , the ingot was hot rolled to $3 \\mathrm { m m }$ thickness steel sheet through 6 passes. The start rolling and finish rolling temperatures were $1 1 5 0 ~ ^ { \\circ } \\mathrm { C }$ and $8 5 0 ^ { \\circ } \\mathrm { C } ,$ respectively. The hot-rolled steel was subsequently water quenched to $5 5 0 ^ { \\circ } \\mathrm { C } ,$ , followed by air cooling to room temperature. Finally, solution treatment experiments were performed at $7 0 0 { - } 1 0 0 0 ^ { \\circ } \\mathrm { C }$ for $^ { 1 \\mathrm { h } }$ with a water quenching followed. For convenience, the specimens being solution treated at 700, 800, 900 and $1 0 0 0 ^ { \\circ } \\mathrm { C }$ are referred to as H70, H80, H90 and H100, respectively. For tensile tests, specimens with a gauge width of $1 2 . 5 \\mathrm { m m }$ and a gauge length of $5 0 \\mathrm { m m }$ were machined from the solution-treated sheets along the longitudinal direction. The microstructure was analyzed by scanning electron microscopy (SEM), transmission electron microscopy (TEM) and electron back-scatter diffraction (EBSD). Energy dispersive spectrometer (EDS) was used to investigate the element distribution in austenite and ferrite. The volume fraction of austenite was determined by X-ray diffraction (XRD) with $\\mathrm { C u K } _ { \\mathrm { a } }$ radiation, and the direct comparison method was adopted, in which the integrated intensities of the peaks of $( 2 0 0 ) \\alpha$ and $( 2 1 1 ) \\alpha$ are recognized as ferrite, and those of the peaks of $( 2 2 0 ) \\gamma$ and $( 3 1 1 ) \\gamma$ are regarded as austenite [22]. The density of the steel was measured by a densitometry based on the Archimedes Principle. The density of the present steel is about $6 . 9 5 { \\mathrm { g } } / { \\mathrm { c m } } ^ { 3 }$ , which is about $1 1 \\%$ lower than pure Fe. The C content in austenite was measured by the XRD method using the following equation [23]:"
+    },
+    {
+        "type": "equation",
+        "img_path": "images/54d736572493d4b5b4e3c53dfaa7e239b98c6f13812c054f62e099706bd35819.jpg",
+        "text": "$$\n\\alpha _ { \\gamma } = 3 . 5 7 8 + 0 . 0 3 3 0 \\mathrm { X } _ { \\mathrm { C } } + 0 . 0 0 5 6 \\mathrm { X } _ { \\mathrm { A l } } + 0 . 0 0 0 9 5 \\mathrm { X } _ { \\mathrm { M n } }\n$$"
+    },
+    {
+        "type": "text",
+        "text": "where $\\alpha _ { \\gamma }$ is austenite lattice parameter, in A, and $\\Chi _ { \\mathrm { C } } , \\mathrm { X _ { M n } }$ and $\\mathbf { X } _ { \\mathbf { A l } }$ are concentrations of C, Mn and Al, respectively, in ${ \\mathrm { \\mathbf { w t } } } \\%$ . The austenite lattice parameter $( \\alpha _ { \\gamma } )$ was determined from a d-spacing of $( 2 2 0 ) _ { \\gamma }$ position."
+    },
+    {
+        "type": "text",
+        "text": "3. Results"
+    },
+    {
+        "type": "text",
+        "text": "3.1. Microstructure"
+    },
+    {
+        "type": "text",
+        "text": "The microstructure of the hot-rolled steel after being solution treated at $7 0 0 { - } 1 0 0 0 ^ { \\circ } \\mathrm { C }$ for $^ { 1 \\mathrm { h } }$ is shown in Fig. 1. For H70 (shown in Fig. 1a), nearly all the original austenite phase decomposed to martensite and spheroidal $\\mathrm { M } _ { 5 } \\mathrm { C } _ { 2 }$ -carbide, with a volume fraction of $1 2 . 2 \\%$ being retained. $\\mathbf { M } _ { 5 } \\mathbf { C } _ { 2 }$ -carbide phase widely distributed both at δ-ferrite grain boundaries and among martensite laths. For H80 (shown in Fig. 1b), $\\mathbf { M } _ { 5 } \\mathbf { C } _ { 2 }$ -carbide disappeared, martensite has reverse-transformed to austenite. Large amount of strip ferrite, which is termed as $\\alpha$ -ferrite in order to distinguish it from δ-ferrite that is formed at high temperature, was observed. For H90, with the solution temperature increasing to ${ 9 0 0 } ^ { \\circ } \\mathrm { C } ,$ , the microstructure of specimen was mainly consisted of $\\alpha$ -ferrite, δ-ferrite and austenite, as shown in Fig. 1c. Besides, the morphology of $\\alpha$ -ferrite changed from strip shape into fine blocky shape and the volume fraction of austenite increased to $3 3 . 8 \\%$ . For H100, martensite appeared again with only $1 2 . 9 \\%$ austenite retained. The calculated austenite volume fractions for these steels are listed in Table 3. The phases were distinguished according to the Vickers microhardness as is presented in Table 2. And $\\mathrm { M } _ { 5 } \\mathrm { C } _ { 2 }$ -carbide was identified"
+    },
+    {
+        "type": "text",
+        "text": "according to EDS."
+    },
+    {
+        "type": "text",
+        "text": "3.2. Properties and work hardening behavior"
+    },
+    {
+        "type": "text",
+        "text": "After tensile tests, the mechanical performance is shown in Table 3. In H70, ultimate tensile strength (UTS) was $7 7 8 . 3 \\mathrm { M P a }$ , while total elongation (TE) was $2 3 \\%$ . For H80, TE increased apparently but UTS decreased. In comparison, H90 steel had much higher UTS of $8 4 6 . 4 \\mathrm { M P a }$ and also an enhanced TE of $3 2 \\%$ . H100 owns the first-rank UTS of $8 6 0 . 3 \\mathrm { M P a }$ but the worst TE of $1 5 \\%$ . With the increase of solution temperature, yield strength (YS) decreases gradually, which was $6 4 2 . 1 \\mathrm { M P a }$ , $5 8 7 . 8 \\mathrm { M P a }$ , $4 7 3 . 6 \\mathrm { M P a }$ and $3 9 8 . 3 \\mathrm { M P a }$ , respectively."
+    },
+    {
+        "type": "text",
+        "text": "True stress-strain curves and the corresponding work hardening rate-true strain curves are plotted in Fig. 2. As shown in Fig. 2a, there is no yield point phenomenon occurring under all the solution treatment conditions. With the increase of solution temperature, both the critical stress for uniform deformation and the work hardening rate decreased obviously. However, for H90, true stress increased abruptly at a true strain of $\\sim 0 . 0 3$ , and both the UTS and TE were the highest among the four steels. As shown in Fig. 3b, the steels possesses an obvious threestage work hardening (WH) characteristics: in stage 1, WH rate decreased rapidly, which was mainly associated with the deformation of ferrite; In stage 2, the slight decrease of the WH rate is a consequence of the strong hardening mechanism, such as TRIP or TWIP effect [24]; In stage 3, the WH rate decreased quickly again, and this was presumably associated with the deformation localization of ferrite or martensite. For H90, the formation of mechanical twining were not observed from SEM analyses. It can be inferred that, possibly, TRIP effect was the main mechanism for high tensile strength and excellent ductility. In stage 2, the WH rate increased with strain in the true strain range 0.03–0.15, because martensitic transformation took place when a critical stress was attained. After true strain of 0.15, the WH rate began to decrease gently, which was the consequence of a potential competition between the increased stress and stress relaxation induced by the TRIP effect."
+    },
+    {
+        "type": "text",
+        "text": "3.3. Tensile behavior and austenite stability"
+    },
+    {
+        "type": "text",
+        "text": "In order to observe the TRIP effect, the EBSD analysis was carried out on H90 under different true strains of 0.03, 0.10, 0.20 and, 0.27, respectively. Fig. 3 shows the superimposed maps of phase distribution map and band contrast map, which can be used not only to distinguish ferrite and austenite grains from martensite grains, but also to measure the volume fractions of austenite. Martensite grains usually show a poor band contrast because of their high dislocation density, indicated in black. Austenite was marked in green and ferrite was marked in gray. At various strain stages, the calculated austenite volume fractions were $3 1 . 4 \\%$ , $2 2 . 3 \\%$ , $1 0 . 1 \\%$ and $4 . 7 \\%$ , respectively. It can be concluded that deformation induced martensite transformation occurred continuously with the increase of true strain, which was consistent with the above inference. Both blocky and lath-like retained austenite grains were observed at a true strain of 0.03. Blocky retained austenite was mainly located at the triple junction boundaries, as shown in square region, while lath-like retained austenite was always distributed between ferrite laths or embedded in a single ferrite grain, as shown in ellipse region. Along with the deformation, blocky austenite grains disappeared gradually and only a few were retained at a true strain of 0.20. However, at a true strain of 0.27, almost the whole retained austenite was lath-like austenite. In addition, a large portion of small angle grain boundaries (green line) yielding to $5 1 \\%$ was observed at this strain rate, while the values of those under other strains (0.03, 0.10 and 0.20 in turn) were $2 6 \\%$ , $3 1 \\%$ , $4 5 \\%$ , respectively. It has been reported that abundant small angle grain boundaries can significantly improve the deformation ability of the material [25]."
+    },
+    {
+        "type": "text",
+        "text": "Besides, the orientation of retained austenite relative to the loading direction (Schmid factors) was also investigated, and the Schmid factor maps are presented in Fig. 4. The Schmid factor were always used to measure the relative ease with each grain slips. It is well known that grains with the higher Schmid factor will undergo deformation faster because the slip planes in these grains do not need to undergo much rotation before the resolved shear stress reaches a critical value [26]. In this paper, the grains with a high Schmid factor were indicated in red, whereas those with a very low Schmid factor were indicated in blue using rainbow coloring. As shown in Fig. 4a, the relative volume fraction of retained austenite with Schmid factors of 0.45–0.48 was more than $7 0 \\%$ at the true strain of 0.03. When the true strain increased to 0.10, the average factor decreased apparently, the majority retained austenite had Schmid factors of 0.39–0.42. With true strain increased to 0.20, over $6 0 \\%$ retained austenite had Schmid factors smaller than 0.40, the average Schmid factor of the retained austenite is less than"
+    },
+    {
+        "type": "image",
+        "img_path": "images/00fb633a7cc8a643f25d3ec1d2a9fcf065207b7523934df1a50357809a9ca600.jpg",
+        "caption": "Fig. 1. SEM micrographs of the (a) H70, (b) H80, (c) H90, (d) H100."
+    },
+    {
+        "type": "table",
+        "img_path": "images/ebd1cda7cfb2e2fd3bec4046bbd83d8de7f81a4ffd27c3696af057819b2d2736.jpg",
+        "table_caption": [
+            "Table 2 Vickers microhardness of different phases. "
+        ]
+    },
+    {
+        "type": "table",
+        "img_path": "images/9823878eb72a01ad594db0e4ea0b10b7d9b523f62efc17e55407ebbee4357786.jpg",
+        "table_caption": [
+            "Table 3 Tensile properties and volume fraction of austenite of the solution treated specimens. "
+        ]
+    },
+    {
+        "type": "text",
+        "text": "0.34. However, at the true strain of 0.27, the volume fraction of retained austenite with Schmid factors less than 0.34 decreased to $5 \\%$ . This means retained austenite possessing relatively small Schmid factors tends to remain untransformed during tensile deformation. This tendency is clearly depicted in Fig. 4e."
+    },
+    {
+        "type": "text",
+        "text": "3.4. Fracture mechanism"
+    },
+    {
+        "type": "text",
+        "text": "Fig. 5a shows the fracture morphology of H90 steel, which possesses the common features of quasi-cleavage fracture under different solution treatment conditions. There were some flat \"class cleavage\" facets, micropores, tear edges, secondary cracks and a little dimples. The river pattern was short and curved with less tributaries, and the herringbone crack showed the direction of crack propagation. Generally, the failure mode of quasi-cleavage fracture is thought to be a mixed fracture characteristics, in which the ductile fracture area is mainly deduced from austenite deformation and that the quasi-fracture area is mainly correlated with ferrite deformation [27]. Fig. 5b and c present typical TEM microsgraphs of H90 in the vicinity of fracture area. It is obvious that a small amount of austenite was still remaining after the strong TRIP effect during tensile deformation. Moreover, high density dislocation were observed in both ferrite and martensite, which could play an active role in enhancing the mechanical property."
+    },
+    {
+        "type": "text",
+        "text": "4. Discussions"
+    },
+    {
+        "type": "text",
+        "text": "4.1. The relationship between microstructure and mechanical performance"
+    },
+    {
+        "type": "text",
+        "text": "The mechanical performance varied with different solution temperature, which is definitely related to the microstructural evolution. Due to the Al addition, a duplex microstructure of δ-ferrite and austenite was obtained at high temperature. Some δ-ferrite phase was retained during the subsequent solution treatment process, while austenite transformed to different phases under various conditions. For H70, UTS was high attributed to the secondary phase and martensite strengthening, while TE was low because of low austenite fraction. For H80, with the austenite volume fraction increasing to $2 0 . 7 \\%$ , TE increased apparently but UTS decreased. For H90, the excellent combination of UTS and TE was obtained not only attributed to the most austenite fraction with higher hardenability than that of ferrite but uniform microstructure. As is seen, banded ferrite grains had been crushed and separated, austenite grains kept equiaxed and the uniformity was enhanced dramatically. Furthermore, good coordination of austenite and ferrite during deformation was another vital factor to improve mechanical performance [28]. For H100, the best UTS was attributed to the appearing of martensite while lowest austenite volume fraction led to the worst TE. With the increase of solution temperature, YS decreases gradually. On the one hand, plastic deformation generally begins with the softest phase, higher austenite volume fraction will induce plastic deformation easily, and high solution temperature forces the softening of microstructure, leading to yield more prone to occur. On the other hand, it can be explained by asymmetric distribution of ferrite and coarsening of the grains due to the Hall–Petch relation."
+    },
+    {
+        "type": "image",
+        "img_path": "images/e4958f7fc81ca772ea0ba4bd9dbafdc958c8fdc0627d480cd93bd801c4511dc7.jpg",
+        "caption": "Fig. 2. (a) True stress-strain curves, (b) work hardening rate."
+    },
+    {
+        "type": "image",
+        "img_path": "images/c54aeb6e4933b98fe37b50c71f361512b0df8800e8e9d94d094be7c01fdbcb66.jpg",
+        "caption": "Fig. 3. The combined band contrast maps and phase identification maps under different true strain (a) 0.03, (b) 0.10, (c) 0.20, (d) 0.27. (For interpretation of the references to color in this figure, the reader is referred to the web version of this article)."
+    },
+    {
+        "type": "image",
+        "img_path": "images/80df8311a3d515c5c279062fcec63040d1b744ae4dfe7b3851e3ce3999dcb759.jpg",
+        "caption": "Fig. 4. The combined band contrast maps and Schmid factor maps under different true strain (a) 0.03, (b) 0.10, (c) 0.20, (d) 0.27, (e) the changed trend of Schmid factor under different strain. (For interpretation of the references to color in this figure, the reader is referred to the web version of this article)."
+    },
+    {
+        "type": "image",
+        "img_path": "images/3883e47c876a898eba438cd85074680edbcda0b5c37b78818b18fc3184a9cd16.jpg"
+    },
+    {
+        "type": "image",
+        "img_path": "images/957891d064723bf5857f30f78ddb4cae6bccd844b3448e6cd3f7e634d3fdec23.jpg",
+        "caption": "Fig. 6. A schematic illustration of martensitic transformation in experimental steel. (a) before deformation, (b) deformation induces austenite rotation and transformation (Aaustenite, F-ferrite, M-martensite). (For interpretation of the references to color in this figure, the reader is referred to the web version of this article)."
+    },
+    {
+        "type": "table",
+        "img_path": "images/1a29f6b6efbd1cc50233f06f9970848815c3beee55630a1aa474ce2c4cb66639.jpg",
+        "table_caption": [
+            "Table 4 The elements fraction and $\\mathbf { M } _ { s } ,$ $\\mathbf { M } _ { \\mathbf { d } 3 0 }$ temperature. "
+        ],
+        "table_footnote": [
+            "a Content of C measured from the XRD analysis. b Contents of Mn and Al measured from the EDS analysis. "
+        ]
+    },
+    {
+        "type": "text",
+        "text": "4.2. The deformation mechanism in association with austenite stability"
+    },
+    {
+        "type": "text",
+        "text": "Two types of austenite grains were carefully analyzed in the present work. Some austenite grains were blocky with a high Schmid factor, and were positioned at the ferrite triple edges. The other ones were lath-like and were located between ferrite laths or embedded in a single ferrite grain with a lower Schmid factor. Fig. 6 shows a schematic illustration of martensitic transformation during tensile deformation for the experimental steel, in which martensite were marked in blue, ferrite delineated in gray, blocky austenite in white and lath-like austenite in red. With the increase of tensile strain, the blocky austenite took the initiative to transform into martensite, which can be attributed to the higher localized stress. It has been accepted that there exist high free energy and atomic activity at grain boundaries and phase boundaries. Consequently, a triaxial state of stress and more strain can be favored on these blocky austenite grains during deformation. In this case, martensitic transformation is prone to take place at ferrite triple junction boundaries [29]. However, for lath-like austenite grains with lower Schmid factor, they would undergo rotations firstly during deformation, which were dependent on the crystallographic orientation of the grains with respect to the straining direction."
+    },
+    {
+        "type": "image",
+        "img_path": "images/d58f5bdf17d8ab8c20f1c33126a62aa70f5fb476f2440f50703658adadeedd96.jpg",
+        "caption": "Fig. 7. (a) The XRD profiles and (b) the corresponding austenite fractions for the steels before and after tensile deformation. Note that, in b, the martensitic transformation ratios for the three steels are also plotted. (F - after fraction)."
+    },
+    {
+        "type": "text",
+        "text": "From the perspective of dislocation glide, both the austenite and ferrite were deformed by the dislocation slip at the beginning of deformation. Next, martensite was independently formed inside austenite grain, not only acting as a barrier for dislocation glide but also as a site for dislocation accumulation and as a source of partial dislocations. As the deformation continues, dislocation multiplied constantly in martensite, while wavy glide in ferrite leading to the formation of complicated dislocation structure. This is why high density dislocation were observed in both ferrite and martensite, as shown in Fig. 5b and c. Thus, the dynamic recovery and dislocation climbing were restricted, and the strength performance were enhanced eventually [30–33]."
+    },
+    {
+        "type": "text",
+        "text": "Austenite stability among H70\\~H90 steel was discussed here, which can be explained by the difference in chemical composition of austenite. Table 4 shows the contents of elements of austenite and $\\mathbf { M } _ { s } ,$ $\\mathbf { M } _ { \\mathbf { d } 3 0 }$ temperature in different specimen. Content of C measured from the XRD analysis and Contents of Mn and Al measured from the EDS analysis. $\\mathbf { M } _ { s }$ is the martensitic transformation starting temperature, and $\\mathbf { M } _ { \\mathbf { d } 3 0 }$ is the temperature at which point $5 0 \\%$ of austenite has been transformed into martensite at a true strain of $3 0 \\%$ : where the elemental contents are in mass percentage [34,35]. According to Eqs. (2) and (3), the calculated $\\mathbf { M } _ { s }$ and $\\mathbf { M } _ { \\mathbf { d } 3 0 }$ temperatures differ in various solution conditions: H90 were ${ 1 2 0 ~ ^ { \\circ } \\mathrm { C } }$ and $2 4 9 ^ { \\circ } \\mathrm { C } ,$ , H80 were $6 7 ^ { \\circ } \\mathrm { C }$ and $2 0 4 ^ { \\circ } \\mathrm { C } ,$ , and H70 were $3 3 ^ { \\circ } \\mathrm { C }$ and ${ 2 6 8 } ^ { \\circ } \\mathrm { C } ,$ respectively. Due to the lower C and Mn contents, the corresponding temperature in H90 was much higher than that in other cases. It can be concluded that C content plays a significant role in austenite stability, and that lower C content enables austenite a metastable state to induce martensite transformation in this paper."
+    },
+    {
+        "type": "equation",
+        "img_path": "images/d7ff35260b492aff39f792eaea20f1d67162b37ff2ca0d297e670c64c9ac5900.jpg",
+        "text": "$$\n\\mathbf { M _ { s } ( ^ { \\circ } C ) } = 5 3 9 - 4 2 3 \\mathbf { C } - 3 0 . 4 \\mathbf { M } \\mathbf { n } - 1 2 . 1 \\mathbf { C } \\mathbf { r } - 1 7 . 7 \\mathbf { N } \\mathbf { i } - 7 . 5 \\mathbf { M } \\mathbf { o } + 1 0 \\mathbf { C } \\mathbf { o } - 7 . 3 \\mathbf { S } \\mathbf { i }\n$$"
+    },
+    {
+        "type": "equation",
+        "img_path": "images/9dbe3dc09abae0289526266b7601f93769b2984e03cfb2d0c185a28c4a8800f2.jpg",
+        "text": "$$\n\\mathbf { M _ { d 3 0 } } ( ^ { \\circ } \\mathbf { C } ) = 4 9 7 - 4 6 2 ( \\mathbf { C } + \\mathbf { N } ) - 2 0 \\mathbf { N i } - 1 8 . 5 \\mathbf { M o } - 1 3 . 7 \\mathbf { C r } - 8 . 1 \\mathbf { M n } - 9 . 2 \\mathbf { S i }\n$$"
+    },
+    {
+        "type": "text",
+        "text": "The austenite volume fractions were measured by XRD analysis before and after deformation, as illustrated in Fig. 7. Fig. 7a plotted the XRD profile and the calculated results are plotted in Fig. 7b. In all steels, the austenite volume fraction decreased after tensile tests. As the solution temperature increasing in the range $7 0 0 { - } 9 0 0 \\ { ^ { \\circ } } \\mathrm { C }$ , the martensite transformation ratio increased gradually, with a peak value of $8 9 . 9 \\%$ in H90. This also suggests an enhanced TRIP effects in association with a metastable stability of austenite."
+    },
+    {
+        "type": "text",
+        "text": "5. Conclusions"
+    },
+    {
+        "type": "text",
+        "text": "In the present study, the tensile behavior of Fe-8Mn-6Al-0.2C low density steel was investigated in relation to microstructural evolution and deformation mechanisms, showing the operation of TRIP effect."
+    },
+    {
+        "type": "text",
+        "text": "(1) The hot-rolled steel solution treated at $9 0 0 ~ ^ { \\circ } \\mathrm { C }$ for $^ { 1 \\mathrm { h } }$ , possessing a dual-phase microstructure consisting of ferrite and over $3 0 \\%$ austenite, exhibited best combination of mechanical properties, and was characterized by excellent combination of UTS of $8 3 6 . 4 \\mathrm { M P a }$ , YS of $4 7 3 . 6 \\mathrm { M P a }$ , and TE of $3 2 \\%$ .   \n(2) The TRIP effect and the high dislocation density in ferrite and martensite significantly contributed to the excellent combination in mechanical performance. The considerable C and Mn enrichment in austenite, as well as its high volume fraction, enables the metastable austenite to transform into martensite during tensile deformation. Because of the variation in element partitioning, the martensitic transformation ratio increased with the solution temperature in the range $7 0 0 { - } 9 0 0 \\ { ^ { \\circ } } \\mathrm { C }$ . Moreover, $\\mathbf { M } _ { s }$ temperature was another factor influencing the austenite stability.   \n(3) During tensile test, the steel exhibited an obvious three-stage work hardening characteristics, in which the S2 was linked to the TRIP effect. With the increase of tensile strain, the austenite volume fraction decreased while martensite volume fraction increased gradually. The austenite grains positioned at grain boundaries between multiple ferrite grains took the initiative to transform, whereas some other austenite grains, which were located in ferrite laths or embedded in larger ferrite grains, were often found to undergo rotations. In addition, the volume fraction of small angle grain boundaries increased greatly, with a value of over $5 1 \\%$ being observed at the true strain of 0.27."
+    }
+]

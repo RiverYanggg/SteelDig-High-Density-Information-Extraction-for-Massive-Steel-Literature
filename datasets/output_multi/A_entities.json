@@ -1,0 +1,929 @@
+{
+  "unmapped_findings": [
+    "The 15Mn5Ni alloy exhibited brittle behavior with tensile elongation <1% when heat treated at 973 K and 1023 K, and stress-strain curves could not be recorded for these conditions.",
+    "The B2 phase in 15Mn5Ni alloy underwent shearing and fragmentation at 35-45 degrees to rolling direction during cold rolling.",
+    "The dissolution rate of finer intragranular B2 particles was higher than that of B2 stringers.",
+    "The strain hardening exponent n varied from 0.16 to 0.50 depending on alloy composition and heat treatment temperature.",
+    "Fractography revealed dimple morphology for 28Mn0Ni and 28Mn5Ni (ductile failure) but quasi-cleavage fracture with intergranular cracking for 15Mn5Ni at 1023 K.",
+    "Planar slip activity followed by dynamic slip band refinement was observed as the dominant deformation mechanism in fully recrystallized austenite.",
+    "The Mn/Ni ratio played a vital role in controlling precipitation, recrystallization kinetics, and mechanical properties."
+  ],
+  "metadata": {
+    "doi": null,
+    "title": "Effect of cold rolling and subsequent heat treatment on microstructural evolution and mechanical properties of Fe-Mn-Al-C-(Ni) based austenitic low-density steels",
+    "authors": [
+      "Bidyapati Mishra",
+      "Rajdeep Sarkar",
+      "Vajinder Singh",
+      "Deepak Kumar",
+      "A. Mukhopadhyay",
+      "V. Madhu",
+      "M.J.N.V. Prasad"
+    ],
+    "publication_year": null,
+    "journal": null,
+    "keywords": [
+      "Low-density steels",
+      "Austenite",
+      "Cold rolling",
+      "Microstructure",
+      "Tensile properties"
+    ],
+    "research_type": "Experimental study",
+    "alloy_system": {
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C",
+        "Ni"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Mn",
+          "weight_percent": "28.3 ± 0.4",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "9.0 ± 0.05",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "0.9 ± 0.01",
+          "atomic_percent": null
+        },
+        {
+          "element": "Ni",
+          "weight_percent": "0",
+          "atomic_percent": null
+        },
+        {
+          "element": "Fe",
+          "weight_percent": "Balance",
+          "atomic_percent": null
+        }
+      ]
+    }
+  },
+  "processing": {
+    "synthesis_methods": [
+      {
+        "method": "Vacuum induction melting",
+        "parameters": {
+          "temperature": null,
+          "atmosphere": "Vacuum",
+          "cooling_rate": null,
+          "others": "30 kg ingot"
+        }
+      }
+    ],
+    "process_sequence": [
+      {
+        "sequence": "0",
+        "type": "Homogenization",
+        "method": "Heat treatment",
+        "temperature": "1423",
+        "unit": "K",
+        "duration": "2.5 h",
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": null
+      },
+      {
+        "sequence": "1",
+        "type": "Hot rolling",
+        "method": "Rolling",
+        "temperature": "1323",
+        "unit": "K",
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": null,
+        "others": "Final thickness ~13 mm; denoted as HR"
+      },
+      {
+        "sequence": "2",
+        "type": "Cold rolling",
+        "method": "Rolling",
+        "temperature": "Room temperature",
+        "unit": null,
+        "duration": null,
+        "cooling_medium": null,
+        "reduction_ratio": "~50%",
+        "others": "Final thickness ~6 mm; denoted as HR+CR; 15Mn5Ni experienced cracking beyond 50% reduction"
+      },
+      {
+        "sequence": "3",
+        "type": "Heat treatment",
+        "method": "Annealing and quenching",
+        "temperature": "873-1273",
+        "unit": "K",
+        "duration": "1 h",
+        "cooling_medium": "Water quenching",
+        "reduction_ratio": null,
+        "others": "Specific temperatures studied: 873 K, 973 K, 1023 K, 1073 K, 1173 K, 1273 K"
+      }
+    ],
+    "post_processing": [],
+    "others": {
+      "note": "Thermo-mechanical processing in two-phase domain (austenite + secondary phases) was employed to enhance strength-ductility combination."
+    }
+  },
+  "structure": {
+    "overall_structure": "Austenitic matrix with secondary precipitates (κ-carbides and B2 phase)",
+    "number_of_phases": "3",
+    "microstructure_counts": "Multiple conditions examined",
+    "microstructure_list": [
+      {
+        "uuid": "28Mn0Ni-HR+CR",
+        "related_sequence": "2",
+        "phases_present": [
+          {
+            "phase_name": "Austenite (γ)",
+            "crystal_structure": "FCC",
+            "volume_fraction": "100%",
+            "morphology": "Deformed grains with parallel slip bands",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": "High density of dislocations, planar slip bands, no deformation twinning or martensite",
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": "Deformed structure with elongated grains",
+          "texture": null
+        },
+        "precipitates": []
+      },
+      {
+        "uuid": "28Mn5Ni-HR+CR",
+        "related_sequence": "2",
+        "phases_present": [
+          {
+            "phase_name": "Austenite (γ)",
+            "crystal_structure": "FCC",
+            "volume_fraction": null,
+            "morphology": "Deformed matrix",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "B2 (Fe(Ni)Al)",
+            "crystal_structure": "Ordered B2",
+            "volume_fraction": "~4%",
+            "morphology": "Fine particles dispersed in matrix",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": "Dislocation accumulation, planar slip bands",
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": null,
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "B2",
+            "size": {
+              "value": null,
+              "unit": null
+            },
+            "distribution": "Dispersed particles",
+            "coherency": null
+          }
+        ]
+      },
+      {
+        "uuid": "15Mn5Ni-HR+CR",
+        "related_sequence": "2",
+        "phases_present": [
+          {
+            "phase_name": "Austenite (γ)",
+            "crystal_structure": "FCC",
+            "volume_fraction": null,
+            "morphology": "Deformed matrix",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "B2 (Fe(Ni)Al)",
+            "crystal_structure": "Ordered B2",
+            "volume_fraction": "~12%",
+            "morphology": "Elongated stringers (bamboo-like) and polygonal particles, sheared and fragmented",
+            "grain_size": "Thickness reduced from ~8 μm to ~2 μm",
+            "texture": "<100> orientation in stringers"
+          }
+        ],
+        "defects": "Fragmented B2 stringers, dislocation accumulation, planar slip bands",
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": null,
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "B2 stringers",
+            "size": {
+              "value": "~2",
+              "unit": "μm (thickness after rolling)"
+            },
+            "distribution": "Aligned stringers",
+            "coherency": null
+          }
+        ]
+      },
+      {
+        "uuid": "28Mn0Ni-973K",
+        "related_sequence": "3",
+        "phases_present": [
+          {
+            "phase_name": "Austenite (γ)",
+            "crystal_structure": "FCC",
+            "volume_fraction": null,
+            "morphology": "Partially recrystallized",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "κ-carbide",
+            "crystal_structure": null,
+            "volume_fraction": null,
+            "morphology": "Fine intragranular and coarse intergranular",
+            "grain_size": "10-60 nm in deformed regions, finer in recrystallized regions",
+            "texture": null
+          },
+          {
+            "phase_name": "B2",
+            "crystal_structure": "Ordered B2",
+            "volume_fraction": null,
+            "morphology": "Intergranular particles",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": "Mixed regions of recrystallized and deformed austenite, dislocation cell structure in deformed regions",
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": "Bimodal: recrystallized grains and deformed grains",
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "κ-carbide",
+            "size": {
+              "value": "10-60",
+              "unit": "nm"
+            },
+            "distribution": "Inhomogeneous in deformed austenite, fine and uniform in recrystallized austenite",
+            "coherency": null
+          },
+          {
+            "type": "B2",
+            "size": {
+              "value": null,
+              "unit": null
+            },
+            "distribution": "Intergranular",
+            "coherency": null
+          }
+        ]
+      },
+      {
+        "uuid": "28Mn0Ni-1173K",
+        "related_sequence": "3",
+        "phases_present": [
+          {
+            "phase_name": "Austenite (γ)",
+            "crystal_structure": "FCC",
+            "volume_fraction": "100%",
+            "morphology": "Fully recrystallized equiaxed grains with annealing twins",
+            "grain_size": "Significant grain growth observed",
+            "texture": "Nearly random"
+          }
+        ],
+        "defects": "Annealing twins, low dislocation density",
+        "grain_structure": {
+          "average_grain_size": {
+            "value": "Significantly larger than at lower temperatures",
+            "unit": "μm"
+          },
+          "grain_size_distribution": "Uniform equiaxed grains",
+          "texture": "Nearly random"
+        },
+        "precipitates": []
+      },
+      {
+        "uuid": "28Mn5Ni-973K",
+        "related_sequence": "3",
+        "phases_present": [
+          {
+            "phase_name": "Austenite (γ)",
+            "crystal_structure": "FCC",
+            "volume_fraction": null,
+            "morphology": "Mostly deformed with minor recrystallization",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "B2",
+            "crystal_structure": "Ordered B2",
+            "volume_fraction": null,
+            "morphology": "Fine intragranular (5-20 nm) and intergranular (50-200 nm) particles",
+            "grain_size": "5-200 nm",
+            "texture": null
+          },
+          {
+            "phase_name": "κ-carbide",
+            "crystal_structure": null,
+            "volume_fraction": null,
+            "morphology": "Fine precipitates",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": "High density of dislocations in deformed regions, precipitate-dislocation interactions",
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": "Mostly deformed structure",
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "B2 intragranular",
+            "size": {
+              "value": "5-20",
+              "unit": "nm"
+            },
+            "distribution": "Fine particles",
+            "coherency": null
+          },
+          {
+            "type": "B2 intergranular",
+            "size": {
+              "value": "50-200",
+              "unit": "nm"
+            },
+            "distribution": "Along grain boundaries",
+            "coherency": null
+          },
+          {
+            "type": "κ-carbide",
+            "size": {
+              "value": null,
+              "unit": null
+            },
+            "distribution": null,
+            "coherency": null
+          }
+        ]
+      },
+      {
+        "uuid": "28Mn5Ni-1173K",
+        "related_sequence": "3",
+        "phases_present": [
+          {
+            "phase_name": "Austenite (γ)",
+            "crystal_structure": "FCC",
+            "volume_fraction": null,
+            "morphology": "Partially recrystallized",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "B2",
+            "crystal_structure": "Ordered B2",
+            "volume_fraction": "~10% (reduced from lower temperature)",
+            "morphology": "Prior B2 stringers (recovered, bamboo-type) and new precipitates",
+            "grain_size": null,
+            "texture": "New precipitates show single crystal orientations with OR to γ"
+          }
+        ],
+        "defects": "Mixture of recrystallized and deformed grains",
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": null,
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "B2",
+            "size": {
+              "value": null,
+              "unit": null
+            },
+            "distribution": "Reduced fraction compared to 973 K",
+            "coherency": null
+          }
+        ]
+      },
+      {
+        "uuid": "15Mn5Ni-973K",
+        "related_sequence": "3",
+        "phases_present": [
+          {
+            "phase_name": "Austenite (γ)",
+            "crystal_structure": "FCC",
+            "volume_fraction": null,
+            "morphology": "Deformed with precipitate-rich zones",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "B2",
+            "crystal_structure": "Ordered B2",
+            "volume_fraction": "~40%",
+            "morphology": "Coarse precipitate-rich zones around deformed austenite, intragranular and intergranular",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "κ-carbide",
+            "crystal_structure": null,
+            "volume_fraction": "Higher than 28Mn5Ni",
+            "morphology": "Coarser in deformed austenite",
+            "grain_size": "Larger than in 28Mn0Ni and 28Mn5Ni",
+            "texture": null
+          }
+        ],
+        "defects": "Extensive B2 precipitation along grain boundaries forming precipitate-rich zones, minimal recrystallization",
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": "Highly deformed with precipitate zones",
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "B2",
+            "size": {
+              "value": "50-200 (intragranular), 0.5-1.5 μm (intergranular)",
+              "unit": "nm and μm"
+            },
+            "distribution": "High volume fraction, precipitate-rich zones",
+            "coherency": null
+          },
+          {
+            "type": "κ-carbide",
+            "size": {
+              "value": "Coarser",
+              "unit": null
+            },
+            "distribution": "Inhomogeneous",
+            "coherency": null
+          }
+        ]
+      },
+      {
+        "uuid": "15Mn5Ni-1173K",
+        "related_sequence": "3",
+        "phases_present": [
+          {
+            "phase_name": "Austenite (γ)",
+            "crystal_structure": "FCC",
+            "volume_fraction": null,
+            "morphology": "Significantly recrystallized",
+            "grain_size": null,
+            "texture": null
+          },
+          {
+            "phase_name": "B2",
+            "crystal_structure": "Ordered B2",
+            "volume_fraction": "~15%",
+            "morphology": "Partially dissolved, remaining stringers and precipitates",
+            "grain_size": null,
+            "texture": null
+          }
+        ],
+        "defects": "Increased recrystallization fraction compared to 973 K",
+        "grain_structure": {
+          "average_grain_size": {
+            "value": null,
+            "unit": null
+          },
+          "grain_size_distribution": "Mixed recrystallized and deformed",
+          "texture": null
+        },
+        "precipitates": [
+          {
+            "type": "B2",
+            "size": {
+              "value": null,
+              "unit": null
+            },
+            "distribution": "Reduced fraction, partial dissolution",
+            "coherency": null
+          }
+        ]
+      }
+    ]
+  },
+  "interface": {
+    "phases": [
+      {
+        "phase_1_name": "Austenite (γ)",
+        "phase_2_name": "B2",
+        "coherence": null
+      },
+      {
+        "phase_1_name": "Austenite (γ)",
+        "phase_2_name": "κ-carbide",
+        "coherence": null
+      }
+    ],
+    "defect_interaction": [
+      {
+        "interaction_type": "Dislocation-B2 particle interaction",
+        "quality_description": "Non-shearable B2 particles act as obstacles to dislocation motion, leading to early initiation of slip band refinement; Orowan bowing observed"
+      },
+      {
+        "interaction_type": "Dislocation-κ-carbide interaction",
+        "quality_description": "Dislocations cut through fine κ-carbides; coarse κ-carbides impede dislocation motion"
+      },
+      {
+        "interaction_type": "Dislocation-twin interaction",
+        "quality_description": "Observed in fully recrystallized austenite, leading to enhanced strain hardening"
+      }
+    ],
+    "others": [
+      {
+        "crack_propagation_path": "Along γ/B2 interphase boundaries in 15Mn5Ni at 1023 K"
+      },
+      {
+        "recrystallization_nucleation_sites": "Along γ/γ boundaries and γ/B2 interfaces"
+      }
+    ],
+    "phase_evolution": "Concurrent precipitation of κ-carbides and B2 phase during heat treatment; dissolution of precipitates with increasing temperature; delayed recrystallization in Ni-containing alloys due to B2 precipitation"
+  },
+  "properties": {
+    "mechanical": {
+      "tensile_properties": {
+        "yield_strength": [
+          {
+            "direction": "Uniaxial",
+            "value": "1350 ± 10",
+            "unit": "MPa"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1394 ± 5",
+            "unit": "MPa"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1665 ± 12",
+            "unit": "MPa"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "884 ± 6",
+            "unit": "MPa"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1450 ± 15",
+            "unit": "MPa"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "732 ± 2",
+            "unit": "MPa"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1289 ± 2",
+            "unit": "MPa"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "504 ± 5",
+            "unit": "MPa"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "900 ± 4",
+            "unit": "MPa"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "971 ± 5",
+            "unit": "MPa"
+          }
+        ],
+        "ultimate_tensile_strength": [
+          {
+            "direction": "Uniaxial",
+            "value": "1500 ± 10",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1571 ± 5",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1800 ± 15",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1162 ± 10",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1645 ± 10",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1051 ± 5",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1537 ± 2",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "905 ± 8",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1236 ± 5",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "1303 ± 12",
+            "unit": "MPa",
+            "others": {
+              "uncertainty": null
+            }
+          }
+        ],
+        "elongation": [
+          {
+            "direction": "Uniaxial",
+            "value": "10 ± 0.4",
+            "unit": "%"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "11 ± 0.4",
+            "unit": "%"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "7 ± 0.5",
+            "unit": "%"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "23 ± 0.5",
+            "unit": "%"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "5 ± 1",
+            "unit": "%"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "36 ± 2",
+            "unit": "%"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "17 ± 1",
+            "unit": "%"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "86 ± 2",
+            "unit": "%"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "39 ± 1",
+            "unit": "%"
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "36 ± 1",
+            "unit": "%"
+          }
+        ],
+        "youngs_modulus": null,
+        "stress_strain_curves": "Engineering stress-engineering strain curves and true stress-true strain curves provided in Figure 9",
+        "stress_strain_distribution": null,
+        "strain_hardening_rate": [
+          {
+            "direction": "Uniaxial",
+            "value": "0.16",
+            "unit": null
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "0.30",
+            "unit": null
+          },
+          {
+            "direction": "Uniaxial",
+            "value": "0.50",
+            "unit": null
+          }
+        ]
+      },
+      "hardness": [
+        {
+          "region": "Bulk",
+          "value": "450",
+          "scale": "VHN",
+          "unit": "VHN"
+        },
+        {
+          "region": "Bulk",
+          "value": "256 ± 5",
+          "scale": "VHN",
+          "unit": "VHN"
+        },
+        {
+          "region": "Bulk",
+          "value": "268 ± 5",
+          "scale": "VHN",
+          "unit": "VHN"
+        },
+        {
+          "region": "Bulk",
+          "value": "375 ± 6",
+          "scale": "VHN",
+          "unit": "VHN"
+        },
+        {
+          "region": "Bulk",
+          "value": "500",
+          "scale": "VHN",
+          "unit": "VHN"
+        }
+      ],
+      "fracture_toughness": {
+        "value": null,
+        "unit": null
+      },
+      "fatigue_properties": {
+        "fatigue_limit": null,
+        "cycles_to_failure": null
+      },
+      "creep_properties": {
+        "steady_state_creep_rate": null,
+        "rupture_life": null
+      }
+    },
+    "physical": {
+      "density": {
+        "value": null,
+        "unit": null
+      },
+      "thermal_properties": {
+        "thermal_conductivity": null,
+        "thermal_expansion_coefficient": null,
+        "specific_heat": null
+      },
+      "electrical_properties": {
+        "electrical_conductivity": null,
+        "resistivity": null
+      },
+      "magnetic_properties": {
+        "magnetic_susceptibility": null,
+        "curie_temperature": null
+      }
+    },
+    "chemical": {
+      "corrosion_resistance": {
+        "test_medium": null,
+        "corrosion_rate": null,
+        "passivation_behavior": null
+      },
+      "oxidation_resistance": {
+        "oxidation_rate_constant": null,
+        "protective_scale": null
+      }
+    },
+    "radiation_properties": {
+      "void_swelling": null,
+      "irradiation_hardening": null,
+      "helium_embrittlement": null
+    }
+  },
+  "performance": {
+    "service_conditions": {
+      "operating_temperature": {
+        "min": null,
+        "max": null,
+        "unit": null
+      },
+      "stress_state": null,
+      "environment": null
+    },
+    "lifetime_prediction": {
+      "model_used": null,
+      "predicted_lifetime": null,
+      "confidence_interval": null
+    },
+    "comparative_performance": {
+      "benchmark_alloy": "28Mn0Ni",
+      "improvement_percentage": null
+    }
+  },
+  "characterization_methods": [
+    {
+      "technique": "Orientation Imaging Microscopy (OIM)/EBSD",
+      "purpose": "Microstructure characterization, grain orientation, grain size, twin fraction, recrystallization fraction analysis",
+      "key_findings": "Recrystallization kinetics, grain structure evolution, phase identification (γ and B2)"
+    },
+    {
+      "technique": "X-ray Diffraction (XRD)",
+      "purpose": "Phase identification",
+      "key_findings": "Presence of γ, B2, and κ-carbide phases; dissolution of phases with increasing temperature"
+    },
+    {
+      "technique": "Transmission Electron Microscopy (TEM)",
+      "purpose": "Fine microstructural analysis, phase identification, dislocation substructure",
+      "key_findings": "κ-carbide and B2 particle sizes and distributions, dislocation-precipitate interactions, slip band refinement"
+    },
+    {
+      "technique": "Scanning Electron Microscopy (SEM) with EDS",
+      "purpose": "Fractography and chemical composition analysis",
+      "key_findings": "Dimple vs quasi-cleavage fracture modes, B2 composition analysis"
+    },
+    {
+      "technique": "Vickers Hardness Testing",
+      "purpose": "Hardness measurement",
+      "key_findings": "Hardness variation with cold work and heat treatment; 300 N load, 15 s dwell"
+    },
+    {
+      "technique": "Tensile Testing",
+      "purpose": "Mechanical property evaluation",
+      "key_findings": "Yield strength, ultimate tensile strength, elongation, strain hardening exponent (n)"
+    }
+  ],
+  "computational_details": {
+    "simulation_method": null,
+    "software_used": "TSL-OIMTm software for EBSD data analysis",
+    "potential_model": null,
+    "validation_against_experiment": null,
+    "analytical_model": []
+  }
+}
