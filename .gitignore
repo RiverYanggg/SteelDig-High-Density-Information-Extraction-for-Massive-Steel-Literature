@@ -23,3 +23,8 @@ ENV/
 # 本地测试输出（如有）
 *.log
 output/
+
+# Neo4j 本地运行时（便携 JDK、Homebrew bottle 解包、数据库文件较大）
+.jdk21/
+.neo4j_homebrew/
+datasets/neo4j_data/

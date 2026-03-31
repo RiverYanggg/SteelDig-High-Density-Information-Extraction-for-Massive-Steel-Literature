@@ -1,1 +1,598 @@
-{}
+{
+  "papers": [
+    {
+      "paper_id": "paper_001",
+      "doi": null,
+      "title": "Current state of Fe-Mn-Al-C low density steels",
+      "authors": [
+        "Shangping Chen",
+        "Radhakanta Rana",
+        "Arunansu Haldar",
+        "Ranjit Kumar Ray"
+      ],
+      "publication_year": "2017",
+      "journal": "Elsevier",
+      "keywords": [
+        "Low density steels",
+        "Deformation mechanisms",
+        "Phase transformation",
+        "Short-range ordering",
+        "j-carbide",
+        "Planar glide",
+        "TRIP steel",
+        "TWIP steel",
+        "Stacking fault energy"
+      ],
+      "research_type": "review",
+      "paper_scope": "Review of physical metallurgy, processing strategies, strengthening mechanisms, and mechanical properties of Fe-Mn-Al-C low density steels for automotive applications."
+    }
+  ],
+  "alloys": [
+    {
+      "alloy_id": "alloy_femnalc_general",
+      "paper_id": "paper_001",
+      "alloy_name": "Fe-Mn-Al-C low density steels",
+      "aliases": [
+        "Low density steels",
+        "Lightweight steels"
+      ],
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Al",
+          "weight_percent": "7-10",
+          "atomic_percent": null
+        },
+        {
+          "element": "Mn",
+          "weight_percent": "15-30",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "0.7-1.2",
+          "atomic_percent": null
+        }
+      ],
+      "alloys_notes": "Main alloying element is Al for density reduction. Mn and C stabilize austenite."
+    },
+    {
+      "alloy_id": "alloy_28mn9al08c",
+      "paper_id": "paper_001",
+      "alloy_name": "Fe-28Mn-9Al-0.8C",
+      "aliases": [],
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Mn",
+          "weight_percent": "28",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "9",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "0.8",
+          "atomic_percent": null
+        }
+      ],
+      "alloys_notes": "Austenitic steel, high elongation (~100%)."
+    },
+    {
+      "alloy_id": "alloy_30mn10al1c",
+      "paper_id": "paper_001",
+      "alloy_name": "Fe-30Mn-10Al-1C",
+      "aliases": [],
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Mn",
+          "weight_percent": "30",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "10",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "1",
+          "atomic_percent": null
+        }
+      ],
+      "alloys_notes": "Austenitic steel."
+    },
+    {
+      "alloy_id": "alloy_8al",
+      "paper_id": "paper_001",
+      "alloy_name": "Fe-8Al",
+      "aliases": [
+        "Ferritic Fe-Al steel"
+      ],
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Al"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Al",
+          "weight_percent": "8",
+          "atomic_percent": null
+        }
+      ],
+      "alloys_notes": "Ferritic low density steel."
+    },
+    {
+      "alloy_id": "alloy_22mn8al08c",
+      "paper_id": "paper_001",
+      "alloy_name": "Fe-22Mn-8Al-0.8C",
+      "aliases": [],
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Mn",
+          "weight_percent": "22",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "8",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "0.8",
+          "atomic_percent": null
+        }
+      ],
+      "alloys_notes": "Austenitic steel."
+    }
+  ],
+  "processes": [
+    {
+      "process_id": "proc_general",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_femnalc_general",
+      "description": "General processing for Fe-Mn-Al-C steels including melting, casting, hot rolling, and heat treatment.",
+      "processes_notes": "Ingot casting, homogenization, hot rolling, cooling, cold rolling, annealing, aging."
+    },
+    {
+      "process_id": "proc_solution_treatment",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_femnalc_general",
+      "description": "Solution treatment in single austenite phase area followed by quenching.",
+      "processes_notes": "Temperature range 900-1100 C, water/oil quenching."
+    },
+    {
+      "process_id": "proc_aging",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_femnalc_general",
+      "description": "Aging treatment for precipitation hardening.",
+      "processes_notes": "Temperature range 450-700 C, duration 5-20 h."
+    },
+    {
+      "process_id": "proc_hot_rolling",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_femnalc_general",
+      "description": "Hot rolling to reduce thickness.",
+      "processes_notes": "Finishing temperature 850-1000 C."
+    },
+    {
+      "process_id": "proc_cold_rolling",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_femnalc_general",
+      "description": "Cold rolling for grain refinement and texture control.",
+      "processes_notes": "Reduction up to 70%."
+    }
+  ],
+  "samples": [
+    {
+      "sample_id": "sample_28mn9al08c_sol",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_28mn9al08c",
+      "process_id": "proc_solution_treatment"
+    },
+    {
+      "sample_id": "sample_28mn9al08c_age",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_28mn9al08c",
+      "process_id": "proc_aging"
+    },
+    {
+      "sample_id": "sample_30mn10al1c_sol",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_30mn10al1c",
+      "process_id": "proc_solution_treatment"
+    },
+    {
+      "sample_id": "sample_8al_ferritic",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_8al",
+      "process_id": "proc_cold_rolling"
+    },
+    {
+      "sample_id": "sample_22mn8al08c",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_22mn8al08c",
+      "process_id": "proc_general"
+    }
+  ],
+  "processing_steps": [
+    {
+      "sample_id": "sample_28mn9al08c_sol",
+      "paper_id": "paper_001",
+      "sequence": "1",
+      "type": "heat_treatment",
+      "method": "Solution treatment",
+      "temperature": "900-1100",
+      "unit": "C",
+      "duration": "1-3",
+      "cooling_medium": "Water",
+      "processing_steps_notes": "Homogenization at 1100-1250 C for 1-3 h prior to rolling."
+    },
+    {
+      "sample_id": "sample_28mn9al08c_age",
+      "paper_id": "paper_001",
+      "sequence": "2",
+      "type": "heat_treatment",
+      "method": "Aging",
+      "temperature": "450-700",
+      "unit": "C",
+      "duration": "5-20",
+      "cooling_medium": null,
+      "processing_steps_notes": "Isothermal holding for precipitation hardening."
+    },
+    {
+      "sample_id": "sample_8al_ferritic",
+      "paper_id": "paper_001",
+      "sequence": "3",
+      "type": "mechanical_processing",
+      "method": "Cold rolling",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "processing_steps_notes": "Followed by recrystallization annealing at 700-1000 C."
+    }
+  ],
+  "structures": [
+    {
+      "structure_id": "struct_austenitic",
+      "sample_id": "sample_28mn9al08c_sol",
+      "overall_structure": "Single-phase austenite (gamma) with SRO or nano-sized kappa-prime carbides.",
+      "number_of_phases": "1-2",
+      "microstructure_counts": null,
+      "microstructure_list": [
+        {
+          "uuid": "uuid_austenite_001",
+          "related_sequence": "1",
+          "phases_present": [
+            {
+              "phase_name": "Austenite",
+              "crystal_structure": "FCC",
+              "volume_fraction": "100",
+              "morphology": "Equiaxed",
+              "grain_size": "38-80",
+              "texture": "Random"
+            }
+          ],
+          "defects": [
+            {
+              "type": "Dislocations",
+              "porosity": null,
+              "inclusions": [],
+              "dislocation_density": null,
+              "lattice_distortion": "SRO"
+            }
+          ],
+          "grain_structure": {
+            "average_grain_size": {
+              "value": "50",
+              "unit": "um"
+            },
+            "grain_size_distribution": null,
+            "texture": null
+          },
+          "precipitates": [
+            {
+              "precipitate_id": "precip_kappa_prime",
+              "type": "Kappa-prime carbide",
+              "size": {
+                "value": "2-5",
+                "unit": "nm"
+              },
+              "distribution": "Homogeneous",
+              "coherency": "Coherent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "structure_id": "struct_ferritic",
+      "sample_id": "sample_8al_ferritic",
+      "overall_structure": "Ferritic (alpha-delta) with possible B2 or DO3 ordering.",
+      "number_of_phases": "1",
+      "microstructure_counts": null,
+      "microstructure_list": [
+        {
+          "uuid": "uuid_ferrite_001",
+          "related_sequence": "3",
+          "phases_present": [
+            {
+              "phase_name": "Ferrite",
+              "crystal_structure": "BCC",
+              "volume_fraction": "100",
+              "morphology": "Equiaxed",
+              "grain_size": "40-90",
+              "texture": "Cube fiber"
+            }
+          ],
+          "defects": [
+            {
+              "type": "Dislocations",
+              "porosity": null,
+              "inclusions": [],
+              "dislocation_density": null,
+              "lattice_distortion": "Solid solution"
+            }
+          ],
+          "grain_structure": {
+            "average_grain_size": {
+              "value": "65",
+              "unit": "um"
+            },
+            "grain_size_distribution": null,
+            "texture": "Cube"
+          },
+          "precipitates": [
+            {
+              "precipitate_id": "precip_kappa",
+              "type": "Kappa carbide",
+              "size": {
+                "value": "Thick/elongated",
+                "unit": "nm"
+              },
+              "distribution": "Grain boundaries",
+              "coherency": "Semicoherent"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_set_id": "interface_gamma_kappa",
+      "sample_id": "sample_28mn9al08c_sol",
+      "phases": [
+        {
+          "interface_id": "int_001",
+          "microstructure_uuid": "uuid_austenite_001",
+          "phase_1_name": "Austenite",
+          "phase_2_name": "Kappa-prime carbide",
+          "coherence": "Coherent"
+        }
+      ],
+      "defect_interaction": [
+        {
+          "interaction_id": "int_001",
+          "microstructure_uuid": "uuid_austenite_001",
+          "interaction_type": "Dislocation shearing",
+          "quality_description": "Planar glide"
+        }
+      ],
+      "interface_notes": [
+        {
+          "stress_strain_distribution": "Planar slip bands"
+        }
+      ],
+      "phase_evolution": "SRO -> Kappa-prime -> Kappa (overaging)"
+    }
+  ],
+  "properties": [
+    {
+      "property_set_id": "prop_mechanical",
+      "sample_id": "sample_28mn9al08c_sol",
+      "mechanical": {
+        "tensile_properties": {
+          "yield_strength": [
+            {
+              "direction": null,
+              "value": "0.4-1.0",
+              "unit": "GPa"
+            }
+          ],
+          "ultimate_tensile_strength": [
+            {
+              "direction": null,
+              "value": "0.6-2.0",
+              "unit": "GPa",
+              "others": {
+                "uncertainty": null
+              }
+            }
+          ],
+          "elongation": [
+            {
+              "direction": null,
+              "value": "30-100",
+              "unit": "%"
+            }
+          ],
+          "youngs_modulus": null,
+          "stress_strain_curves": null,
+          "stress_strain_distribution": null,
+          "strain_hardening_rate": [
+            {
+              "property_id": null,
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ]
+        },
+        "hardness": [
+          {
+            "region": null,
+            "value": null,
+            "scale": null,
+            "unit": null
+          }
+        ],
+        "fracture_toughness": {
+          "value": null,
+          "unit": null
+        },
+        "fatigue_properties": {
+          "fatigue_limit": null,
+          "cycles_to_failure": null
+        },
+        "creep_properties": {
+          "steady_state_creep_rate": null,
+          "rupture_life": null
+        }
+      },
+      "physical": {
+        "density": {
+          "value": "7.8",
+          "unit": "g/cm3"
+        },
+        "thermal_properties": {
+          "thermal_conductivity": null,
+          "thermal_expansion_coefficient": null,
+          "specific_heat": null
+        },
+        "electrical_properties": {
+          "electrical_conductivity": null,
+          "resistivity": null
+        },
+        "magnetic_properties": {
+          "magnetic_susceptibility": null,
+          "curie_temperature": null
+        }
+      },
+      "chemical": {
+        "corrosion_resistance": {
+          "test_medium": null,
+          "corrosion_rate": null,
+          "passivation_behavior": null
+        },
+        "oxidation_resistance": {
+          "oxidation_rate_constant": null,
+          "protective_scale": null
+        }
+      },
+      "radiation_properties": {
+        "void_swelling": null,
+        "irradiation_hardening": null,
+        "helium_embrittlement": null
+      }
+    }
+  ],
+  "performance": [
+    {
+      "performance_id": "perf_impact",
+      "sample_id": "sample_28mn9al08c_sol",
+      "service_conditions": {
+        "operating_temperature": {
+          "min": null,
+          "max": null,
+          "unit": null
+        },
+        "stress_state": null,
+        "environment": null
+      },
+      "lifetime_prediction": {
+        "model_used": null,
+        "predicted_lifetime": null,
+        "confidence_interval": null
+      },
+      "comparative_performance": {
+        "benchmark_alloy": "Cr-Ni stainless steel",
+        "benchmark_process_id": null,
+        "benchmark_sample_id": null,
+        "improvement_percentage": null
+      }
+    }
+  ],
+  "characterization_methods": [
+    {
+      "characterization_id": "char_tensile",
+      "sample_id": "sample_28mn9al08c_sol",
+      "microstructure_uuid": null,
+      "technique": "Tensile testing",
+      "purpose": "Mechanical properties evaluation",
+      "key_findings": "High elongation and strength."
+    },
+    {
+      "characterization_id": "char_micro",
+      "sample_id": "sample_28mn9al08c_sol",
+      "microstructure_uuid": "uuid_austenite_001",
+      "technique": "TEM",
+      "purpose": "Microstructure and precipitate analysis",
+      "key_findings": "Observation of SRO and kappa-prime carbides."
+    },
+    {
+      "characterization_id": "char_xrd",
+      "sample_id": "sample_28mn9al08c_sol",
+      "microstructure_uuid": null,
+      "technique": "X-ray diffraction",
+      "purpose": "Phase identification",
+      "key_findings": "Detection of SRO superlattice reflections."
+    }
+  ],
+  "computational_details": [
+    {
+      "computation_id": "comp_thermo",
+      "sample_id": null,
+      "simulation_method": "CALPHAD",
+      "software_used": "FactSage 6.4",
+      "potential_model": null,
+      "validation_against_experiment": "Comparison with experimental phase diagrams",
+      "analytical_model": [
+        {
+          "model_name": "Phase diagram calculation",
+          "equation_role": "Predict phase equilibria",
+          "parameters": [
+            "Al content",
+            "Mn content",
+            "C content"
+          ],
+          "model_note": "Used to predict kappa carbide formation and solvus temperatures."
+        }
+      ]
+    }
+  ],
+  "unmapped_findings": [
+    "The review indicates that the fatigue behaviour and formability of Fe-Mn-Al-C steels cannot be properly understood at this stage due to limited experimental results.",
+    "Information on weldability and coatability of these materials is still very much lacking.",
+    "The Young's modulus of these steels is significantly lower than conventional high strength steels, which is a main issue for automotive applications.",
+    "Industrial scale production remains a challenge due to high Al content causing processing problems like surface defects and cracking.",
+    "The exact cause of the large difference in total elongation between studies on the same alloy composition is still unclear."
+  ]
+}

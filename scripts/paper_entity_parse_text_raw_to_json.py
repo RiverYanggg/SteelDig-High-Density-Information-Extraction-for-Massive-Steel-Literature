@@ -3,7 +3,8 @@
 将 paper_entity_extract_text_once.py 写出的「原始模型输出」解析为 JSON 对象，
 并保存为 *_entities_text_only.json（与多模态 datasets/output 中的命名语义对齐）。
 
-不调用任何大模型，仅依赖 model_reply_json.parse_model_json。
+不调用任何大模型，仅依赖 model_reply_json.parse_model_json（会按 schema 根级键命中数
+优先选取 `{...}`，避免思考文字里抢先出现的 `` `{}` `` 等被误当作最终结果）。
 
 用法（在项目根目录）：
   # 批量：目录下所有 *_entities_text_only.raw.txt

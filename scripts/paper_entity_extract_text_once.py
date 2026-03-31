@@ -28,7 +28,7 @@ JSON 解析请使用独立脚本（与模型调用解耦）：
   python scripts/paper_entity_extract_text_once.py \\
     -i datasets/text_llm_input/A_text_llm_input.json
 
-  # 并行 4 线程、任务日志
+  # 并行 4 线程、任务日志（含每篇 prompt/completion/total tokens，及可选 reasoning/应答拆分）
   python scripts/paper_entity_extract_text_once.py \\
     --input datasets/text_llm_input \\
     --output-dir datasets/output_text \\
@@ -64,6 +64,23 @@ if str(_SCRIPTS_DIR) not in sys.path:
 TEXT_LLM_INPUT_DIR = PROJECT_ROOT / "datasets" / "text_llm_input"
 TEXT_RAW_OUTPUT_DIR = PROJECT_ROOT / "datasets" / "output_text"
 
+# =========================
+# 可配置项（常修改参数集中）
+# =========================
+# 环境变量名
+ENV_OPENAI_BASE_URL = "OPENAI_BASE_URL"
+ENV_OPENAI_API_KEY = "OPENAI_API_KEY"
+ENV_OPENAI_MODEL = "OPENAI_MODEL"
+ENV_OPENAI_MAX_TOKENS = "OPENAI_MAX_TOKENS"
+ENV_WORKERS = "STEELDIG_EXTRACT_WORKERS"
+
+# 默认值
+DEFAULT_OPENAI_BASE_URL = "http://127.0.0.1:8001/v1"
+DEFAULT_OPENAI_API_KEY = "EMPTY"
+DEFAULT_TEMPERATURE = 0.3
+DEFAULT_MAX_TOKENS = 65536
+DEFAULT_WORKERS = 3
+
 try:
     from dotenv import load_dotenv
 
@@ -94,28 +111,26 @@ _exc_lock = threading.Lock()
 
 
 def _default_workers() -> int:
-    raw = (os.environ.get("STEELDIG_EXTRACT_WORKERS") or "1").strip()
+    raw = (os.environ.get(ENV_WORKERS) or str(DEFAULT_WORKERS)).strip()
     try:
         return max(1, int(raw, 10))
     except ValueError:
-        return 1
+        return DEFAULT_WORKERS
 
 
 def _effective_openai_base_url() -> str:
-    return os.environ.get(
-        "OPENAI_BASE_URL", "http://127.0.0.1:8001/v1"
-    ).rstrip("/")
+    return os.environ.get(ENV_OPENAI_BASE_URL, DEFAULT_OPENAI_BASE_URL).rstrip("/")
 
 
 def _openai_client() -> OpenAI:
     """与 digmodel/basemodel/start_vllm.sh、test_vllm.py 一致：本地 OpenAI 兼容端点。"""
-    key = os.environ.get("OPENAI_API_KEY", "EMPTY")
+    key = os.environ.get(ENV_OPENAI_API_KEY, DEFAULT_OPENAI_API_KEY)
     return OpenAI(api_key=key, base_url=_effective_openai_base_url())
 
 
 def _resolve_chat_model_id(client: OpenAI, cli_model: Optional[str]) -> str:
     """与 vLLM 返回的 model id 必须一致；未指定时取 /v1/models 第一个 id。"""
-    for candidate in ((cli_model or "").strip(), (os.environ.get("OPENAI_MODEL") or "").strip()):
+    for candidate in ((cli_model or "").strip(), (os.environ.get(ENV_OPENAI_MODEL) or "").strip()):
         if candidate:
             return candidate
     try:
@@ -133,6 +148,60 @@ def _resolve_chat_model_id(client: OpenAI, cli_model: Optional[str]) -> str:
             "名称须与 vLLM 注册的 id 完全一致（可对照启动日志或 curl /v1/models）。"
         )
     return str(data[0].id)
+
+
+def _get_obj_field(obj: Any, key: str, default: Any = None) -> Any:
+    if obj is None:
+        return default
+    if isinstance(obj, dict):
+        return obj.get(key, default)
+    return getattr(obj, key, default)
+
+
+def _extract_usage_from_completion(completion: Any) -> Optional[Dict[str, Any]]:
+    """从 completion.usage 提取 token；若存在 reasoning 细分（如 OpenAI o 系列、部分网关）则一并记录。"""
+    usage = _get_obj_field(completion, "usage")
+    if usage is None:
+        return None
+    pt = _get_obj_field(usage, "prompt_tokens")
+    ct = _get_obj_field(usage, "completion_tokens")
+    tt = _get_obj_field(usage, "total_tokens")
+    details = _get_obj_field(usage, "completion_tokens_details")
+    reasoning_tok = None
+    if details is not None:
+        reasoning_tok = _get_obj_field(details, "reasoning_tokens")
+
+    out: Dict[str, Any] = {}
+    if pt is not None:
+        out["prompt_tokens"] = int(pt)
+    if ct is not None:
+        out["completion_tokens"] = int(ct)
+    if tt is not None:
+        out["total_tokens"] = int(tt)
+    elif pt is not None and ct is not None:
+        out["total_tokens"] = int(pt) + int(ct)
+    if reasoning_tok is not None:
+        out["completion_tokens_reasoning"] = int(reasoning_tok)
+        if ct is not None:
+            out["completion_tokens_response"] = max(
+                0, int(ct) - int(reasoning_tok)
+            )
+
+    return out if out else None
+
+
+def _extract_output_text_stats(message: Any) -> Dict[str, Any]:
+    """若 API 将 thinking 与最终回复分字段（如 reasoning_content / thinking），则分别统计字符数。"""
+    content = _get_obj_field(message, "content")
+    if not isinstance(content, str):
+        content = str(content) if content is not None else ""
+    reasoning = _get_obj_field(message, "reasoning_content")
+    if reasoning is None:
+        reasoning = _get_obj_field(message, "thinking")
+    stats: Dict[str, Any] = {"response_chars": len(content)}
+    if reasoning is not None and str(reasoning).strip():
+        stats["reasoning_chars"] = len(str(reasoning))
+    return stats
 
 
 def load_schema_object(schema_path: Path) -> dict:
@@ -174,10 +243,7 @@ def build_system_content(
         prompt_md_path, variant=prompt_variant
     )
     return (
-        system_rules
-        + "\n\n【JSON Schema（已由程序去除注释，键与嵌套结构必须与输出一致；"
-        "可增键但不可擅自改名已有键）】\n"
-        + schema_compact
+        system_rules + "\n\n" + schema_compact
     )
 
 
@@ -237,8 +303,12 @@ def run_extraction(
     temperature: float = 0.3,
     max_tokens: int = 65536,
     quiet: bool = False,
-) -> str:
-    """调用模型，返回原始文本；若指定 raw_output_path 则写入该文件。
+) -> Tuple[str, Optional[Dict[str, Any]]]:
+    """调用模型，返回 (原始文本, token/输出分块元数据)。
+
+    元数据在成功调用 API 时通常含 ``usage``（prompt/completion/total token，及可选的
+    reasoning/response 拆分）与 ``output_text_stats``（reasoning_content 与 content 的字符数）。
+    dry_run 时第二项为 None。
 
     quiet: 为 True 时不打印「已写入…」（多线程时避免输出交错）。
     """
@@ -270,12 +340,14 @@ def run_extraction(
                     "temperature": temperature,
                     "max_tokens": max_tokens,
                     "raw_output": str(raw_output_path) if raw_output_path else None,
+                    "usage_tokens": None,
+                    "note": "dry_run 不调用 API，无 token 统计",
                 },
                 ensure_ascii=False,
                 indent=2,
             )
         )
-        return ""
+        return "", None
 
     client = _openai_client()
     completion = client.chat.completions.create(
@@ -287,11 +359,20 @@ def run_extraction(
         temperature=temperature,
         max_tokens=max_tokens,
     )
-    raw_reply = completion.choices[0].message.content
+    msg = completion.choices[0].message
+    raw_reply = msg.content
     if not raw_reply:
         raise RuntimeError("模型返回空内容")
     if not isinstance(raw_reply, str):
         raw_reply = str(raw_reply)
+
+    meta: Dict[str, Any] = {}
+    usage = _extract_usage_from_completion(completion)
+    if usage:
+        meta["usage"] = usage
+    text_stats = _extract_output_text_stats(msg)
+    if text_stats:
+        meta["output_text_stats"] = text_stats
 
     if raw_output_path:
         raw_output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -299,7 +380,7 @@ def run_extraction(
         if not quiet:
             print(f"已写入原始模型输出: {raw_output_path}")
 
-    return raw_reply
+    return raw_reply, meta if meta else None
 
 
 def _task_record(
@@ -309,20 +390,30 @@ def _task_record(
     status: str,
     processing_seconds: Optional[float],
     error: Optional[str],
+    usage_meta: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    """processing_seconds: 单篇从读入输入到写完 raw 的耗时；skipped 为 null。"""
+    """processing_seconds: 单篇从读入输入到写完 raw 的耗时；skipped 为 null。
+
+    usage_meta: run_extraction 返回的第二项，可含 usage（token）与 output_text_stats（分字段字符数）。
+    """
     ps: Optional[float]
     if processing_seconds is None:
         ps = None
     else:
         ps = round(float(processing_seconds), 4)
-    return {
+    rec: Dict[str, Any] = {
         "text_llm_input": str(text_llm_input_path),
         "raw_output": str(raw_output_path),
         "status": status,
         "processing_seconds": ps,
         "error": error,
     }
+    if usage_meta:
+        if "usage" in usage_meta:
+            rec["usage"] = usage_meta["usage"]
+        if "output_text_stats" in usage_meta:
+            rec["output_text_stats"] = usage_meta["output_text_stats"]
+    return rec
 
 
 def _run_one_extraction_job(
@@ -338,7 +429,7 @@ def _run_one_extraction_job(
 ) -> Dict[str, Any]:
     t0 = time.perf_counter()
     try:
-        run_extraction(
+        _raw, usage_meta = run_extraction(
             text_llm_input_path=text_llm_input_path,
             system_content=system_content,
             model=model_id,
@@ -355,6 +446,7 @@ def _run_one_extraction_job(
             status="ok",
             processing_seconds=elapsed,
             error=None,
+            usage_meta=usage_meta,
         )
     except Exception as e:
         elapsed = time.perf_counter() - t0
@@ -368,6 +460,37 @@ def _run_one_extraction_job(
             processing_seconds=elapsed,
             error=f"{type(e).__name__}: {e}",
         )
+
+
+def _aggregate_usage_for_summary(items: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """对 items[].usage 做求和，便于整批 token 汇总。"""
+    keys = (
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens",
+        "completion_tokens_reasoning",
+        "completion_tokens_response",
+    )
+    sums: Dict[str, int] = {k: 0 for k in keys}
+    counts: Dict[str, int] = {k: 0 for k in keys}
+    for it in items:
+        u = it.get("usage")
+        if not isinstance(u, dict):
+            continue
+        for k in keys:
+            v = u.get(k)
+            if v is not None:
+                sums[k] += int(v)
+                counts[k] += 1
+    out: Dict[str, Any] = {}
+    for k in keys:
+        if counts[k] > 0:
+            out[f"{k}_sum"] = sums[k]
+    if out:
+        out["items_with_usage_count"] = len(
+            [it for it in items if isinstance(it.get("usage"), dict)]
+        )
+    return out
 
 
 def _write_task_log(
@@ -394,6 +517,9 @@ def _write_task_log(
         if psec is not None:
             processing_sum += float(psec)
     summary["processing_seconds_sum"] = round(processing_sum, 4)
+    usage_agg = _aggregate_usage_for_summary(items)
+    if usage_agg:
+        summary["usage_tokens"] = usage_agg
     wall_r = round(wall_seconds, 4)
     payload = {
         "started_at": started_at,
@@ -463,13 +589,13 @@ def main() -> None:
     parser.add_argument(
         "--temperature",
         type=float,
-        default=0.7,
+        default=DEFAULT_TEMPERATURE,
         help="采样温度（结构化抽取建议偏低）",
     )
     parser.add_argument(
         "--max-tokens",
         type=int,
-        default=int(os.environ.get("OPENAI_MAX_TOKENS", "65536")),
+        default=int(os.environ.get(ENV_OPENAI_MAX_TOKENS, str(DEFAULT_MAX_TOKENS))),
         help=(
             "单次 completion 最多生成的 token；须严格小于「模型上下文上限 − 本请求 prompt 占用」。"
             "若默认仍 400，请再调小或缩短输入。环境变量 OPENAI_MAX_TOKENS 可覆盖默认值。"
@@ -496,7 +622,7 @@ def main() -> None:
         type=int,
         default=_default_workers(),
         help=(
-            "并行线程数（仅对实际调用 API 的任务生效；默认 1，过大可能打满 vLLM）。"
+            "并行线程数（仅对实际调用 API 的任务生效；默认 3，过大可能打满 vLLM）。"
             "也可用环境变量 STEELDIG_EXTRACT_WORKERS"
         ),
     )
@@ -505,8 +631,9 @@ def main() -> None:
         type=Path,
         default=None,
         help=(
-            "任务日志 JSON：每篇 processing_seconds（单篇处理耗时）、"
-            "summary.processing_seconds_sum（各篇之和）、batch_wall_seconds（整批墙钟）"
+            "任务日志 JSON：每篇 items[].processing_seconds、items[].usage（prompt/completion/total token，"
+            "及可选的 reasoning/response 拆分）、items[].output_text_stats；"
+            "summary.usage_tokens 为各篇 token 合计；另有 batch_wall_seconds 等"
         ),
     )
     parser.add_argument(
@@ -514,28 +641,33 @@ def main() -> None:
         action="store_true",
         help="不显示 tqdm 进度条（便于重定向日志）",
     )
-    args = parser.parse_args()
+    args = parser.parse_args() # 解析命令行参数
 
+    # 路径解析
     input_arg = args.input.resolve()
     output_dir = args.output_dir.resolve()
     schema_path = args.schema.resolve()
     prompt_path = args.prompt.resolve()
 
-    files = collect_text_llm_input_files(input_arg)
+    files = collect_text_llm_input_files(input_arg) # 收集文本 LLM 输入文件
+    # 构建系统提示词
     system_content = build_system_content(
         schema_path, prompt_path, prompt_variant="text"
     )
 
-    client = _openai_client()
+    client = _openai_client() # 创建 OpenAI 客户端
     model_id = _resolve_chat_model_id(client, args.model)
     print(f"使用模型: {model_id}", file=sys.stderr)
 
+    # 单文件模式：指定完整原始输出路径时覆盖 --output-dir 的自动命名
     single_explicit_output: Optional[Path] = None
     if len(files) == 1 and args.output is not None:
         single_explicit_output = args.output.resolve()
 
+    # 跳过已存在的、非空的 *_entities_text_only.raw.txt
     skip_existing = not args.no_skip and not args.dry_run
 
+    # 并行线程数（仅对实际调用 API 的任务生效；默认 1，过大可能打满 vLLM）。
     workers = max(1, args.workers)
     if args.fail_fast and workers > 1:
         print(
@@ -550,14 +682,14 @@ def main() -> None:
         )
         workers = 1
 
-    log_items: List[Dict[str, Any]] = []
-    to_process: List[Tuple[Path, Path]] = []
+    log_items: List[Dict[str, Any]] = [] # 任务日志项列表
+    to_process: List[Tuple[Path, Path]] = [] # 待处理任务列表
 
-    for text_input_path in files:
+    for text_input_path in files: # 遍历文本 LLM 输入文件
         if single_explicit_output is not None:
             raw_path = single_explicit_output
         else:
-            raw_path = derive_raw_output_path(text_input_path, output_dir)
+            raw_path = derive_raw_output_path(text_input_path, output_dir) # 生成原始输出路径
 
         if (
             skip_existing
@@ -578,20 +710,20 @@ def main() -> None:
 
         to_process.append((text_input_path, raw_path))
 
-    started_at = datetime.now().isoformat(timespec="seconds")
-    t_wall0 = time.perf_counter()
-    run_results: List[Dict[str, Any]] = []
-    quiet = workers > 1
+    started_at = datetime.now().isoformat(timespec="seconds") # 开始时间
+    t_wall0 = time.perf_counter() # 开始时间
+    run_results: List[Dict[str, Any]] = [] # 运行结果列表
+    quiet = workers > 1 # 是否静默模式
 
     if to_process:
-        if workers == 1:
+        if workers == 1: # 单线程模式
             bar = tqdm(
                 to_process,
                 desc="提取",
                 unit="篇",
                 disable=args.no_progress,
             )
-            for text_input_path, raw_path in bar:
+            for text_input_path, raw_path in bar: # 遍历待处理任务
                 rec = _run_one_extraction_job(
                     text_llm_input_path=text_input_path,
                     raw_output_path=raw_path,
@@ -658,10 +790,30 @@ def main() -> None:
         for it in all_items
         if it.get("processing_seconds") is not None
     )
+    uagg = _aggregate_usage_for_summary(all_items)
+    usage_parts: List[str] = []
+    if uagg:
+        if "prompt_tokens_sum" in uagg:
+            usage_parts.append(f"prompt_tokens 合计={uagg['prompt_tokens_sum']}")
+        if "completion_tokens_sum" in uagg:
+            usage_parts.append(f"completion_tokens 合计={uagg['completion_tokens_sum']}")
+        if "total_tokens_sum" in uagg:
+            usage_parts.append(f"total_tokens 合计={uagg['total_tokens_sum']}")
+        if "completion_tokens_reasoning_sum" in uagg:
+            usage_parts.append(
+                f"completion 中 reasoning_tokens 合计={uagg['completion_tokens_reasoning_sum']}"
+            )
+        if "completion_tokens_response_sum" in uagg:
+            usage_parts.append(
+                f"completion 中应答 tokens 合计={uagg['completion_tokens_response_sum']}"
+            )
+    usage_line = f" | {' | '.join(usage_parts)}" if usage_parts else ""
+
     print(
         f"整批墙钟: {wall_seconds:.2f}s | 各篇处理时间合计: {per_paper_sum:.2f}s "
         f"（单篇见任务日志 items[].processing_seconds）| "
-        f"成功 {summary['ok']} | 跳过 {summary['skipped']} | 失败 {summary['failed']}",
+        f"成功 {summary['ok']} | 跳过 {summary['skipped']} | 失败 {summary['failed']}"
+        f"{usage_line}",
         file=sys.stderr,
     )
 

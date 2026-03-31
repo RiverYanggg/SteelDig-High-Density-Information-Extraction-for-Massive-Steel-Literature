@@ -1,0 +1,1130 @@
+{
+  "papers": [
+    {
+      "paper_id": "paper_001",
+      "doi": null,
+      "title": "Tensile deformation behavior analysis of low density Fe–18Mn–10Al– xC steels",
+      "authors": [
+        "Hua Ding",
+        "Dong Han",
+        "Jun Zhang",
+        "Zhihui Cai",
+        "Zhiqiang Wu",
+        "Minghui Cai"
+      ],
+      "publication_year": "2015",
+      "journal": "Elsevier",
+      "keywords": [
+        "Fe–Mn–Al–C steels",
+        "Strain hardening",
+        "Ordered phase",
+        "C concentration",
+        "Crussard–Jaoul (C–J) analysis"
+      ],
+      "research_type": "experimental",
+      "paper_scope": "Investigation of microstructure differences and their influence on mechanical behaviors during plastic deformation of low density Fe–18Mn–10Al–xC steels with varying C contents."
+    }
+  ],
+  "alloys": [
+    {
+      "alloy_id": "alloy_05c",
+      "paper_id": "paper_001",
+      "alloy_name": "Fe–18Mn–10Al–0.5C steel",
+      "aliases": [],
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Mn",
+          "weight_percent": "18",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "10",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "0.5",
+          "atomic_percent": null
+        }
+      ],
+      "alloys_notes": "Low density steel, duplex ferritic–austenitic structure."
+    },
+    {
+      "alloy_id": "alloy_08c",
+      "paper_id": "paper_001",
+      "alloy_name": "Fe–18Mn–10Al–0.8C steel",
+      "aliases": [],
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Mn",
+          "weight_percent": "18",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "10",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "0.8",
+          "atomic_percent": null
+        }
+      ],
+      "alloys_notes": "Low density steel, duplex ferritic–austenitic structure with ordered phases (B2, DO3) and kappa carbides."
+    },
+    {
+      "alloy_id": "alloy_12c",
+      "paper_id": "paper_001",
+      "alloy_name": "Fe–18Mn–10Al–1.2C steel",
+      "aliases": [],
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Mn",
+          "weight_percent": "18",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "10",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "1.2",
+          "atomic_percent": null
+        }
+      ],
+      "alloys_notes": "Low density steel, fully austenitic microstructure with kappa carbides."
+    }
+  ],
+  "processes": [
+    {
+      "process_id": "proc_05c_01",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_05c",
+      "description": "Induction melting, forging, homogenization, hot rolling, annealing, cold rolling, annealing, water quenching.",
+      "processes_notes": "Common processing route for all three steels."
+    },
+    {
+      "process_id": "proc_08c_01",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_08c",
+      "description": "Induction melting, forging, homogenization, hot rolling, annealing, cold rolling, annealing, water quenching.",
+      "processes_notes": "Common processing route for all three steels."
+    },
+    {
+      "process_id": "proc_12c_01",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_12c",
+      "description": "Induction melting, forging, homogenization, hot rolling, annealing, cold rolling, annealing, water quenching.",
+      "processes_notes": "Common processing route for all three steels."
+    }
+  ],
+  "samples": [
+    {
+      "sample_id": "sample_05c",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_05c",
+      "process_id": "proc_05c_01"
+    },
+    {
+      "sample_id": "sample_08c",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_08c",
+      "process_id": "proc_08c_01"
+    },
+    {
+      "sample_id": "sample_12c",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_12c",
+      "process_id": "proc_12c_01"
+    }
+  ],
+  "processing_steps": [
+    {
+      "sample_id": "sample_05c",
+      "paper_id": "paper_001",
+      "sequence": "1",
+      "type": "melting",
+      "method": "induction melting",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "Under argon atmosphere."
+    },
+    {
+      "sample_id": "sample_05c",
+      "paper_id": "paper_001",
+      "sequence": "2",
+      "type": "thermomechanical_processing",
+      "method": "forging",
+      "temperature": "1200",
+      "unit": "C",
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_05c",
+      "paper_id": "paper_001",
+      "sequence": "3",
+      "type": "heat_treatment",
+      "method": "homogenization",
+      "temperature": "1200",
+      "unit": "C",
+      "duration": "3",
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "Same temperature as forging."
+    },
+    {
+      "sample_id": "sample_05c",
+      "paper_id": "paper_001",
+      "sequence": "4",
+      "type": "thermomechanical_processing",
+      "method": "hot rolling",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": "90",
+      "processing_steps_notes": "To thickness of 3.5 mm."
+    },
+    {
+      "sample_id": "sample_05c",
+      "paper_id": "paper_001",
+      "sequence": "5",
+      "type": "heat_treatment",
+      "method": "annealing",
+      "temperature": "1000",
+      "unit": "C",
+      "duration": "1",
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_05c",
+      "paper_id": "paper_001",
+      "sequence": "6",
+      "type": "mechanical_processing",
+      "method": "cold rolling",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "To thickness of 1 mm."
+    },
+    {
+      "sample_id": "sample_05c",
+      "paper_id": "paper_001",
+      "sequence": "7",
+      "type": "heat_treatment",
+      "method": "annealing",
+      "temperature": "1000",
+      "unit": "C",
+      "duration": "1",
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_05c",
+      "paper_id": "paper_001",
+      "sequence": "8",
+      "type": "heat_treatment",
+      "method": "water quenching",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": "water",
+      "reduction_ratio": null,
+      "processing_steps_notes": "To room temperature."
+    },
+    {
+      "sample_id": "sample_08c",
+      "paper_id": "paper_001",
+      "sequence": "1",
+      "type": "melting",
+      "method": "induction melting",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "Under argon atmosphere."
+    },
+    {
+      "sample_id": "sample_08c",
+      "paper_id": "paper_001",
+      "sequence": "2",
+      "type": "thermomechanical_processing",
+      "method": "forging",
+      "temperature": "1200",
+      "unit": "C",
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_08c",
+      "paper_id": "paper_001",
+      "sequence": "3",
+      "type": "heat_treatment",
+      "method": "homogenization",
+      "temperature": "1200",
+      "unit": "C",
+      "duration": "3",
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "Same temperature as forging."
+    },
+    {
+      "sample_id": "sample_08c",
+      "paper_id": "paper_001",
+      "sequence": "4",
+      "type": "thermomechanical_processing",
+      "method": "hot rolling",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": "90",
+      "processing_steps_notes": "To thickness of 3.5 mm."
+    },
+    {
+      "sample_id": "sample_08c",
+      "paper_id": "paper_001",
+      "sequence": "5",
+      "type": "heat_treatment",
+      "method": "annealing",
+      "temperature": "1000",
+      "unit": "C",
+      "duration": "1",
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_08c",
+      "paper_id": "paper_001",
+      "sequence": "6",
+      "type": "mechanical_processing",
+      "method": "cold rolling",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "To thickness of 1 mm."
+    },
+    {
+      "sample_id": "sample_08c",
+      "paper_id": "paper_001",
+      "sequence": "7",
+      "type": "heat_treatment",
+      "method": "annealing",
+      "temperature": "1000",
+      "unit": "C",
+      "duration": "1",
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_08c",
+      "paper_id": "paper_001",
+      "sequence": "8",
+      "type": "heat_treatment",
+      "method": "water quenching",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": "water",
+      "reduction_ratio": null,
+      "processing_steps_notes": "To room temperature."
+    },
+    {
+      "sample_id": "sample_12c",
+      "paper_id": "paper_001",
+      "sequence": "1",
+      "type": "melting",
+      "method": "induction melting",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "Under argon atmosphere."
+    },
+    {
+      "sample_id": "sample_12c",
+      "paper_id": "paper_001",
+      "sequence": "2",
+      "type": "thermomechanical_processing",
+      "method": "forging",
+      "temperature": "1200",
+      "unit": "C",
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_12c",
+      "paper_id": "paper_001",
+      "sequence": "3",
+      "type": "heat_treatment",
+      "method": "homogenization",
+      "temperature": "1200",
+      "unit": "C",
+      "duration": "3",
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "Same temperature as forging."
+    },
+    {
+      "sample_id": "sample_12c",
+      "paper_id": "paper_001",
+      "sequence": "4",
+      "type": "thermomechanical_processing",
+      "method": "hot rolling",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": "90",
+      "processing_steps_notes": "To thickness of 3.5 mm."
+    },
+    {
+      "sample_id": "sample_12c",
+      "paper_id": "paper_001",
+      "sequence": "5",
+      "type": "heat_treatment",
+      "method": "annealing",
+      "temperature": "1000",
+      "unit": "C",
+      "duration": "1",
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_12c",
+      "paper_id": "paper_001",
+      "sequence": "6",
+      "type": "mechanical_processing",
+      "method": "cold rolling",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "To thickness of 1 mm."
+    },
+    {
+      "sample_id": "sample_12c",
+      "paper_id": "paper_001",
+      "sequence": "7",
+      "type": "heat_treatment",
+      "method": "annealing",
+      "temperature": "1000",
+      "unit": "C",
+      "duration": "1",
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_12c",
+      "paper_id": "paper_001",
+      "sequence": "8",
+      "type": "heat_treatment",
+      "method": "water quenching",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": "water",
+      "reduction_ratio": null,
+      "processing_steps_notes": "To room temperature."
+    }
+  ],
+  "structures": [
+    {
+      "structure_id": "struct_05c",
+      "sample_id": "sample_05c",
+      "overall_structure": "Duplex ferritic–austenitic structure",
+      "number_of_phases": "2",
+      "microstructure_counts": null,
+      "microstructure_list": [
+        {
+          "uuid": "uuid_05c_01",
+          "related_sequence": null,
+          "phases_present": [
+            {
+              "phase_name": "Ferrite",
+              "crystal_structure": null,
+              "volume_fraction": null,
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "Austenite",
+              "crystal_structure": null,
+              "volume_fraction": "59.2",
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            }
+          ],
+          "defects": [
+            {
+              "type": "dislocation tangles",
+              "porosity": null,
+              "inclusions": [],
+              "dislocation_density": null,
+              "lattice_distortion": null
+            }
+          ],
+          "grain_structure": {
+            "average_grain_size": {
+              "value": null,
+              "unit": null
+            },
+            "grain_size_distribution": null,
+            "texture": null
+          },
+          "precipitates": []
+        }
+      ]
+    },
+    {
+      "structure_id": "struct_08c",
+      "sample_id": "sample_08c",
+      "overall_structure": "Duplex ferritic–austenitic structure with ordered phases",
+      "number_of_phases": "4",
+      "microstructure_counts": null,
+      "microstructure_list": [
+        {
+          "uuid": "uuid_08c_01",
+          "related_sequence": null,
+          "phases_present": [
+            {
+              "phase_name": "Ferrite",
+              "crystal_structure": null,
+              "volume_fraction": null,
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "Austenite",
+              "crystal_structure": null,
+              "volume_fraction": "84.8",
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "B2",
+              "crystal_structure": null,
+              "volume_fraction": null,
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "DO3",
+              "crystal_structure": null,
+              "volume_fraction": null,
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            }
+          ],
+          "defects": [
+            {
+              "type": "kappa carbides",
+              "porosity": null,
+              "inclusions": [],
+              "dislocation_density": null,
+              "lattice_distortion": null
+            }
+          ],
+          "grain_structure": {
+            "average_grain_size": {
+              "value": null,
+              "unit": null
+            },
+            "grain_size_distribution": null,
+            "texture": null
+          },
+          "precipitates": [
+            {
+              "precipitate_id": "precip_08c_01",
+              "type": "kappa carbide",
+              "size": {
+                "value": null,
+                "unit": null
+              },
+              "distribution": null,
+              "coherency": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "structure_id": "struct_12c",
+      "sample_id": "sample_12c",
+      "overall_structure": "Fully austenitic microstructure with kappa carbides",
+      "number_of_phases": "2",
+      "microstructure_counts": null,
+      "microstructure_list": [
+        {
+          "uuid": "uuid_12c_01",
+          "related_sequence": null,
+          "phases_present": [
+            {
+              "phase_name": "Austenite",
+              "crystal_structure": null,
+              "volume_fraction": null,
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "kappa carbides",
+              "crystal_structure": null,
+              "volume_fraction": null,
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            }
+          ],
+          "defects": [
+            {
+              "type": "annealing twins",
+              "porosity": null,
+              "inclusions": [],
+              "dislocation_density": null,
+              "lattice_distortion": null
+            }
+          ],
+          "grain_structure": {
+            "average_grain_size": {
+              "value": null,
+              "unit": null
+            },
+            "grain_size_distribution": null,
+            "texture": null
+          },
+          "precipitates": [
+            {
+              "precipitate_id": "precip_12c_01",
+              "type": "kappa carbide",
+              "size": {
+                "value": null,
+                "unit": null
+              },
+              "distribution": null,
+              "coherency": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_set_id": "interface_001",
+      "sample_id": "sample_05c",
+      "phases": [
+        {
+          "interface_id": "iface_05c_01",
+          "microstructure_uuid": "uuid_05c_01",
+          "phase_1_name": "Ferrite",
+          "phase_2_name": "Austenite",
+          "coherence": null
+        }
+      ],
+      "defect_interaction": [],
+      "interface_notes": [],
+      "phase_evolution": "Duplex structure maintained during deformation."
+    },
+    {
+      "interface_set_id": "interface_002",
+      "sample_id": "sample_08c",
+      "phases": [
+        {
+          "interface_id": "iface_08c_01",
+          "microstructure_uuid": "uuid_08c_01",
+          "phase_1_name": "Ferrite",
+          "phase_2_name": "Austenite",
+          "coherence": null
+        }
+      ],
+      "defect_interaction": [],
+      "interface_notes": [],
+      "phase_evolution": "Duplex structure maintained during deformation."
+    },
+    {
+      "interface_set_id": "interface_003",
+      "sample_id": "sample_12c",
+      "phases": [
+        {
+          "interface_id": "iface_12c_01",
+          "microstructure_uuid": "uuid_12c_01",
+          "phase_1_name": "Austenite",
+          "phase_2_name": "kappa carbides",
+          "coherence": null
+        }
+      ],
+      "defect_interaction": [],
+      "interface_notes": [],
+      "phase_evolution": "Fully austenitic matrix with dispersed kappa carbides."
+    }
+  ],
+  "properties": [
+    {
+      "property_set_id": "prop_05c",
+      "sample_id": "sample_05c",
+      "mechanical": {
+        "tensile_properties": {
+          "yield_strength": [],
+          "ultimate_tensile_strength": [],
+          "elongation": [],
+          "youngs_modulus": null,
+          "stress_strain_curves": null,
+          "stress_strain_distribution": [],
+          "strain_hardening_rate": []
+        },
+        "hardness": [],
+        "fracture_toughness": {
+          "value": null,
+          "unit": null
+        },
+        "fatigue_properties": {
+          "fatigue_limit": null,
+          "cycles_to_failure": null
+        },
+        "creep_properties": {
+          "steady_state_creep_rate": null,
+          "rupture_life": null
+        }
+      },
+      "physical": {
+        "density": {
+          "value": "6.92",
+          "unit": "g/cm3"
+        },
+        "thermal_properties": {
+          "thermal_conductivity": null,
+          "thermal_expansion_coefficient": null,
+          "specific_heat": null
+        },
+        "electrical_properties": {
+          "electrical_conductivity": null,
+          "resistivity": null
+        },
+        "magnetic_properties": {
+          "magnetic_susceptibility": null,
+          "curie_temperature": null
+        }
+      },
+      "chemical": {
+        "corrosion_resistance": {
+          "test_medium": null,
+          "corrosion_rate": null,
+          "passivation_behavior": null
+        },
+        "oxidation_resistance": {
+          "oxidation_rate_constant": null,
+          "protective_scale": null
+        }
+      },
+      "radiation_properties": {
+        "void_swelling": null,
+        "irradiation_hardening": null,
+        "helium_embrittlement": null
+      }
+    },
+    {
+      "property_set_id": "prop_08c",
+      "sample_id": "sample_08c",
+      "mechanical": {
+        "tensile_properties": {
+          "yield_strength": [],
+          "ultimate_tensile_strength": [
+            {
+              "direction": null,
+              "value": "979",
+              "unit": "MPa",
+              "others": {
+                "uncertainty": null
+              }
+            }
+          ],
+          "elongation": [
+            {
+              "direction": null,
+              "value": "38.4",
+              "unit": "%"
+            }
+          ],
+          "youngs_modulus": null,
+          "stress_strain_curves": null,
+          "stress_strain_distribution": [],
+          "strain_hardening_rate": []
+        },
+        "hardness": [],
+        "fracture_toughness": {
+          "value": null,
+          "unit": null
+        },
+        "fatigue_properties": {
+          "fatigue_limit": null,
+          "cycles_to_failure": null
+        },
+        "creep_properties": {
+          "steady_state_creep_rate": null,
+          "rupture_life": null
+        }
+      },
+      "physical": {
+        "density": {
+          "value": "6.88",
+          "unit": "g/cm3"
+        },
+        "thermal_properties": {
+          "thermal_conductivity": null,
+          "thermal_expansion_coefficient": null,
+          "specific_heat": null
+        },
+        "electrical_properties": {
+          "electrical_conductivity": null,
+          "resistivity": null
+        },
+        "magnetic_properties": {
+          "magnetic_susceptibility": null,
+          "curie_temperature": null
+        }
+      },
+      "chemical": {
+        "corrosion_resistance": {
+          "test_medium": null,
+          "corrosion_rate": null,
+          "passivation_behavior": null
+        },
+        "oxidation_resistance": {
+          "oxidation_rate_constant": null,
+          "protective_scale": null
+        }
+      },
+      "radiation_properties": {
+        "void_swelling": null,
+        "irradiation_hardening": null,
+        "helium_embrittlement": null
+      }
+    },
+    {
+      "property_set_id": "prop_12c",
+      "sample_id": "sample_12c",
+      "mechanical": {
+        "tensile_properties": {
+          "yield_strength": [],
+          "ultimate_tensile_strength": [
+            {
+              "direction": null,
+              "value": "946.7",
+              "unit": "MPa",
+              "others": {
+                "uncertainty": null
+              }
+            }
+          ],
+          "elongation": [
+            {
+              "direction": null,
+              "value": "56",
+              "unit": "%"
+            }
+          ],
+          "youngs_modulus": null,
+          "stress_strain_curves": null,
+          "stress_strain_distribution": [],
+          "strain_hardening_rate": []
+        },
+        "hardness": [],
+        "fracture_toughness": {
+          "value": null,
+          "unit": null
+        },
+        "fatigue_properties": {
+          "fatigue_limit": null,
+          "cycles_to_failure": null
+        },
+        "creep_properties": {
+          "steady_state_creep_rate": null,
+          "rupture_life": null
+        }
+      },
+      "physical": {
+        "density": {
+          "value": "6.78",
+          "unit": "g/cm3"
+        },
+        "thermal_properties": {
+          "thermal_conductivity": null,
+          "thermal_expansion_coefficient": null,
+          "specific_heat": null
+        },
+        "electrical_properties": {
+          "electrical_conductivity": null,
+          "resistivity": null
+        },
+        "magnetic_properties": {
+          "magnetic_susceptibility": null,
+          "curie_temperature": null
+        }
+      },
+      "chemical": {
+        "corrosion_resistance": {
+          "test_medium": null,
+          "corrosion_rate": null,
+          "passivation_behavior": null
+        },
+        "oxidation_resistance": {
+          "oxidation_rate_constant": null,
+          "protective_scale": null
+        }
+      },
+      "radiation_properties": {
+        "void_swelling": null,
+        "irradiation_hardening": null,
+        "helium_embrittlement": null
+      }
+    }
+  ],
+  "performance": [
+    {
+      "performance_id": "perf_05c",
+      "sample_id": "sample_05c",
+      "service_conditions": {
+        "operating_temperature": {
+          "min": null,
+          "max": null,
+          "unit": null
+        },
+        "stress_state": null,
+        "environment": null
+      },
+      "lifetime_prediction": {
+        "model_used": null,
+        "predicted_lifetime": null,
+        "confidence_interval": null
+      },
+      "comparative_performance": {
+        "benchmark_alloy": null,
+        "benchmark_process_id": null,
+        "benchmark_sample_id": null,
+        "improvement_percentage": null
+      }
+    },
+    {
+      "performance_id": "perf_08c",
+      "sample_id": "sample_08c",
+      "service_conditions": {
+        "operating_temperature": {
+          "min": null,
+          "max": null,
+          "unit": null
+        },
+        "stress_state": null,
+        "environment": null
+      },
+      "lifetime_prediction": {
+        "model_used": null,
+        "predicted_lifetime": null,
+        "confidence_interval": null
+      },
+      "comparative_performance": {
+        "benchmark_alloy": null,
+        "benchmark_process_id": null,
+        "benchmark_sample_id": null,
+        "improvement_percentage": null
+      }
+    },
+    {
+      "performance_id": "perf_12c",
+      "sample_id": "sample_12c",
+      "service_conditions": {
+        "operating_temperature": {
+          "min": null,
+          "max": null,
+          "unit": null
+        },
+        "stress_state": null,
+        "environment": null
+      },
+      "lifetime_prediction": {
+        "model_used": null,
+        "predicted_lifetime": null,
+        "confidence_interval": null
+      },
+      "comparative_performance": {
+        "benchmark_alloy": null,
+        "benchmark_process_id": null,
+        "benchmark_sample_id": null,
+        "improvement_percentage": null
+      }
+    }
+  ],
+  "characterization_methods": [
+    {
+      "characterization_id": "char_05c_01",
+      "sample_id": "sample_05c",
+      "microstructure_uuid": "uuid_05c_01",
+      "technique": "Optical microscopy",
+      "purpose": "Microstructure observation",
+      "key_findings": "Duplex ferritic–austenitic structure."
+    },
+    {
+      "characterization_id": "char_05c_02",
+      "sample_id": "sample_05c",
+      "microstructure_uuid": "uuid_05c_01",
+      "technique": "TEM",
+      "purpose": "Phase identification and defect analysis",
+      "key_findings": "No precipitates in austenite and ferrite phases."
+    },
+    {
+      "characterization_id": "char_05c_03",
+      "sample_id": "sample_05c",
+      "microstructure_uuid": null,
+      "technique": "Image analysis",
+      "purpose": "Volume fraction measurement",
+      "key_findings": "Austenite fraction ~59.2%."
+    },
+    {
+      "characterization_id": "char_05c_04",
+      "sample_id": "sample_05c",
+      "microstructure_uuid": null,
+      "technique": "Tensile testing",
+      "purpose": "Mechanical property evaluation",
+      "key_findings": "Strain hardening behavior analysis."
+    },
+    {
+      "characterization_id": "char_08c_01",
+      "sample_id": "sample_08c",
+      "microstructure_uuid": "uuid_08c_01",
+      "technique": "Optical microscopy",
+      "purpose": "Microstructure observation",
+      "key_findings": "Duplex ferritic–austenitic structure with ordered phases."
+    },
+    {
+      "characterization_id": "char_08c_02",
+      "sample_id": "sample_08c",
+      "microstructure_uuid": "uuid_08c_01",
+      "technique": "TEM",
+      "purpose": "Phase identification and defect analysis",
+      "key_findings": "B2 domains with fine DO3 particles in ferrite, kappa carbides in austenite."
+    },
+    {
+      "characterization_id": "char_08c_03",
+      "sample_id": "sample_08c",
+      "microstructure_uuid": null,
+      "technique": "Image analysis",
+      "purpose": "Volume fraction measurement",
+      "key_findings": "Austenite fraction ~84.8%."
+    },
+    {
+      "characterization_id": "char_08c_04",
+      "sample_id": "sample_08c",
+      "microstructure_uuid": null,
+      "technique": "Tensile testing",
+      "purpose": "Mechanical property evaluation",
+      "key_findings": "Highest tensile strength ~979 MPa."
+    },
+    {
+      "characterization_id": "char_12c_01",
+      "sample_id": "sample_12c",
+      "microstructure_uuid": "uuid_12c_01",
+      "technique": "Optical microscopy",
+      "purpose": "Microstructure observation",
+      "key_findings": "Fully austenitic microstructure with annealing twins."
+    },
+    {
+      "characterization_id": "char_12c_02",
+      "sample_id": "sample_12c",
+      "microstructure_uuid": "uuid_12c_01",
+      "technique": "TEM",
+      "purpose": "Phase identification and defect analysis",
+      "key_findings": "Kappa carbides in austenite matrix."
+    },
+    {
+      "characterization_id": "char_12c_03",
+      "sample_id": "sample_12c",
+      "microstructure_uuid": null,
+      "technique": "Image analysis",
+      "purpose": "Volume fraction measurement",
+      "key_findings": "Fully austenitic."
+    },
+    {
+      "characterization_id": "char_12c_04",
+      "sample_id": "sample_12c",
+      "microstructure_uuid": null,
+      "technique": "Tensile testing",
+      "purpose": "Mechanical property evaluation",
+      "key_findings": "Superior combination of strength and ductility (UTS 946.7 MPa, Elongation 56%)."
+    }
+  ],
+  "computational_details": [
+    {
+      "computation_id": "comp_001",
+      "sample_id": null,
+      "simulation_method": null,
+      "software_used": null,
+      "potential_model": null,
+      "validation_against_experiment": null,
+      "analytical_model": [
+        {
+          "model_name": "SFE calculation model",
+          "equation_role": "Calculate stacking fault energy of austenite",
+          "parameters": null,
+          "model_note": "Used previously to determine SFE values."
+        }
+      ]
+    }
+  ],
+  "unmapped_findings": [
+    "SFE values calculated using a model: 0.5C steel 73.4 mJ/m2, 0.8C steel 77.9 mJ/m2, 1.2C steel 84.5 mJ/m2.",
+    "Strain hardening behavior: 0.5C and 0.8C steels exhibit two-stage strain hardening, 1.2C steel exhibits three-stage strain hardening.",
+    "Specific strength of 0.8C steel is 142.3 MPa cm3/g."
+  ]
+}
