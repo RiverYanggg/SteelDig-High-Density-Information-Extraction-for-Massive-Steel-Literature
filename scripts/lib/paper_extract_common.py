@@ -34,7 +34,7 @@ DEFAULT_TEMPERATURE = 0.3
 DEFAULT_MAX_TOKENS = 65536
 
 # system 消息里 Schema JSON 与规则正文之间的衔接（纯文本脚本仅换行；多模态多一段说明）
-SCHEMA_GAP_TEXT_ONLY = "\n\n"
+SCHEMA_GAP_TEXT_ONLY = "\n\n 具体抽取规则见下方 Schema JSON。\n\n"
 SCHEMA_PREAMBLE_MULTIMODAL = (
     "\n\n【JSON Schema（已由程序去除注释，键与嵌套结构必须与输出一致；"
     "可增键但不可擅自改名已有键）】\n"

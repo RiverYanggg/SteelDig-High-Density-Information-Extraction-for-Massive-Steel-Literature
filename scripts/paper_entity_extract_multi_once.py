@@ -81,6 +81,7 @@ from lib.multimodal_extract_payload import (  # noqa: E402
 )
 from lib.paper_extract_common import (  # noqa: E402
     ENV_OPENAI_MAX_TOKENS,
+    ENV_OPENAI_MODEL,
     SCHEMA_PREAMBLE_MULTIMODAL,
     DEFAULT_MAX_TOKENS,
     DEFAULT_TEMPERATURE,
@@ -425,8 +426,15 @@ def main() -> None:
         schema_intro_before_json=SCHEMA_PREAMBLE_MULTIMODAL,
     )
 
-    client = openai_client()
-    model_id = resolve_chat_model_id(client, args.model)
+    if args.dry_run:
+        model_id = (
+            (args.model or "").strip()
+            or (os.environ.get(ENV_OPENAI_MODEL) or "").strip()
+            or "dry-run"
+        )
+    else:
+        client = openai_client()
+        model_id = resolve_chat_model_id(client, args.model)
     print(f"使用模型: {model_id}", file=sys.stderr)
 
     started_at = datetime.now().isoformat(timespec="seconds")

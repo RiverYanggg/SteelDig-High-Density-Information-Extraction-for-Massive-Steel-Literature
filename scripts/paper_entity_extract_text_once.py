@@ -81,6 +81,7 @@ except ImportError as e:
 
 from lib.paper_extract_common import (  # noqa: E402
     ENV_OPENAI_MAX_TOKENS,
+    ENV_OPENAI_MODEL,
     SCHEMA_GAP_TEXT_ONLY,
     DEFAULT_MAX_TOKENS,
     DEFAULT_TEMPERATURE,
@@ -145,7 +146,7 @@ def derive_raw_output_path(text_llm_input_path: Path, output_dir: Path) -> Path:
         out_name = f"{stem}_entities_text_only.raw.txt"
     else:
         out_name = f"{text_llm_input_path.stem}_entities_text_only.raw.txt"
-    return output_dir.resolve() / out_name
+    return output_dir.resolve() / out_name # 构建原始输出路径，“/”表示路径分隔符
 
 
 def run_extraction(
@@ -166,18 +167,20 @@ def run_extraction(
     paper_text = load_paper_text_from_text_llm_input(text_llm_input_path)
 
     user_tail = (
-        "【任务】上文按阅读顺序给出了论文全文（含图注/表注/公式文本；未提供插图像素）。"
+        "【任务】上文按阅读顺序给出了论文全文（未提供插图）。"
         "请仅依据文本与标注信息抽取结构化实体。\n"
         "【输出】仅输出一个合法 JSON 对象，不要 Markdown 围栏、不要解释性文字；"
         "严格遵守系统提示中的类型约束（禁止 number/boolean 叶子类型）。"
     )
 
     user_message = (
-        "【论文纯文本内容 — 按顺序阅读】\n\n"
+        "【论文纯文本内容】\n\n"
         + paper_text
         + "\n\n"
         + user_tail
     )
+
+    # print("================== user_message: ==================", user_message)
 
     if dry_run:
         print(
@@ -231,7 +234,7 @@ def run_extraction(
         if not quiet:
             print(f"已写入原始模型输出: {raw_output_path}")
 
-    return raw_reply, meta if meta else None
+    return raw_reply, meta if meta else None # 返回原始回复和用量元数据
 
 
 def _task_record(
@@ -273,7 +276,7 @@ def _run_one_extraction_job(
     temperature: float,
     max_tokens: int,
     quiet: bool,
-) -> Dict[str, Any]:
+) -> Dict[str, Any]: # 运行单个任务，返回任务记录，任务记录包含任务的文本输入路径、原始输出路径、状态、处理时间、错误信息、用量元数据；原始回复已经写入原始输出路径
     t0 = time.perf_counter()
     try:
         _raw, usage_meta = run_extraction(
@@ -294,7 +297,7 @@ def _run_one_extraction_job(
             processing_seconds=elapsed,
             error=None,
             usage_meta=usage_meta,
-        )
+        ) # 任务成功，返回任务记录，任务记录包含任务的文本输入路径、原始输出路径、状态、处理时间、错误信息、用量元数据
     except Exception as e:
         elapsed = time.perf_counter() - t0
         with stderr_exc_lock:
@@ -420,8 +423,16 @@ def main() -> None:
         schema_intro_before_json=SCHEMA_GAP_TEXT_ONLY,
     )
 
-    client = openai_client()
-    model_id = resolve_chat_model_id(client, args.model)
+    # dry-run 不调用 API：勿请求 /v1/models（本地未起 vLLM 时否则会 SystemExit）
+    if args.dry_run:
+        model_id = (
+            (args.model or "").strip()
+            or (os.environ.get(ENV_OPENAI_MODEL) or "").strip()
+            or "dry-run"
+        )
+    else:
+        client = openai_client()
+        model_id = resolve_chat_model_id(client, args.model)
     print(f"使用模型: {model_id}", file=sys.stderr)
 
     if args.task_log is None:
@@ -455,13 +466,13 @@ def main() -> None:
         workers = 1
 
     log_items: List[Dict[str, Any]] = []
-    to_process: List[Tuple[Path, Path]] = []
+    to_process: List[Tuple[Path, Path]] = [] # 待处理的任务列表，每个任务包含文本输入路径和原始输出路径
 
     for text_input_path in files:
         if single_explicit_output is not None:
             raw_path = single_explicit_output
         else:
-            raw_path = derive_raw_output_path(text_input_path, output_dir)
+            raw_path = derive_raw_output_path(text_input_path, output_dir) # 构建原始输出路径
 
         if (
             skip_existing
@@ -500,7 +511,7 @@ def main() -> None:
     run_results: List[Dict[str, Any]] = []
     quiet = workers > 1
 
-    if to_process:
+    if to_process: # 如果存在待处理的任务
         if workers == 1:
             bar = tqdm(
                 to_process,
@@ -509,7 +520,7 @@ def main() -> None:
                 disable=args.no_progress,
             )
             for text_input_path, raw_path in bar:
-                rec = _run_one_extraction_job(
+                rec = _run_one_extraction_job( # 运行单个任务
                     text_llm_input_path=text_input_path,
                     raw_output_path=raw_path,
                     system_content=system_content,
@@ -611,7 +622,7 @@ def main() -> None:
         for it in all_items
         if it.get("processing_seconds") is not None
     )
-    uagg = aggregate_usage_for_summary(all_items)
+    uagg = aggregate_usage_for_summary(all_items) # 聚合用量元数据
     usage_parts: List[str] = []
     if uagg:
         if "prompt_tokens_sum" in uagg:
