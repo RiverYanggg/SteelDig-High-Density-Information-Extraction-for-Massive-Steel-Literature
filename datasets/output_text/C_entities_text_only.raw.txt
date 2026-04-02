@@ -1,106 +1,173 @@
-The user wants me to extract structured information from the provided text of a research paper about "Microstructure and tensile behavior of Fe-8Mn-6Al-0.2C low density steel".
-I need to output a single valid JSON object following the specific schema provided in the prompt.
-The schema requires specific fields like `papers`, `alloys`, `processes`, `samples`, `processing_steps`, `structures`, `interfaces`, `properties`, `performance`, `characterization_methods`, `computational_details`, and `unmapped_findings`.
-All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` types are allowed. Numbers must be strings (e.g., "846", "32").
+The user wants me to extract structured information from the provided text of a scientific paper about "Fe-8Mn-6Al-0.2C low density steel".
+I need to output a single valid JSON object following a specific schema provided in the prompt.
+The schema includes keys like `papers`, `alloys`, `processes`, `samples`, `processing_steps`, `structures`, `interfaces`, `properties`, `performance`, `characterization_methods`, `computational_details`, and `unmapped_findings`.
+I must strictly follow type constraints: no numbers or booleans as leaf values; all numbers must be strings.
+I must not output any markdown, explanations, or text outside the JSON object.
 
 **Plan:**
-1.  **Paper Info**: Extract title, authors, year (not explicitly stated, infer from context or leave null), journal (not explicitly stated, leave null), research type (experimental).
-2.  **Alloys**: Identify the main alloy system (Fe-8Mn-6Al-0.2C). Extract nominal composition.
-3.  **Processes**: Identify the heat treatment processes (Solution treatment at different temperatures: 700, 800, 900, 1000 C).
-4.  **Samples**: Create sample IDs for each condition (H70, H80, H90, H100). Link them to alloy and process.
-5.  **Processing Steps**: Detail the casting, hot forging, homogenization, hot rolling, quenching, and solution treatment steps.
-6.  **Structures**: Describe microstructures for each sample (ferrite, austenite, martensite, carbides).
-7.  **Interfaces**: Describe phase boundaries (ferrite/austenite, etc.).
-8.  **Properties**: Extract mechanical properties (UTS, YS, Elongation, Hardness, Density) for each sample.
-9.  **Performance**: Summarize the best performance (H90).
-10. **Characterization Methods**: List SEM, TEM, EBSD, XRD, EDS, etc.
-11. **Unmapped Findings**: Note any info that doesn't fit well or is qualitative.
+1.  **Parse the Paper Info**: Extract title, authors, journal (implied or missing), year (implied or missing), keywords, research type (experimental), scope.
+2.  **Parse Alloys**: Identify the main alloy system (Fe-8Mn-6Al-0.2C). Extract composition from Table 1 description (though Table 1 content isn't fully explicit in text, the title and abstract give nominal composition).
+3.  **Parse Processes**: Identify the heat treatment conditions (Solution treated at 700, 800, 900, 1000 C for 1h, water quenched). Hot rolling parameters are also mentioned.
+4.  **Parse Samples**: Create sample IDs for each condition (H70, H80, H90, H100). Link them to alloy and process.
+5.  **Parse Processing Steps**: Detail the hot rolling, homogenization, solution treatment, quenching for each sample.
+6.  **Parse Structures**: Describe microstructures (ferrite, austenite, martensite, carbides) for each sample at different states (as-rolled, solution treated).
+7.  **Parse Properties**: Extract tensile properties (UTS, YS, Elongation) from Table 3 and text. Density is also mentioned.
+8.  **Parse Characterization Methods**: SEM, TEM, EBSD, XRD, EDS.
+9.  **Parse Interfaces/Defects**: Mention of grain boundaries (small angle), dislocations.
+10. **Parse Performance**: Mechanical performance comparison.
+11. **Format**: Ensure all numbers are strings. Ensure JSON validity.
 
-**Constraint Checklist & Confidence Score:**
-1. Leaf values: `null`, `string`, `array` only? Yes.
-2. No `number` or `boolean`? Yes.
-3. JSON valid? Yes.
-4. Schema keys match? Yes.
-5. `unmapped_findings` used for qualitative info? Yes.
+**Details Extraction:**
+*   **Title**: Microstructure and tensile behavior of Fe-8Mn-6Al-0.2C low density steel
+*   **Authors**: Xuan Li, Renbo Song, Naipeng Zhou, Jiajia Li
+*   **Institution**: University of Science and Technology Beijing
+*   **Alloy**: Fe-8Mn-6Al-0.2C (Low density steel). Composition: Fe balance, Mn ~8%, Al ~6%, C ~0.2%.
+*   **Processes**:
+    *   Casting (Vacuum induction furnace, 1150 C, 2h).
+    *   Hot forging (35x70x100 mm).
+    *   Homogenization (1200 C, 2h).
+    *   Hot rolling (6 passes, 1150 C start, 850 C finish, water quenched to 550 C, air cooled).
+    *   Solution Treatment: 700, 800, 900, 1000 C for 1h, water quenched.
+    *   Samples: H70, H80, H90, H100.
+*   **Properties (H90 focus in abstract/results)**:
+    *   UTS: 846 MPa (Abstract) / 846.4 MPa (Results).
+    *   Elongation: 32% (Abstract) / 32% (Results).
+    *   YS: 473.6 MPa (Results).
+    *   Density: 6.95 g/cm3.
+    *   H70: UTS 778.3 MPa, TE 23%.
+    *   H80: TE increased, UTS decreased.
+    *   H100: UTS 860.3 MPa, TE 15%.
+*   **Microstructure**:
+    *   H70: Ferrite + Martensite + M5C2 carbide (12.2% retained austenite mentioned in text but later says decomposed to martensite and carbide, volume fraction of 12.2% being retained... wait, text says "nearly all the original austenite phase decomposed to martensite and spheroidal M5C2-carbide, with a volume fraction of 12.2% being retained." This likely refers to carbide or retained austenite? Context suggests carbide volume fraction. Later Table 3 lists austenite volume fractions. H70 austenite fraction is likely low.
+    *   H80: Martensite reverse-transformed to austenite. Strip ferrite. Austenite volume fraction 20.7% (Discussion).
+    *   H90: Ferrite + Austenite (33.8% austenite).
+    *   H100: Martensite appeared again. Austenite 12.9%.
+*   **Characterization**: SEM, TEM, EBSD, XRD, EDS, Densitometry.
+*   **Work Hardening**: Three stages. S2 linked to TRIP.
+*   **TRIP Effect**: Austenite to Martensite transformation during tensile.
 
-**Mental Sandbox:**
-- *Paper*: Title, Authors, Year (Abstract doesn't give year, Introduction doesn't give year, leave null). Research Type: `experimental`.
-- *Alloy*: `alloy_fe8mn6al02c`. Composition: Fe, Mn, Al, C.
-- *Process*: Solution treatment is the key variable. H70, H80, H90, H100.
-- *Samples*: `sample_fe8mn_70`, `sample_fe8mn_80`, etc.
-- *Properties*: Table 3 data. H90: UTS 846.4 MPa, TE 32%, YS 473.6 MPa. Density 6.95 g/cm3.
-- *Structure*: Ferrite + Austenite (duplex). Austenite fraction varies.
-- *Characterization*: SEM, TEM, EBSD, XRD, EDS.
+**Constraint Checklist:**
+*   JSON only.
+*   No markdown code blocks (```json).
+*   No numbers/booleans as leaf values (use strings).
+*   Schema keys match.
+*   `papers` array.
+*   `alloys` array.
+*   `processes` array.
+*   `samples` array (bridge).
+*   `processing_steps` array.
+*   `structures` array.
+*   `properties` array.
+*   `characterization_methods` array.
+*   `unmapped_findings` array.
 
-**Drafting JSON:**
-- `papers`: 1 entry.
-- `alloys`: 1 entry (Fe-8Mn-6Al-0.2C).
-- `processes`: 4 entries (H70, H80, H90, H100 solution treatments).
-- `samples`: 4 entries.
-- `processing_steps`: Need to capture the whole workflow (casting -> rolling -> quenching -> solution).
-- `structures`: Microstructure details per sample.
-- `properties`: Mechanical properties per sample.
-- `characterization_methods`: List of techniques used.
+**Drafting JSON content:**
+*   `papers`: Title, Authors, Year (not explicitly in text, likely 2016-2020 based on citation style, but I should leave null or infer if clear. Text doesn't have year. Leave null). Research type: experimental.
+*   `alloys`: Fe-8Mn-6Al-0.2C.
+*   `processes`: Solution treatment (700-1000C). Hot rolling.
+*   `samples`: H70, H80, H90, H100.
+*   `processing_steps`: Detailed steps for each sample.
+*   `structures`: Microstructure descriptions for each sample.
+*   `properties`: Tensile data.
+*   `characterization_methods`: SEM, TEM, etc.
 
-**Specific Data Extraction:**
-- Alloy: Fe-8Mn-6Al-0.2C.
-- Composition: Fe (balance), Mn 8%, Al 6%, C 0.2%.
-- Processes:
-    - Casting: 1150 C, 2h.
-    - Hot forging: 35x70x100 mm.
-    - Homogenization: 1200 C, 2h.
-    - Hot rolling: 1150 C start, 850 C finish, 6 passes, to 3mm.
-    - Quenching: Water quench to 550 C, air cool.
-    - Solution: 700-1000 C, 1h, water quench.
-- Samples: H70, H80, H90, H100.
-- Properties (Table 3):
-    - H70: UTS 778.3 MPa, TE 23%, YS 642.1 MPa.
-    - H80: UTS (decreased), TE increased. YS 587.8 MPa.
-    - H90: UTS 846.4 MPa, TE 32%, YS 473.6 MPa.
-    - H100: UTS 860.3 MPa, TE 15%, YS 398.3 MPa.
-- Density: 6.95 g/cm3.
-- Austenite fractions: H70 (12.2% retained martensite mentioned, but austenite fraction calc in Table 3), H90 (33.8% austenite).
-- Work hardening: 3 stages. Stage 2 linked to TRIP.
-- Small angle grain boundaries: >51% at true strain 0.27.
+**Refining Numbers:**
+*   846 MPa -> "846 MPa"
+*   32% -> "32%"
+*   900 C -> "900 C"
+*   1 h -> "1 h"
+*   6.95 g/cm3 -> "6.95 g/cm3"
 
-**Refining JSON Structure:**
-- Ensure all numbers are strings.
-- Ensure arrays are used for lists.
-- Ensure `unmapped_findings` captures things like specific phase transformation mechanisms not fully quantified or qualitative descriptions.
+**Unmapped Findings:**
+*   Table 1 content is referenced but not fully detailed in text (only title says "Chemical composition"). I will note this or extract what's in title.
+*   Figure captions describe images not visible.
+
+Let's assemble the JSON.
 
 **Self-Correction on Schema:**
-- `papers` array.
-- `alloys` array.
-- `processes` array.
-- `samples` array.
-- `processing_steps` array.
-- `structures` array.
-- `interfaces` array.
-- `properties` array.
-- `performance` array.
-- `characterization_methods` array.
-- `computational_details` array (empty or null).
-- `unmapped_findings` array.
+*   `papers` needs `paper_id`. I will generate a placeholder like "paper_001".
+*   `alloys` needs `alloy_id`. "alloy_fe8mn6al02c".
+*   `samples` needs `sample_id`. "sample_h70", "sample_h80", etc.
+*   `processing_steps` needs `sequence`. "step_1", "step_2".
+*   `structures` needs `uuid`. I will generate simple strings like "uuid_struct_1".
+*   `properties` needs `property_set_id`. "prop_h90".
+*   Ensure all numeric values are strings.
 
-**Checking Number Constraints:**
-- "846.4" -> "846.4"
-- "32" -> "32"
-- "6.95" -> "6.95"
-- "0.27" -> "0.27"
-- "1150" -> "1150"
-- "2h" -> "2h"
-- "1h" -> "1h"
+**Specific Data Points:**
+*   H90 UTS: "846.4 MPa" (Results text) vs "846 MPa" (Abstract). I will use the more precise one from Results or Abstract if consistent. Abstract says 846, Results Table 3 says 846.4. I'll use "846.4 MPa".
+*   H90 YS: "473.6 MPa".
+*   H90 Elongation: "32%".
+*   Density: "6.95 g/cm3".
+*   Austenite fraction H90: "33.8%".
+*   Small angle grain boundaries at 0.27 strain: "51%".
 
-**Checking Boolean Constraints:**
-- No "true"/"false" unless representing a boolean concept explicitly requested (none in schema usually, but `coherence` might be boolean-like, schema says `coherence` is null/string. I will use string "yes"/"no" or null).
+**Process IDs:**
+*   `proc_casting`
+*   `proc_homogenization`
+*   `proc_rolling`
+*   `proc_solution_700`
+*   `proc_solution_800`
+*   `proc_solution_900`
+*   `proc_solution_1000`
 
-**Let's build the JSON.**
+**Sample IDs:**
+*   `sample_h70`
+*   `sample_h80`
+*   `sample_h90`
+*   `sample_h100`
+
+**Structure IDs:**
+*   `struct_h70`
+*   `struct_h80`
+*   `struct_h90`
+*   `struct_h100`
+
+**Property Sets:**
+*   `prop_h70`
+*   `prop_h80`
+*   `prop_h90`
+*   `prop_h100`
+
+**Characterization:**
+*   `char_sem`
+*   `char_tem`
+*   `char_ebsd`
+*   `char_xrd`
+*   `char_eds`
+
+Let's construct the JSON carefully.
+
+**Note on `paper_id`**: The prompt says `paper_id` aligns with `papers`. I'll use "paper_001".
+**Note on `alloy_id`**: "alloy_fe8mn6al02c".
+**Note on `process_id`**: "proc_sol_700", etc.
+**Note on `sample_id`**: "sample_h70", etc.
+**Note on `processing_steps`**: Bind to `sample_id`.
+**Note on `structures`**: Bind to `sample_id`.
+**Note on `properties`**: Bind to `sample_id`.
+**Note on `characterization_methods`**: Bind to `sample_id`.
+
+**Constraint Check:**
+*   No markdown.
+*   No numbers/booleans.
+*   Valid JSON.
+
+**One detail**: The text mentions "Table 1 Chemical composition...". It doesn't list the exact percentages in the text body other than the title "Fe-8Mn-6Al-0.2C". I will use the title composition for `nominal_composition`.
+**Another detail**: "Table 3 Tensile properties...". I will extract values from text descriptions of Table 3.
+
+**Final check on types**:
+*   `value`: "846.4" (string)
+*   `unit`: "MPa" (string)
+*   `duration`: "1 h" (string)
+*   `temperature`: "900 C" (string)
+*   `yield_strength`: array of objects with string values.
+
+Let's write the JSON.
 </think>
 
 {
   "papers": [
     {
-      "paper_id": "paper_fe8mn6al02c_01",
+      "paper_id": "paper_001",
       "doi": null,
       "title": "Microstructure and tensile behavior of Fe-8Mn-6Al-0.2C low density steel",
       "authors": [
@@ -118,13 +185,13 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
         "TRIP effect"
       ],
       "research_type": "experimental",
-      "paper_scope": "Investigation of microstructure evolution and tensile behavior of Fe-8Mn-6Al-0.2C low density steel under different solution treatment temperatures, focusing on TRIP effect and work hardening mechanisms."
+      "paper_scope": "Investigation of microstructure and tensile behavior of Fe-8Mn-6Al-0.2C low density steel, focusing on TRIP effect and work hardening mechanisms under different solution treatment conditions."
     }
   ],
   "alloys": [
     {
       "alloy_id": "alloy_fe8mn6al02c",
-      "paper_id": "paper_fe8mn6al02c_01",
+      "paper_id": "paper_001",
       "alloy_name": "Fe-8Mn-6Al-0.2C low density steel",
       "aliases": [
         "Fe-Mn-Al-C steel",
@@ -158,159 +225,193 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
           "atomic_percent": null
         }
       ],
-      "alloys_notes": "Medium Mn (5-12%) and medium Al (1-8%) system. Density about 11% lower than pure iron."
+      "alloys_notes": "Density is about 6.95 g/cm3, 11% lower than pure iron."
     }
   ],
   "processes": [
     {
-      "process_id": "proc_fe8mn_01",
-      "paper_id": "paper_fe8mn6al02c_01",
+      "process_id": "proc_casting",
+      "paper_id": "paper_001",
       "alloy_id": "alloy_fe8mn6al02c",
-      "description": "Solution treatment at 700°C for 1h followed by water quenching (H70).",
+      "description": "Casting using vacuum induction furnace at 1150 C for 2 h, followed by hot forging.",
+      "processes_notes": null
+    },
+    {
+      "process_id": "proc_homogenization",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_fe8mn6al02c",
+      "description": "Homogenization at 1200 C for 2 h.",
+      "processes_notes": null
+    },
+    {
+      "process_id": "proc_rolling",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_fe8mn6al02c",
+      "description": "Hot rolled to 3 mm thickness steel sheet through 6 passes, start rolling temperature 1150 C, finish rolling temperature 850 C, water quenched to 550 C, followed by air cooling.",
+      "processes_notes": null
+    },
+    {
+      "process_id": "proc_sol_700",
+      "paper_id": "paper_001",
+      "alloy_id": "alloy_fe8mn6al02c",
+      "description": "Solution treatment at 700 C for 1 h, followed by water quenching.",
       "processes_notes": "Specimen referred to as H70."
     },
     {
-      "process_id": "proc_fe8mn_02",
-      "paper_id": "paper_fe8mn6al02c_01",
+      "process_id": "proc_sol_800",
+      "paper_id": "paper_001",
       "alloy_id": "alloy_fe8mn6al02c",
-      "description": "Solution treatment at 800°C for 1h followed by water quenching (H80).",
+      "description": "Solution treatment at 800 C for 1 h, followed by water quenching.",
       "processes_notes": "Specimen referred to as H80."
     },
     {
-      "process_id": "proc_fe8mn_03",
-      "paper_id": "paper_fe8mn6al02c_01",
+      "process_id": "proc_sol_900",
+      "paper_id": "paper_001",
       "alloy_id": "alloy_fe8mn6al02c",
-      "description": "Solution treatment at 900°C for 1h followed by water quenching (H90).",
-      "processes_notes": "Specimen referred to as H90. Best combination of mechanical properties."
+      "description": "Solution treatment at 900 C for 1 h, followed by water quenching.",
+      "processes_notes": "Specimen referred to as H90."
     },
     {
-      "process_id": "proc_fe8mn_04",
-      "paper_id": "paper_fe8mn6al02c_01",
+      "process_id": "proc_sol_1000",
+      "paper_id": "paper_001",
       "alloy_id": "alloy_fe8mn6al02c",
-      "description": "Solution treatment at 1000°C for 1h followed by water quenching (H100).",
+      "description": "Solution treatment at 1000 C for 1 h, followed by water quenching.",
       "processes_notes": "Specimen referred to as H100."
     }
   ],
   "samples": [
     {
-      "sample_id": "sample_fe8mn_70",
-      "paper_id": "paper_fe8mn6al02c_01",
+      "sample_id": "sample_h70",
+      "paper_id": "paper_001",
       "alloy_id": "alloy_fe8mn6al02c",
-      "process_id": "proc_fe8mn_01"
+      "process_id": "proc_sol_700"
     },
     {
-      "sample_id": "sample_fe8mn_80",
-      "paper_id": "paper_fe8mn6al02c_01",
+      "sample_id": "sample_h80",
+      "paper_id": "paper_001",
       "alloy_id": "alloy_fe8mn6al02c",
-      "process_id": "proc_fe8mn_02"
+      "process_id": "proc_sol_800"
     },
     {
-      "sample_id": "sample_fe8mn_90",
-      "paper_id": "paper_fe8mn6al02c_01",
+      "sample_id": "sample_h90",
+      "paper_id": "paper_001",
       "alloy_id": "alloy_fe8mn6al02c",
-      "process_id": "proc_fe8mn_03"
+      "process_id": "proc_sol_900"
     },
     {
-      "sample_id": "sample_fe8mn_100",
-      "paper_id": "paper_fe8mn6al02c_01",
+      "sample_id": "sample_h100",
+      "paper_id": "paper_001",
       "alloy_id": "alloy_fe8mn6al02c",
-      "process_id": "proc_fe8mn_04"
+      "process_id": "proc_sol_1000"
     }
   ],
   "processing_steps": [
     {
-      "sample_id": null,
-      "paper_id": "paper_fe8mn6al02c_01",
-      "sequence": "1",
+      "sample_id": "sample_h70",
+      "paper_id": "paper_001",
+      "sequence": "step_casting",
       "type": "casting",
       "method": "vacuum induction furnace",
-      "temperature": "1150",
-      "unit": "°C",
-      "duration": "2h",
+      "temperature": "1150 C",
+      "unit": "C",
+      "duration": "2 h",
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "Heated to 1150°C for 2h."
+      "processing_steps_notes": "Heated then hot forged to rods."
     },
     {
-      "sample_id": null,
-      "paper_id": "paper_fe8mn6al02c_01",
-      "sequence": "2",
-      "type": "thermomechanical_processing",
-      "method": "hot forging",
-      "temperature": null,
-      "unit": null,
-      "duration": null,
-      "cooling_medium": "air",
-      "reduction_ratio": null,
-      "processing_steps_notes": "Forged to rods 35mm x 70mm x 100mm."
-    },
-    {
-      "sample_id": null,
-      "paper_id": "paper_fe8mn6al02c_01",
-      "sequence": "3",
+      "sample_id": "sample_h70",
+      "paper_id": "paper_001",
+      "sequence": "step_homogenization",
       "type": "heat_treatment",
       "method": "homogenization",
-      "temperature": "1200",
-      "unit": "°C",
-      "duration": "2h",
+      "temperature": "1200 C",
+      "unit": "C",
+      "duration": "2 h",
       "cooling_medium": null,
       "reduction_ratio": null,
       "processing_steps_notes": null
     },
     {
-      "sample_id": null,
-      "paper_id": "paper_fe8mn6al02c_01",
-      "sequence": "4",
+      "sample_id": "sample_h70",
+      "paper_id": "paper_001",
+      "sequence": "step_rolling",
       "type": "thermomechanical_processing",
       "method": "hot rolling",
-      "temperature": "1150-850",
-      "unit": "°C",
+      "temperature": "1150 C start, 850 C finish",
+      "unit": "C",
       "duration": null,
-      "cooling_medium": null,
-      "reduction_ratio": "6 passes to 3mm",
-      "processing_steps_notes": "Start rolling 1150°C, finish rolling 850°C."
-    },
-    {
-      "sample_id": null,
-      "paper_id": "paper_fe8mn6al02c_01",
-      "sequence": "5",
-      "type": "heat_treatment",
-      "method": "quenching",
-      "temperature": "550",
-      "unit": "°C",
-      "duration": null,
-      "cooling_medium": "water",
+      "cooling_medium": "water quench to 550 C, air cooling",
       "reduction_ratio": null,
-      "processing_steps_notes": "Water quenched to 550°C, then air cooled to room temperature."
+      "processing_steps_notes": "6 passes to 3 mm thickness."
     },
     {
-      "sample_id": null,
-      "paper_id": "paper_fe8mn6al02c_01",
-      "sequence": "6",
+      "sample_id": "sample_h70",
+      "paper_id": "paper_001",
+      "sequence": "step_solution",
       "type": "heat_treatment",
       "method": "solution treatment",
-      "temperature": "700-1000",
-      "unit": "°C",
-      "duration": "1h",
-      "cooling_medium": "water",
+      "temperature": "700 C",
+      "unit": "C",
+      "duration": "1 h",
+      "cooling_medium": "water quenching",
       "reduction_ratio": null,
-      "processing_steps_notes": "Specimens H70, H80, H90, H100 correspond to 700, 800, 900, 1000°C."
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_h80",
+      "paper_id": "paper_001",
+      "sequence": "step_solution",
+      "type": "heat_treatment",
+      "method": "solution treatment",
+      "temperature": "800 C",
+      "unit": "C",
+      "duration": "1 h",
+      "cooling_medium": "water quenching",
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_h90",
+      "paper_id": "paper_001",
+      "sequence": "step_solution",
+      "type": "heat_treatment",
+      "method": "solution treatment",
+      "temperature": "900 C",
+      "unit": "C",
+      "duration": "1 h",
+      "cooling_medium": "water quenching",
+      "reduction_ratio": null,
+      "processing_steps_notes": null
+    },
+    {
+      "sample_id": "sample_h100",
+      "paper_id": "paper_001",
+      "sequence": "step_solution",
+      "type": "heat_treatment",
+      "method": "solution treatment",
+      "temperature": "1000 C",
+      "unit": "C",
+      "duration": "1 h",
+      "cooling_medium": "water quenching",
+      "reduction_ratio": null,
+      "processing_steps_notes": null
     }
   ],
   "structures": [
     {
-      "structure_id": "struct_fe8mn_70",
-      "sample_id": "sample_fe8mn_70",
-      "overall_structure": "Duplex microstructure consisting of ferrite and martensite with M5C2 carbides.",
+      "structure_id": "struct_h70",
+      "sample_id": "sample_h70",
+      "overall_structure": "Duplex microstructure of ferrite and martensite with M5C2 carbide.",
       "number_of_phases": 3,
       "microstructure_counts": null,
       "microstructure_list": [
         {
-          "uuid": "uuid_70_01",
-          "related_sequence": "6",
+          "uuid": "uuid_h70_1",
+          "related_sequence": "step_solution",
           "phases_present": [
             {
-              "phase_name": "ferrite",
+              "phase_name": "Ferrite",
               "crystal_structure": null,
               "volume_fraction": null,
               "morphology": null,
@@ -318,7 +419,7 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
               "texture": null
             },
             {
-              "phase_name": "martensite",
+              "phase_name": "Martensite",
               "crystal_structure": null,
               "volume_fraction": null,
               "morphology": null,
@@ -326,9 +427,9 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
               "texture": null
             },
             {
-              "phase_name": "M5C2 carbide",
+              "phase_name": "M5C2-carbide",
               "crystal_structure": null,
-              "volume_fraction": "12.2",
+              "volume_fraction": "12.2%",
               "morphology": "spheroidal",
               "grain_size": null,
               "texture": null
@@ -336,7 +437,7 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
           ],
           "defects": [
             {
-              "type": null,
+              "type": "carbide",
               "porosity": null,
               "inclusions": [],
               "dislocation_density": null,
@@ -354,7 +455,7 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
           "precipitates": [
             {
               "precipitate_id": null,
-              "type": "M5C2 carbide",
+              "type": "M5C2-carbide",
               "size": {
                 "value": null,
                 "unit": null
@@ -367,18 +468,59 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
       ]
     },
     {
-      "structure_id": "struct_fe8mn_90",
-      "sample_id": "sample_fe8mn_90",
-      "overall_structure": "Duplex microstructure consisting of alpha-ferrite, delta-ferrite and austenite.",
+      "structure_id": "struct_h80",
+      "sample_id": "sample_h80",
+      "overall_structure": "Duplex microstructure of strip ferrite and austenite.",
+      "number_of_phases": 2,
+      "microstructure_counts": null,
+      "microstructure_list": [
+        {
+          "uuid": "uuid_h80_1",
+          "related_sequence": "step_solution",
+          "phases_present": [
+            {
+              "phase_name": "Ferrite",
+              "crystal_structure": null,
+              "volume_fraction": null,
+              "morphology": "strip",
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "Austenite",
+              "crystal_structure": null,
+              "volume_fraction": "20.7%",
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            }
+          ],
+          "defects": [],
+          "grain_structure": {
+            "average_grain_size": {
+              "value": null,
+              "unit": null
+            },
+            "grain_size_distribution": null,
+            "texture": null
+          },
+          "precipitates": []
+        }
+      ]
+    },
+    {
+      "structure_id": "struct_h90",
+      "sample_id": "sample_h90",
+      "overall_structure": "Duplex microstructure of alpha-ferrite, delta-ferrite and austenite.",
       "number_of_phases": 3,
       "microstructure_counts": null,
       "microstructure_list": [
         {
-          "uuid": "uuid_90_01",
-          "related_sequence": "6",
+          "uuid": "uuid_h90_1",
+          "related_sequence": "step_solution",
           "phases_present": [
             {
-              "phase_name": "alpha-ferrite",
+              "phase_name": "Ferrite",
               "crystal_structure": null,
               "volume_fraction": null,
               "morphology": "fine blocky",
@@ -386,17 +528,9 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
               "texture": null
             },
             {
-              "phase_name": "delta-ferrite",
+              "phase_name": "Austenite",
               "crystal_structure": null,
-              "volume_fraction": null,
-              "morphology": null,
-              "grain_size": null,
-              "texture": null
-            },
-            {
-              "phase_name": "austenite",
-              "crystal_structure": null,
-              "volume_fraction": "33.8",
+              "volume_fraction": "33.8%",
               "morphology": "blocky and lath-like",
               "grain_size": null,
               "texture": null
@@ -404,13 +538,54 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
           ],
           "defects": [
             {
-              "type": null,
+              "type": "small angle grain boundaries",
               "porosity": null,
               "inclusions": [],
-              "dislocation_density": null,
+              "dislocation_density": "high",
               "lattice_distortion": null
             }
           ],
+          "grain_structure": {
+            "average_grain_size": {
+              "value": null,
+              "unit": null
+            },
+            "grain_size_distribution": null,
+            "texture": null
+          },
+          "precipitates": []
+        }
+      ]
+    },
+    {
+      "structure_id": "struct_h100",
+      "sample_id": "sample_h100",
+      "overall_structure": "Microstructure with martensite and retained austenite.",
+      "number_of_phases": 2,
+      "microstructure_counts": null,
+      "microstructure_list": [
+        {
+          "uuid": "uuid_h100_1",
+          "related_sequence": "step_solution",
+          "phases_present": [
+            {
+              "phase_name": "Martensite",
+              "crystal_structure": null,
+              "volume_fraction": null,
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "Austenite",
+              "crystal_structure": null,
+              "volume_fraction": "12.9%",
+              "morphology": null,
+              "grain_size": null,
+              "texture": null
+            }
+          ],
+          "defects": [],
           "grain_structure": {
             "average_grain_size": {
               "value": null,
@@ -426,23 +601,23 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
   ],
   "interfaces": [
     {
-      "interface_set_id": "interface_fe8mn_01",
-      "sample_id": "sample_fe8mn_90",
+      "interface_set_id": "interface_h90",
+      "sample_id": "sample_h90",
       "phases": [
         {
-          "interface_id": "iface_01",
-          "microstructure_uuid": "uuid_90_01",
-          "phase_1_name": "ferrite",
-          "phase_2_name": "austenite",
+          "interface_id": "iface_h90_1",
+          "microstructure_uuid": "uuid_h90_1",
+          "phase_1_name": "Ferrite",
+          "phase_2_name": "Austenite",
           "coherence": null
         }
       ],
       "defect_interaction": [
         {
-          "interaction_id": null,
-          "microstructure_uuid": null,
-          "interaction_type": null,
-          "quality_description": null
+          "interaction_id": "defect_h90_1",
+          "microstructure_uuid": "uuid_h90_1",
+          "interaction_type": "dislocation accumulation",
+          "quality_description": "High density dislocation in ferrite and martensite contributed to mechanical property."
         }
       ],
       "interface_notes": [
@@ -453,20 +628,20 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
           "slippage_situation": null
         }
       ],
-      "phase_evolution": "Blocky austenite at ferrite triple junctions transformed first, followed by lath-like austenite between ferrite laths or embedded in ferrite grains undergoing rotation."
+      "phase_evolution": "During tensile test, blocky austenite at ferrite triple edges transformed to martensite first, while lath-like austenite between ferrite laths underwent rotations."
     }
   ],
   "properties": [
     {
-      "property_set_id": "prop_fe8mn_70",
-      "sample_id": "sample_fe8mn_70",
+      "property_set_id": "prop_h70",
+      "sample_id": "sample_h70",
       "mechanical": {
         "tensile_properties": {
           "yield_strength": [
             {
               "direction": null,
-              "value": "642.1",
-              "unit": "MPa"
+              "value": null,
+              "unit": null
             }
           ],
           "ultimate_tensile_strength": [
@@ -491,26 +666,61 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
           "stress_strain_distribution": null,
           "strain_hardening_rate": null
         },
-        "hardness": [],
+        "hardness": null,
         "fracture_toughness": null,
         "fatigue_properties": null,
         "creep_properties": null
       },
-      "physical": {
-        "density": {
-          "value": null,
-          "unit": null
-        },
-        "thermal_properties": null,
-        "electrical_properties": null,
-        "magnetic_properties": null
-      },
+      "physical": null,
       "chemical": null,
       "radiation_properties": null
     },
     {
-      "property_set_id": "prop_fe8mn_90",
-      "sample_id": "sample_fe8mn_90",
+      "property_set_id": "prop_h80",
+      "sample_id": "sample_h80",
+      "mechanical": {
+        "tensile_properties": {
+          "yield_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ],
+          "ultimate_tensile_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": "MPa",
+              "others": {
+                "uncertainty": null
+              }
+            }
+          ],
+          "elongation": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": "%"
+            }
+          ],
+          "youngs_modulus": null,
+          "stress_strain_curves": null,
+          "stress_strain_distribution": null,
+          "strain_hardening_rate": null
+        },
+        "hardness": null,
+        "fracture_toughness": null,
+        "fatigue_properties": null,
+        "creep_properties": null
+      },
+      "physical": null,
+      "chemical": null,
+      "radiation_properties": null
+    },
+    {
+      "property_set_id": "prop_h90",
+      "sample_id": "sample_h90",
       "mechanical": {
         "tensile_properties": {
           "yield_strength": [
@@ -542,7 +752,7 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
           "stress_strain_distribution": null,
           "strain_hardening_rate": null
         },
-        "hardness": [],
+        "hardness": null,
         "fracture_toughness": null,
         "fatigue_properties": null,
         "creep_properties": null
@@ -558,12 +768,55 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
       },
       "chemical": null,
       "radiation_properties": null
+    },
+    {
+      "property_set_id": "prop_h100",
+      "sample_id": "sample_h100",
+      "mechanical": {
+        "tensile_properties": {
+          "yield_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ],
+          "ultimate_tensile_strength": [
+            {
+              "direction": null,
+              "value": "860.3",
+              "unit": "MPa",
+              "others": {
+                "uncertainty": null
+              }
+            }
+          ],
+          "elongation": [
+            {
+              "direction": null,
+              "value": "15",
+              "unit": "%"
+            }
+          ],
+          "youngs_modulus": null,
+          "stress_strain_curves": null,
+          "stress_strain_distribution": null,
+          "strain_hardening_rate": null
+        },
+        "hardness": null,
+        "fracture_toughness": null,
+        "fatigue_properties": null,
+        "creep_properties": null
+      },
+      "physical": null,
+      "chemical": null,
+      "radiation_properties": null
     }
   ],
   "performance": [
     {
-      "performance_id": "perf_fe8mn_90",
-      "sample_id": "sample_fe8mn_90",
+      "performance_id": "perf_h90",
+      "sample_id": "sample_h90",
       "service_conditions": {
         "operating_temperature": {
           "min": null,
@@ -574,109 +827,63 @@ All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` t
         "environment": null
       },
       "lifetime_prediction": null,
-      "comparative_performance": {
-        "benchmark_alloy": null,
-        "benchmark_process_id": null,
-        "benchmark_sample_id": null,
-        "improvement_percentage": null
-      }
+      "comparative_performance": null
     }
   ],
   "characterization_methods": [
     {
-      "characterization_id": "char_01",
-      "sample_id": null,
-      "microstructure_uuid": null,
-      "technique": "SEM",
+      "characterization_id": "char_sem",
+      "sample_id": "sample_h70",
+      "microstructure_uuid": "uuid_h70_1",
+      "technique": "Scanning Electron Microscopy (SEM)",
       "purpose": "Microstructure analysis",
-      "key_findings": "Observed ferrite, austenite, martensite and carbides."
+      "key_findings": "Observation of ferrite, martensite and carbide distribution."
     },
     {
-      "characterization_id": "char_02",
-      "sample_id": null,
-      "microstructure_uuid": null,
-      "technique": "TEM",
-      "purpose": "Microstructure and dislocation analysis",
-      "key_findings": "High density dislocations in ferrite and martensite."
+      "characterization_id": "char_tem",
+      "sample_id": "sample_h70",
+      "microstructure_uuid": "uuid_h70_1",
+      "technique": "Transmission Electron Microscopy (TEM)",
+      "purpose": "Microstructure analysis near fracture area",
+      "key_findings": "High density dislocation in ferrite and martensite."
     },
     {
-      "characterization_id": "char_03",
-      "sample_id": null,
-      "microstructure_uuid": null,
-      "technique": "EBSD",
-      "purpose": "Phase distribution and orientation analysis",
-      "key_findings": "Schmid factor maps and phase volume fractions at different strains."
+      "characterization_id": "char_ebsd",
+      "sample_id": "sample_h90",
+      "microstructure_uuid": "uuid_h90_1",
+      "technique": "Electron Back-Scatter Diffraction (EBSD)",
+      "purpose": "Phase distribution and grain orientation analysis under deformation",
+      "key_findings": "Measurement of austenite volume fraction and Schmid factors."
     },
     {
-      "characterization_id": "char_04",
-      "sample_id": null,
+      "characterization_id": "char_xrd",
+      "sample_id": "sample_h90",
       "microstructure_uuid": null,
-      "technique": "EDS",
-      "purpose": "Element distribution analysis",
-      "key_findings": "Elemental composition of austenite and ferrite."
+      "technique": "X-ray Diffraction (XRD)",
+      "purpose": "Determination of austenite volume fraction and lattice parameter",
+      "key_findings": "Austenite volume fraction determined by integrated intensities of peaks."
     },
     {
-      "characterization_id": "char_05",
-      "sample_id": null,
+      "characterization_id": "char_eds",
+      "sample_id": "sample_h70",
       "microstructure_uuid": null,
-      "technique": "XRD",
-      "purpose": "Phase identification and austenite volume fraction",
-      "key_findings": "Austenite lattice parameter and volume fraction calculation."
-    },
-    {
-      "characterization_id": "char_06",
-      "sample_id": null,
-      "microstructure_uuid": null,
-      "technique": "Densitometry",
-      "purpose": "Density measurement",
-      "key_findings": "Density 6.95 g/cm3."
+      "technique": "Energy Dispersive Spectrometer (EDS)",
+      "purpose": "Element distribution investigation",
+      "key_findings": "Identification of M5C2-carbide."
     }
   ],
-  "computational_details": [
-    {
-      "computation_id": null,
-      "sample_id": null,
-      "simulation_method": null,
-      "software_used": null,
-      "potential_model": null,
-      "validation_against_experiment": null,
-      "analytical_model": [
-        {
-          "model_name": "Ms temperature calculation",
-          "equation_role": "Predict martensitic transformation starting temperature",
-          "parameters": [
-            "C",
-            "Mn",
-            "Cr",
-            "Ni",
-            "Mo",
-            "Co",
-            "Si"
-          ],
-          "model_note": "Equation provided in text."
-        },
-        {
-          "model_name": "Md30 temperature calculation",
-          "equation_role": "Predict temperature at which 50% austenite transformed at 30% strain",
-          "parameters": [
-            "C",
-            "N",
-            "Ni",
-            "Mo",
-            "Cr",
-            "Mn",
-            "Si"
-          ],
-          "model_note": "Equation provided in text."
-        }
-      ]
-    }
-  ],
+  "computational_details": [],
   "unmapped_findings": [
-    "Work hardening behavior defined as three-stage characteristics, stage 2 linked to TRIP effect.",
-    "Volume fraction of small angle grain boundaries increased greatly, value over 51% observed at true strain of 0.27.",
-    "Austenite stability associated with element composition, grain size, grain morphology and Schmid factors.",
-    "Fracture morphology of H90 steel showed quasi-cleavage fracture with mixed characteristics.",
-    "Martensite transformation ratio increased with solution temperature in range 700-900 C, peak value 89.9% in H90."
+    "Table 1 Chemical composition details are referenced but not fully listed in the text body.",
+    "Figure 1 SEM micrographs for H70, H80, H90, H100 are referenced but images are not provided.",
+    "Figure 2 True stress-strain curves are referenced but images are not provided.",
+    "Figure 3 Band contrast maps under different true strains are referenced but images are not provided.",
+    "Figure 4 Schmid factor maps under different true strains are referenced but images are not provided.",
+    "Figure 5 Fracture morphology and TEM microsgraphs are referenced but images are not provided.",
+    "Figure 6 Schematic illustration of martensitic transformation is referenced but image is not provided.",
+    "Figure 7 XRD profiles and austenite fractions are referenced but images are not provided.",
+    "Table 2 Vickers microhardness values are referenced but not explicitly listed in text.",
+    "Table 3 Tensile properties and volume fraction of austenite are referenced but values extracted from text descriptions.",
+    "Table 4 Elements fraction and Ms, Md30 temperature are referenced but values extracted from text descriptions."
   ]
 }

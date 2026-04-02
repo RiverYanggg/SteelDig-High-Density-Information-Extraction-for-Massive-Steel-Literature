@@ -1,178 +1,199 @@
-The user wants me to extract structured information from the provided text of a scientific paper about "Tensile deformation behavior analysis of low density Fe–18Mn–10Al– xC steels".
-I need to output a valid JSON object following the specific schema provided in the prompt.
-The schema requires specific keys: `papers`, `alloys`, `processes`, `samples`, `processing_steps`, `structures`, `interfaces`, `properties`, `performance`, `characterization_methods`, `computational_details`, `unmapped_findings`.
-All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` types allowed.
-I need to parse the text to identify:
-1.  **Paper Info**: Title, Authors, Year, Journal (implied Elsevier based on copyright), DOI (not explicitly in text, so null), Research Type (Experimental), Scope.
-2.  **Alloys**: Fe-18Mn-10Al-xC steels with x = 0.5, 0.8, 1.2 (wt%).
-3.  **Processes**: Induction melting, Forging (1200 C), Homogenization (1200 C, 3h), Hot Rolling (3.5mm, 90% reduction), Annealing (1000 C, 1h), Cold Rolling (1mm), Annealing (1000 C), Water Quenching. Tensile tests.
-4.  **Samples**: Three samples corresponding to the three C contents (0.5C, 0.8C, 1.2C).
-5.  **Processing Steps**: Detail the heat treatment and mechanical processing steps for each sample.
-6.  **Structures**: Microstructures (Duplex ferritic-austenitic for 0.5C/0.8C, Fully austenitic for 1.2C), Phases (Ferrite, Austenite, B2, DO3, Kappa carbides), Grain size (not explicitly given as a number, but mentioned relative sizes), Precipitates.
-7.  **Properties**: Tensile properties (YS, UTS, Elongation, TE), Hardness (not explicitly given numbers, but mentioned relative), Strain hardening behavior (C-J analysis stages).
-8.  **Performance**: Comparison of strength/ductility.
-9.  **Characterization Methods**: Optical microscopy, TEM, Image analysis, Tensile testing.
-10. **Computational Details**: None mentioned (SFE calculated using a model, but not full computational simulation of deformation).
-11. **Unmapped Findings**: Any info that doesn't fit well.
-
-**Constraints Checklist & Confidence Score:**
-1.  Leaf values `null`, `string`, `array` only? Yes.
-2.  No `number` or `boolean`? Yes.
-3.  Keys match schema? Yes.
-4.  `papers`, `alloys`, `processes`, `samples`, `processing_steps`, `structures`, `interfaces`, `properties`, `performance`, `characterization_methods`, `computational_details`, `unmapped_findings` all present? Yes.
-5.  `sample_id` binds `alloy_id` and `process_id`? Yes.
-6.  `processing_steps` bound to `sample_id`? Yes.
-7.  `structures` bound to `sample_id`? Yes.
-8.  `properties` bound to `sample_id`? Yes.
-9.  `characterization_methods` bound to `sample_id`? Yes.
-10. No Markdown fencing? Yes.
+The user wants me to extract structured information from the provided text of a scientific paper and output it as a JSON object.
+The paper is titled "Tensile deformation behavior analysis of low density Fe–18Mn–10Al– xC steels".
+I need to follow the schema provided in the prompt (which mimics `paper_schema.json` and `paper_entity_schema.jsonc`).
+Key constraints:
+1.  **Output ONLY JSON**: No markdown, no explanations, no text outside the JSON object.
+2.  **Strict Type Constraints**: No `number` or `boolean` types for leaf nodes. All numbers must be strings. Booleans must be strings ("true"/"false") or null.
+3.  **Schema Compliance**: Use the provided JSON template structure.
+4.  **Content**: Extract information based *only* on the text provided. Do not hallucinate data from images (since images are not provided, just captions).
+5.  **IDs**: Generate unique IDs for alloys, processes, samples, etc., following the naming conventions (e.g., `alloy_05c`, `proc_05c_01`, `sample_05c_01`).
 
 **Plan:**
-1.  **Paper**: Extract title, authors, year (2015), journal (implied Elsevier, text says "Available online 23 November 2015", copyright "Elsevier B.V."), research type (experimental).
-2.  **Alloys**: Create entries for 0.5C, 0.8C, 1.2C steels. Base element Fe, alloying Mn, Al, C.
-3.  **Processes**: Create entries for the main processing route (Melting -> Forging -> Homogenization -> Hot Rolling -> Annealing -> Cold Rolling -> Annealing -> Quenching). Tensile test is a property measurement, not a sample processing step usually, but the text describes the sample preparation. I will group the sample preparation into `processes` and `processing_steps`.
-4.  **Samples**: Create `sample_05c`, `sample_08c`, `sample_12c`.
-5.  **Processing Steps**: Break down the manufacturing steps.
-6.  **Structures**: Describe microstructures for each sample (Duplex vs Fully Austenitic), phases present (Ferrite, Austenite, B2, DO3, Kappa carbides), grain structure info (if available - text mentions grain size relative, not specific numbers for all).
-7.  **Properties**: Extract YS, UTS, Elongation from text (Table 2 summary in text). 0.5C: UTS ~979? No, text says 0.8C has max UTS ~979 MPa. 1.2C UTS 946.7 MPa, Elongation 56%. 0.5C Elongation ~59.2%? Wait, text says "fraction of austenite was ~59.2%". Let's check elongation. Text says "tensile ductility... reached a maximum value (~59.1%) at 1.0% C". Wait, this is in Introduction citing Sutou. For this paper: "1.2C steel... elongation to failure of 56%". "0.5C and 0.8C steels... total elongation (TE) is found to increase, reaching a maximum of 56.2% at 1.2% C". "0.8C steel... elongation of ~38.4%". "0.5C steel...". Need to be careful with numbers.
-    *   0.5C: UTS not explicitly max, but 0.8C is max. 0.5C UTS lower. Elongation lower than 1.2C.
-    *   0.8C: UTS ~979 MPa, Elongation ~38.4%.
-    *   1.2C: UTS 946.7 MPa, Elongation 56%.
-    *   SFE values: 73.4, 77.9, 84.5 mJ/m2.
-    *   Densities: 6.92, 6.88, 6.78 g/cm3.
-8.  **Characterization**: Optical microscopy, TEM, Image analysis, Tensile testing.
-9.  **Unmapped**: SFE calculation model reference.
+1.  **Papers**: Extract title, authors, journal info (if available, likely "Materials Science and Engineering: A" based on typical Elsevier format, but text says "Elsevier B.V.", I will check if journal name is explicit. Text says "Available online 23 November 2015", "Elsevier B.V.". It doesn't explicitly state the journal name in the text provided, but I can infer or leave as null. Wait, the prompt says "strictly based on user provided text". I will leave `journal` as null if not explicitly named in the text, or check if "Materials Science and Engineering: A" is implied. The text says "Article history... Received... Accepted... Available online... Elsevier B.V.". It does not explicitly name the journal. I will set `journal` to null or "Elsevier" if I must be strict. Better to be strict: `null` or "Elsevier B.V."? Usually `journal` expects the journal name. I will leave it `null` or "Elsevier" if I can infer. Let's look closely. "© 2015 Elsevier B.V. All rights reserved." No journal name. I will use `null` for `journal` to be safe, or "Elsevier" as a generic. Actually, looking at the text "Article history", it's typical of Materials Science and Engineering: A. But I shouldn't guess. I will leave `journal` as `null` or "Elsevier". Let's check the prompt instruction: "strictly based on user provided text". I will use `null` for unknowns.)
+    *   `research_type`: "experimental" (since it describes experiments, tensile tests, microstructure analysis).
+    *   `paper_scope`: Investigate microstructures and mechanical behaviors of low density Fe–18Mn–10Al–xC steels with different C contents.
 
-**Refining Numbers:**
-*   0.5C: Austenite fraction 59.2%.
-*   0.8C: Austenite fraction 84.8%. UTS ~979 MPa. Elongation ~38.4%.
-*   1.2C: Austenite fraction (fully austenitic). UTS 946.7 MPa. Elongation 56%.
-*   Densities: 0.5C=6.92, 0.8C=6.88, 1.2C=6.78.
-*   SFE: 0.5C=73.4, 0.8C=77.9, 1.2C=84.5.
-*   Strain Hardening: 0.5C (2-stage), 0.8C (2-stage), 1.2C (3-stage).
+2.  **Alloys**:
+    *   Alloy 1: Fe–18Mn–10Al–0.5C. ID: `alloy_05c`.
+    *   Alloy 2: Fe–18Mn–10Al–0.8C. ID: `alloy_08c`.
+    *   Alloy 3: Fe–18Mn–10Al–1.2C. ID: `alloy_12c`.
+    *   Compositions: Base Fe, Mn, Al, C. Text says "Fe–18Mn–10Al–xC". Table 1 is mentioned but content not fully detailed in text except C content. I will extract C content from text. Mn=18, Al=10 are fixed.
+    *   `nominal_composition`: Fe (balance), Mn (18), Al (10), C (0.5, 0.8, 1.2).
+
+3.  **Processes**:
+    *   General process: Induction melting, Forging at 1200°C, Homogenization at 1200°C for 3h, Hot rolling to 3.5mm (90% reduction), Annealing at 1000°C for 1h, Cold rolling to 1mm, Annealing at 1000°C, Water quenching.
+    *   This applies to all steels. I can create one process entry or separate. Since they share the same processing, one process entry linked to all alloys or separate entries. The schema allows `processes` array. I will create one process description covering the standard procedure.
+    *   ID: `proc_common_01`.
+
+4.  **Samples**:
+    *   Sample 1: `sample_05c_01` (Alloy 0.5C).
+    *   Sample 2: `sample_08c_01` (Alloy 0.8C).
+    *   Sample 3: `sample_12c_01` (Alloy 1.2C).
+
+5.  **Processing Steps**:
+    *   Bind to samples.
+    *   Sequence: "1", "2", "3"...
+    *   Steps: Melting, Forging, Homogenization, Hot Rolling, Annealing 1, Cold Rolling, Annealing 2, Quenching.
+
+6.  **Structures**:
+    *   0.5C: Duplex ferritic–austenitic. Austenite ~59.2%. No precipitates.
+    *   0.8C: Duplex ferritic–austenitic. Austenite ~84.8%. Ordered phases (B2 in ferrite, DO3 in ferrite, kappa carbide in austenite).
+    *   1.2C: Fully austenitic. Kappa carbides.
+    *   Need `microstructure_list` with `uuid`.
+    *   Need `grain_structure` info if available (grain size not explicitly given as a number, just "smaller grain size" for 0.8C vs 1.2C). I will use `null` for specific values.
+
+7.  **Interfaces**:
+    *   Phase boundaries (ferrite/austenite).
+    *   Defect interactions (dislocation tangles, microbands interaction).
+
+8.  **Properties**:
+    *   Tensile properties:
+        *   0.5C: UTS ~979 MPa (Wait, text says 0.8C has 979 MPa. 0.5C is lower). Text: "0.8C steel exhibited a highest tensile strength of ~979 MPa". "1.2C steel... UTS of 946.7 MPa". "0.5C steel...". Table 2 is mentioned but data is in text.
+        *   0.5C: UTS not explicitly given as a number in the summary paragraph, but "0.8C... highest... 979", "1.2C... 946.7". 0.5C is lower. I will extract what is explicitly stated.
+        *   0.8C: UTS ~979 MPa, Elongation ~38.4%.
+        *   1.2C: UTS 946.7 MPa, Elongation 56%.
+        *   YS: 0.8C and 1.2C similar. 0.5C lower.
+    *   Density: 6.92, 6.88, 6.78 g/cm3.
+    *   SFE: 73.4, 77.9, 84.5 mJ/m2.
+
+9.  **Performance**:
+    *   Service conditions: Room temperature tensile tests.
+    *   Comparative performance: 0.8C vs 0.5C, 1.2C.
+
+10. **Characterization Methods**:
+    *   Optical microscopy, Image analysis, TEM (Tecnai G2 20, 200kV), Tensile testing (SANSCMT5000).
+
+11. **Unmapped Findings**:
+    *   Any data not fitting schema (e.g., specific grain sizes not given, specific yield strength numbers not fully detailed for 0.5C in text summary).
+
+**Refining Data Extraction:**
+*   **Authors**: Hua Ding, Dong Han, Jun Zhang, Zhihui Cai, Zhiqiang Wu, Minghui Cai.
+*   **Alloys**:
+    *   `alloy_05c`: Fe-18Mn-10Al-0.5C.
+    *   `alloy_08c`: Fe-18Mn-10Al-0.8C.
+    *   `alloy_12c`: Fe-18Mn-10Al-1.2C.
+*   **Samples**:
+    *   `sample_05c_01`
+    *   `sample_08c_01`
+    *   `sample_12c_01`
+*   **Properties**:
+    *   Density: 6.92 (0.5C), 6.88 (0.8C), 6.78 (1.2C) g/cm3.
+    *   SFE: 73.4 (0.5C), 77.9 (0.8C), 84.5 (1.2C) mJ/m2.
+    *   Tensile:
+        *   0.8C: UTS ~979 MPa, Elongation ~38.4%.
+        *   1.2C: UTS 946.7 MPa, Elongation 56%.
+        *   0.5C: Not explicitly quantified in the summary text for UTS/Yield, but mentioned as lower. I will put `null` for specific values if not found, or extract from text "Table 2" implies data exists but text only summarizes 0.8C and 1.2C numbers clearly. Wait, text says "0.5C and 0.8C steels... 0.8C steel exhibited a highest tensile strength of ~979 MPa". It implies 0.5C is lower. I will use `null` for 0.5C specific numbers to avoid hallucination, or check if "Table 2" text contains numbers. Text says "Table 2 Mechanical properties of 0.5C, 0.8C and 1.2C steels." but doesn't list the table content explicitly in the text provided (only captions). I must rely on text. I will extract the numbers explicitly mentioned.
+    *   Specific Strength: 0.8C: 142.3 MPa cm3/g.
+    *   Comparison: 0.8C vs Fe-20Mn-10Al-1.2C (Ref 7: 881 MPa, 38.1%). 0.8C vs Fe-27Mn-12Al-0.8C (Ref 10: 995 MPa, 42%).
+
+*   **Strain Hardening**:
+    *   0.5C: Two-stage.
+    *   0.8C: Two-stage.
+    *   1.2C: Three-stage.
+
+*   **Microstructure**:
+    *   0.5C: Ferrite + Austenite (59.2%).
+    *   0.8C: Ferrite + Austenite (84.8%) + Ordered phases (B2, DO3 in ferrite, Kappa in austenite).
+    *   1.2C: Fully Austenite + Kappa carbides.
+
+*   **Processing**:
+    *   Melting, Forging (1200C), Homogenization (1200C, 3h), Hot Rolling (3.5mm, 90% red), Annealing (1000C, 1h), Cold Rolling (1mm), Annealing (1000C), Quenching (Water).
 
 **JSON Construction:**
 *   Ensure all numbers are strings.
-*   Ensure no boolean values.
-*   Ensure arrays are used for lists.
-*   Ensure `sample_id` links correctly.
-*   Ensure `processing_steps` links to `sample_id`.
+*   Ensure all keys match the schema.
+*   Ensure `unmapped_findings` captures things like "Table 1 content not fully detailed in text" or "Grain size comparison mentioned but no value".
 
-Let's draft the JSON structure mentally.
-`papers`: 1 entry.
-`alloys`: 3 entries (0.5C, 0.8C, 1.2C).
-`processes`: 1 entry (General processing route).
-`samples`: 3 entries.
-`processing_steps`: 3 entries (one per sample, same steps).
-`structures`: 3 entries (microstructure description).
-`properties`: 3 entries (mechanical properties).
-`characterization_methods`: 3 entries (methods used for each sample).
-`computational_details`: 1 entry (SFE calculation mentioned).
-`unmapped_findings`: Any specific details missed.
+Let's build the JSON.
 
-Wait, `processes` schema: `process_id`, `paper_id`, `alloy_id`, `description`, `processes_notes`.
-`processing_steps` schema: `sample_id`, `paper_id`, `sequence`, `type`, `method`, `temperature`, `unit`, `duration`, `cooling_medium`, `reduction_ratio`, `processing_steps_notes`.
-`structures` schema: `structure_id`, `sample_id`, `overall_structure`, `number_of_phases`, `microstructure_list` (with `uuid`, `phases_present`, `defects`, `grain_structure`, `precipitates`).
-`properties` schema: `property_set_id`, `sample_id`, `mechanical` (tensile_properties, hardness, etc.), `physical`, `chemical`, `radiation_properties`.
-`characterization_methods` schema: `characterization_id`, `sample_id`, `microstructure_uuid`, `technique`, `purpose`, `key_findings`.
+*   `papers`: 1 entry.
+*   `alloys`: 3 entries.
+*   `processes`: 1 entry (common process).
+*   `samples`: 3 entries.
+*   `processing_steps`: 3 entries (one per sample, binding to process).
+*   `structures`: 3 entries (one per sample).
+*   `interfaces`: 3 entries (one per sample, describing phase boundaries).
+*   `properties`: 3 entries (mechanical, physical).
+*   `performance`: 3 entries (service conditions).
+*   `characterization_methods`: 3 entries (TEM, OM, Tensile).
+*   `computational_details`: [] (None mentioned).
+*   `unmapped_findings`: List of notes.
 
-I need to be careful with `microstructure_list` in `structures`. It expects `uuid`. I will generate a placeholder uuid or just use a string identifier. The prompt says "microstructure_list": [{"uuid": null, ...}]. I should probably use a string for uuid to avoid null if I want to link it to characterization, but the prompt says "uuid": null is allowed. I will use a string identifier for consistency within the sample. Actually, the schema says `uuid` is a string field. I will use a string like "uuid_05c_01".
-Wait, `properties` -> `mechanical` -> `tensile_properties` -> `yield_strength` is an array of objects with `direction`, `value`, `unit`.
-`hardness` is an array of objects with `region`, `value`, `scale`, `unit`.
-`fracture_toughness` is an object with `value`, `unit`.
-`fatigue_properties` is an object with `fatigue_limit`, `cycles_to_failure`.
-`creep_properties` is an object with `steady_state_creep_rate`, `rupture_life`.
+Double check constraints:
+- No `number` type.
+- No `boolean` type.
+- Valid JSON.
+- No markdown.
 
-I will fill in the data based on the text.
-Text mentions: "0.5C steel had a duplex ferritic–austenitic structure... fraction of austenite was ~59.2%".
-"0.8C steel... fraction of austenite was ~84.8%... ordered phases existed in both ferrite and austenite".
-"1.2C steel... fully austenitic microstructure with some κ carbides".
-"0.8C steel exhibited a highest tensile strength of ~979 MPa".
-"1.2C steel... ultimate tensile strength of 946.7 MPa and elongation to failure of 56%".
-"Densities... 6.92, 6.88 and 6.78 g/cm3".
-"SFE... 73.4 and 77.9 mJ/m2... 84.5 mJ/m2".
+One detail: `processing_steps` needs `sequence`. I will use "1", "2", etc.
+`structures` needs `microstructure_list` with `uuid`. I will generate UUIDs like "uuid_05c_01".
+`properties` needs `mechanical` -> `tensile_properties` -> arrays.
+`unmapped_findings`: Add note about Table 1/2 content not fully visible in text stream.
 
-I will construct the JSON now.
-Double check: No numbers. All numbers as strings.
-Double check: Keys match schema.
-Double check: `papers` array, `alloys` array, etc.
+Let's draft the content.
 
-One detail: `processing_steps` needs `sample_id`. I will create 3 steps entries for the 3 samples (or 1 generic entry if the schema allows, but `sample_id` is a field). The schema says `processing_steps` is an array of objects. Each object has `sample_id`. I will create 3 objects, one for each sample, with the same sequence of steps.
-Actually, the text describes a common process for all three steels ("Three different Fe–18Mn–10Al–xC... steels were selected... The 50 kg ingots... were prepared..."). So I can list the steps once per sample.
-Steps:
-1. Induction melting.
-2. Forging (1200 C).
-3. Homogenization (1200 C, 3h).
-4. Hot Rolling (3.5mm, 90% reduction).
-5. Annealing (1000 C, 1h).
-6. Cold Rolling (1mm).
-7. Annealing (1000 C).
-8. Water Quenching.
+**Papers:**
+- title: "Tensile deformation behavior analysis of low density Fe–18Mn–10Al– xC steels"
+- authors: ["Hua Ding", "Dong Han", "Jun Zhang", "Zhihui Cai", "Zhiqiang Wu", "Minghui Cai"]
+- research_type: "experimental"
+- paper_scope: "Investigate the differences in microstructures and their influence on mechanical behaviors during plastic deformation of low density Fe–18Mn–10Al–xC steels with varying C contents."
 
-I will group these into `processing_steps`.
-I will map `structures` to `sample_id`.
-I will map `properties` to `sample_id`.
-I will map `characterization_methods` to `sample_id`.
+**Alloys:**
+- `alloy_05c`: Fe-18Mn-10Al-0.5C.
+- `alloy_08c`: Fe-18Mn-10Al-0.8C.
+- `alloy_12c`: Fe-18Mn-10Al-1.2C.
 
-Let's start writing the JSON.
-Ensure `paper_id` is consistent. I'll use "paper_001".
-`alloy_id`: "alloy_05c", "alloy_08c", "alloy_12c".
-`process_id`: "proc_05c_01", "proc_08c_01", "proc_12c_01".
-`sample_id`: "sample_05c", "sample_08c", "sample_12c".
+**Processes:**
+- `proc_05c_01` (common for all). Description: Induction melting, forging at 1200C, homogenization at 1200C for 3h, hot rolling to 3.5mm (90% reduction), annealing at 1000C for 1h, cold rolling to 1mm, annealing at 1000C, water quenching.
 
-Wait, `processes` schema has `process_id`, `paper_id`, `alloy_id`.
-`processing_steps` schema has `sample_id`, `paper_id`.
-`structures` schema has `structure_id`, `sample_id`.
-`properties` schema has `property_set_id`, `sample_id`.
-`characterization_methods` schema has `characterization_id`, `sample_id`.
+**Samples:**
+- `sample_05c_01` (alloy_05c, proc_05c_01)
+- `sample_08c_01` (alloy_08c, proc_05c_01)
+- `sample_12c_01` (alloy_12c, proc_05c_01)
 
-I need to make sure I don't use `number` types.
-Example: "979 MPa" not 979. "56%" not 56.
-"true" not true.
+**Processing Steps:**
+- Bind to samples.
+- Sequence: "1" (Melting), "2" (Forging), "3" (Homogenization), "4" (Hot Rolling), "5" (Annealing 1), "6" (Cold Rolling), "7" (Annealing 2), "8" (Quenching).
+- I will group them into one `processing_steps` entry per sample or split. Schema says `processing_steps` array. I will create one entry per sample with a sequence string representing the full process or split steps. The schema example shows `processing_steps` as a list of steps. I will create one step entry per major stage per sample to be detailed, or one entry summarizing. Given the text describes a standard process for all, I will create one entry per sample with `sequence` "1" to "8" or just one entry describing the whole. The schema `processing_steps` has `sequence` as string. I will create one entry per sample summarizing the process to avoid redundancy, or split. Let's create one entry per sample with `sequence` "1" and `method` "Thermo-mechanical processing". Or better, split into steps if text allows. Text lists them sequentially. I will create one entry per sample with `sequence` "1" and `description` covering the whole process to keep it clean, as they are identical. Wait, `processing_steps` is usually a list of steps. I will create one entry per sample with `sequence` "1" and `description` containing the full process flow.
 
-Let's finalize the content.
-Paper info:
-Title: Tensile deformation behavior analysis of low density Fe–18Mn–10Al– xC steels
-Authors: Hua Ding, Dong Han, Jun Zhang, Zhihui Cai, Zhiqiang Wu, Minghui Cai
-Year: 2015
-Journal: Elsevier (implied by copyright)
-Research Type: experimental
+**Structures:**
+- `structures` array.
+- 0.5C: `structure_id` "struct_05c", `sample_id` "sample_05c_01". `overall_structure`: "Duplex ferritic–austenitic". `number_of_phases`: "2". `microstructure_list`: 1 item (overall).
+- 0.8C: `structure_id` "struct_08c", `sample_id` "sample_08c_01". `overall_structure`: "Duplex ferritic–austenitic with ordered phases". `number_of_phases`: "3" (Ferrite, Austenite, Ordered phases/Kappa). `microstructure_list`: 1 item.
+- 1.2C: `structure_id` "struct_12c", `sample_id` "sample_12c_01". `overall_structure`: "Fully austenitic with kappa carbides". `number_of_phases`: "2" (Austenite, Kappa carbides). `microstructure_list`: 1 item.
 
-Alloys:
-1. Fe-18Mn-10Al-0.5C
-2. Fe-18Mn-10Al-0.8C
-3. Fe-18Mn-10Al-1.2C
+**Interfaces:**
+- `interfaces` array.
+- 0.5C: Ferrite/Austenite interface.
+- 0.8C: Ferrite/Austenite, Ferrite/Ordered, Austenite/Kappa.
+- 1.2C: Austenite/Kappa.
 
-Samples:
-1. sample_05c
-2. sample_08c
-3. sample_12c
+**Properties:**
+- `properties` array.
+- 0.5C: Density 6.92 g/cm3. SFE 73.4 mJ/m2. Tensile: UTS null (not explicitly stated number in text summary, only relative).
+- 0.8C: Density 6.88 g/cm3. SFE 77.9 mJ/m2. Tensile: UTS ~979 MPa, Elongation ~38.4%. Specific strength 142.3 MPa cm3/g.
+- 1.2C: Density 6.78 g/cm3. SFE 84.5 mJ/m2. Tensile: UTS 946.7 MPa, Elongation 56%.
 
-Processing Steps:
-Common steps for all. I will list them for each sample to satisfy `sample_id` binding.
-Sequence: 1, 2, 3...
-Type: heat_treatment, mechanical_processing.
+**Performance:**
+- `performance` array.
+- Service conditions: Room temperature.
+- Comparative: 0.8C vs Ref 7 (881 MPa, 38.1%). 0.8C vs Ref 10 (995 MPa, 42%).
 
-Structures:
-0.5C: Duplex ferritic-austenitic. Phases: Ferrite, Austenite. Austenite fraction 59.2%.
-0.8C: Duplex ferritic-austenitic. Phases: Ferrite, Austenite, B2, DO3, Kappa carbides. Austenite fraction 84.8%.
-1.2C: Fully austenitic. Phases: Austenite, Kappa carbides.
+**Characterization:**
+- `characterization_methods` array.
+- Tensile test (SANSCMT5000).
+- Optical microscopy.
+- TEM (Tecnai G2 20, 200kV).
+- Image analysis.
 
-Properties:
-0.5C: UTS (not explicitly given number, but lower than 0.8C), Elongation (not explicitly given number, but lower than 1.2C).
-0.8C: UTS ~979 MPa, Elongation ~38.4%.
-1.2C: UTS 946.7 MPa, Elongation 56%.
-Densities: 6.92, 6.88, 6.78 g/cm3.
-SFE: 73.4, 77.9, 84.5 mJ/m2.
+**Unmapped:**
+- Note about Table 1 and Table 2 content not fully detailed in text.
+- Note about specific grain sizes not given numerically.
 
-Characterization:
-Optical microscopy, TEM, Image analysis, Tensile testing.
-
-Computational:
-SFE calculation model mentioned.
-
-Unmapped:
-None significant, maybe specific strain values in C-J analysis not fully detailed in text (only stages mentioned).
+**Type Check:**
+- All numbers as strings.
+- No booleans.
+- Valid JSON.
 
 Let's assemble.
 </think>
@@ -180,7 +201,7 @@ Let's assemble.
 {
   "papers": [
     {
-      "paper_id": "paper_001",
+      "paper_id": null,
       "doi": null,
       "title": "Tensile deformation behavior analysis of low density Fe–18Mn–10Al– xC steels",
       "authors": [
@@ -192,7 +213,7 @@ Let's assemble.
         "Minghui Cai"
       ],
       "publication_year": "2015",
-      "journal": "Elsevier",
+      "journal": null,
       "keywords": [
         "Fe–Mn–Al–C steels",
         "Strain hardening",
@@ -201,13 +222,13 @@ Let's assemble.
         "Crussard–Jaoul (C–J) analysis"
       ],
       "research_type": "experimental",
-      "paper_scope": "Investigation of microstructure differences and their influence on mechanical behaviors during plastic deformation of low density Fe–18Mn–10Al–xC steels with varying C contents."
+      "paper_scope": "Investigate the differences in microstructures and their influence on mechanical behaviors during plastic deformation of low density Fe–18Mn–10Al–xC steels with varying C contents (0.5, 0.8, 1.2 wt%)."
     }
   ],
   "alloys": [
     {
       "alloy_id": "alloy_05c",
-      "paper_id": "paper_001",
+      "paper_id": null,
       "alloy_name": "Fe–18Mn–10Al–0.5C steel",
       "aliases": [],
       "base_element": "Fe",
@@ -233,11 +254,11 @@ Let's assemble.
           "atomic_percent": null
         }
       ],
-      "alloys_notes": "Low density steel, duplex ferritic–austenitic structure."
+      "alloys_notes": "Low density steel, density calculated as 6.92 g/cm3."
     },
     {
       "alloy_id": "alloy_08c",
-      "paper_id": "paper_001",
+      "paper_id": null,
       "alloy_name": "Fe–18Mn–10Al–0.8C steel",
       "aliases": [],
       "base_element": "Fe",
@@ -263,11 +284,11 @@ Let's assemble.
           "atomic_percent": null
         }
       ],
-      "alloys_notes": "Low density steel, duplex ferritic–austenitic structure with ordered phases (B2, DO3) and kappa carbides."
+      "alloys_notes": "Low density steel, density calculated as 6.88 g/cm3. Contains ordered phases (B2, DO3) and kappa carbides."
     },
     {
       "alloy_id": "alloy_12c",
-      "paper_id": "paper_001",
+      "paper_id": null,
       "alloy_name": "Fe–18Mn–10Al–1.2C steel",
       "aliases": [],
       "base_element": "Fe",
@@ -293,370 +314,239 @@ Let's assemble.
           "atomic_percent": null
         }
       ],
-      "alloys_notes": "Low density steel, fully austenitic microstructure with kappa carbides."
+      "alloys_notes": "Low density steel, density calculated as 6.78 g/cm3. Fully austenitic with kappa carbides."
     }
   ],
   "processes": [
     {
-      "process_id": "proc_05c_01",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_05c",
-      "description": "Induction melting, forging, homogenization, hot rolling, annealing, cold rolling, annealing, water quenching.",
-      "processes_notes": "Common processing route for all three steels."
-    },
-    {
-      "process_id": "proc_08c_01",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_08c",
-      "description": "Induction melting, forging, homogenization, hot rolling, annealing, cold rolling, annealing, water quenching.",
-      "processes_notes": "Common processing route for all three steels."
-    },
-    {
-      "process_id": "proc_12c_01",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_12c",
-      "description": "Induction melting, forging, homogenization, hot rolling, annealing, cold rolling, annealing, water quenching.",
-      "processes_notes": "Common processing route for all three steels."
+      "process_id": "proc_common_01",
+      "paper_id": null,
+      "alloy_id": null,
+      "description": "Induction melting under argon atmosphere, forged at 1200 C, homogenized at 1200 C for 3 h, hot rolled to 3.5 mm thickness (90% reduction), annealed at 1000 C for 1 h, cold rolled to 1 mm, annealed at 1000 C, water quenched to room temperature.",
+      "processes_notes": "Standard processing applied to all three steels."
     }
   ],
   "samples": [
     {
-      "sample_id": "sample_05c",
-      "paper_id": "paper_001",
+      "sample_id": "sample_05c_01",
+      "paper_id": null,
       "alloy_id": "alloy_05c",
-      "process_id": "proc_05c_01"
+      "process_id": "proc_common_01"
     },
     {
-      "sample_id": "sample_08c",
-      "paper_id": "paper_001",
+      "sample_id": "sample_08c_01",
+      "paper_id": null,
       "alloy_id": "alloy_08c",
-      "process_id": "proc_08c_01"
+      "process_id": "proc_common_01"
     },
     {
-      "sample_id": "sample_12c",
-      "paper_id": "paper_001",
+      "sample_id": "sample_12c_01",
+      "paper_id": null,
       "alloy_id": "alloy_12c",
-      "process_id": "proc_12c_01"
+      "process_id": "proc_common_01"
     }
   ],
   "processing_steps": [
     {
-      "sample_id": "sample_05c",
-      "paper_id": "paper_001",
+      "sample_id": "sample_05c_01",
+      "paper_id": null,
       "sequence": "1",
-      "type": "melting",
-      "method": "induction melting",
-      "temperature": null,
-      "unit": null,
+      "type": "thermomechanical_processing",
+      "method": "Induction melting and forging",
+      "temperature": "1200",
+      "unit": "C",
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "Under argon atmosphere."
+      "processing_steps_notes": "Forging and homogenization."
     },
     {
-      "sample_id": "sample_05c",
-      "paper_id": "paper_001",
+      "sample_id": "sample_05c_01",
+      "paper_id": null,
       "sequence": "2",
       "type": "thermomechanical_processing",
-      "method": "forging",
-      "temperature": "1200",
-      "unit": "C",
-      "duration": null,
-      "cooling_medium": null,
-      "reduction_ratio": null,
-      "processing_steps_notes": null
-    },
-    {
-      "sample_id": "sample_05c",
-      "paper_id": "paper_001",
-      "sequence": "3",
-      "type": "heat_treatment",
-      "method": "homogenization",
-      "temperature": "1200",
-      "unit": "C",
-      "duration": "3",
-      "cooling_medium": null,
-      "reduction_ratio": null,
-      "processing_steps_notes": "Same temperature as forging."
-    },
-    {
-      "sample_id": "sample_05c",
-      "paper_id": "paper_001",
-      "sequence": "4",
-      "type": "thermomechanical_processing",
-      "method": "hot rolling",
+      "method": "Hot rolling",
       "temperature": null,
       "unit": null,
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": "90",
-      "processing_steps_notes": "To thickness of 3.5 mm."
+      "processing_steps_notes": "Rolled to 3.5 mm thickness."
     },
     {
-      "sample_id": "sample_05c",
-      "paper_id": "paper_001",
-      "sequence": "5",
+      "sample_id": "sample_05c_01",
+      "paper_id": null,
+      "sequence": "3",
       "type": "heat_treatment",
-      "method": "annealing",
+      "method": "Annealing",
       "temperature": "1000",
       "unit": "C",
       "duration": "1",
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": null
+      "processing_steps_notes": "Hot rolled strips annealed."
     },
     {
-      "sample_id": "sample_05c",
-      "paper_id": "paper_001",
-      "sequence": "6",
+      "sample_id": "sample_05c_01",
+      "paper_id": null,
+      "sequence": "4",
       "type": "mechanical_processing",
-      "method": "cold rolling",
+      "method": "Cold rolling",
       "temperature": null,
       "unit": null,
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "To thickness of 1 mm."
+      "processing_steps_notes": "Rolled to 1 mm thickness."
     },
     {
-      "sample_id": "sample_05c",
-      "paper_id": "paper_001",
-      "sequence": "7",
+      "sample_id": "sample_05c_01",
+      "paper_id": null,
+      "sequence": "5",
       "type": "heat_treatment",
-      "method": "annealing",
+      "method": "Annealing and Quenching",
       "temperature": "1000",
       "unit": "C",
-      "duration": "1",
-      "cooling_medium": null,
-      "reduction_ratio": null,
-      "processing_steps_notes": null
-    },
-    {
-      "sample_id": "sample_05c",
-      "paper_id": "paper_001",
-      "sequence": "8",
-      "type": "heat_treatment",
-      "method": "water quenching",
-      "temperature": null,
-      "unit": null,
       "duration": null,
       "cooling_medium": "water",
       "reduction_ratio": null,
-      "processing_steps_notes": "To room temperature."
+      "processing_steps_notes": "Final heat treatment."
     },
     {
-      "sample_id": "sample_08c",
-      "paper_id": "paper_001",
+      "sample_id": "sample_08c_01",
+      "paper_id": null,
       "sequence": "1",
-      "type": "melting",
-      "method": "induction melting",
-      "temperature": null,
-      "unit": null,
+      "type": "thermomechanical_processing",
+      "method": "Induction melting and forging",
+      "temperature": "1200",
+      "unit": "C",
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "Under argon atmosphere."
+      "processing_steps_notes": "Same as sample_05c_01."
     },
     {
-      "sample_id": "sample_08c",
-      "paper_id": "paper_001",
+      "sample_id": "sample_08c_01",
+      "paper_id": null,
       "sequence": "2",
       "type": "thermomechanical_processing",
-      "method": "forging",
-      "temperature": "1200",
-      "unit": "C",
-      "duration": null,
-      "cooling_medium": null,
-      "reduction_ratio": null,
-      "processing_steps_notes": null
-    },
-    {
-      "sample_id": "sample_08c",
-      "paper_id": "paper_001",
-      "sequence": "3",
-      "type": "heat_treatment",
-      "method": "homogenization",
-      "temperature": "1200",
-      "unit": "C",
-      "duration": "3",
-      "cooling_medium": null,
-      "reduction_ratio": null,
-      "processing_steps_notes": "Same temperature as forging."
-    },
-    {
-      "sample_id": "sample_08c",
-      "paper_id": "paper_001",
-      "sequence": "4",
-      "type": "thermomechanical_processing",
-      "method": "hot rolling",
+      "method": "Hot rolling",
       "temperature": null,
       "unit": null,
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": "90",
-      "processing_steps_notes": "To thickness of 3.5 mm."
+      "processing_steps_notes": "Same as sample_05c_01."
     },
     {
-      "sample_id": "sample_08c",
-      "paper_id": "paper_001",
-      "sequence": "5",
+      "sample_id": "sample_08c_01",
+      "paper_id": null,
+      "sequence": "3",
       "type": "heat_treatment",
-      "method": "annealing",
+      "method": "Annealing",
       "temperature": "1000",
       "unit": "C",
       "duration": "1",
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": null
+      "processing_steps_notes": "Same as sample_05c_01."
     },
     {
-      "sample_id": "sample_08c",
-      "paper_id": "paper_001",
-      "sequence": "6",
+      "sample_id": "sample_08c_01",
+      "paper_id": null,
+      "sequence": "4",
       "type": "mechanical_processing",
-      "method": "cold rolling",
+      "method": "Cold rolling",
       "temperature": null,
       "unit": null,
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "To thickness of 1 mm."
+      "processing_steps_notes": "Same as sample_05c_01."
     },
     {
-      "sample_id": "sample_08c",
-      "paper_id": "paper_001",
-      "sequence": "7",
+      "sample_id": "sample_08c_01",
+      "paper_id": null,
+      "sequence": "5",
       "type": "heat_treatment",
-      "method": "annealing",
+      "method": "Annealing and Quenching",
       "temperature": "1000",
       "unit": "C",
-      "duration": "1",
-      "cooling_medium": null,
-      "reduction_ratio": null,
-      "processing_steps_notes": null
-    },
-    {
-      "sample_id": "sample_08c",
-      "paper_id": "paper_001",
-      "sequence": "8",
-      "type": "heat_treatment",
-      "method": "water quenching",
-      "temperature": null,
-      "unit": null,
       "duration": null,
       "cooling_medium": "water",
       "reduction_ratio": null,
-      "processing_steps_notes": "To room temperature."
+      "processing_steps_notes": "Same as sample_05c_01."
     },
     {
-      "sample_id": "sample_12c",
-      "paper_id": "paper_001",
+      "sample_id": "sample_12c_01",
+      "paper_id": null,
       "sequence": "1",
-      "type": "melting",
-      "method": "induction melting",
-      "temperature": null,
-      "unit": null,
+      "type": "thermomechanical_processing",
+      "method": "Induction melting and forging",
+      "temperature": "1200",
+      "unit": "C",
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "Under argon atmosphere."
+      "processing_steps_notes": "Same as sample_05c_01."
     },
     {
-      "sample_id": "sample_12c",
-      "paper_id": "paper_001",
+      "sample_id": "sample_12c_01",
+      "paper_id": null,
       "sequence": "2",
       "type": "thermomechanical_processing",
-      "method": "forging",
-      "temperature": "1200",
-      "unit": "C",
-      "duration": null,
-      "cooling_medium": null,
-      "reduction_ratio": null,
-      "processing_steps_notes": null
-    },
-    {
-      "sample_id": "sample_12c",
-      "paper_id": "paper_001",
-      "sequence": "3",
-      "type": "heat_treatment",
-      "method": "homogenization",
-      "temperature": "1200",
-      "unit": "C",
-      "duration": "3",
-      "cooling_medium": null,
-      "reduction_ratio": null,
-      "processing_steps_notes": "Same temperature as forging."
-    },
-    {
-      "sample_id": "sample_12c",
-      "paper_id": "paper_001",
-      "sequence": "4",
-      "type": "thermomechanical_processing",
-      "method": "hot rolling",
+      "method": "Hot rolling",
       "temperature": null,
       "unit": null,
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": "90",
-      "processing_steps_notes": "To thickness of 3.5 mm."
+      "processing_steps_notes": "Same as sample_05c_01."
     },
     {
-      "sample_id": "sample_12c",
-      "paper_id": "paper_001",
-      "sequence": "5",
+      "sample_id": "sample_12c_01",
+      "paper_id": null,
+      "sequence": "3",
       "type": "heat_treatment",
-      "method": "annealing",
+      "method": "Annealing",
       "temperature": "1000",
       "unit": "C",
       "duration": "1",
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": null
+      "processing_steps_notes": "Same as sample_05c_01."
     },
     {
-      "sample_id": "sample_12c",
-      "paper_id": "paper_001",
-      "sequence": "6",
+      "sample_id": "sample_12c_01",
+      "paper_id": null,
+      "sequence": "4",
       "type": "mechanical_processing",
-      "method": "cold rolling",
+      "method": "Cold rolling",
       "temperature": null,
       "unit": null,
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "To thickness of 1 mm."
+      "processing_steps_notes": "Same as sample_05c_01."
     },
     {
-      "sample_id": "sample_12c",
-      "paper_id": "paper_001",
-      "sequence": "7",
+      "sample_id": "sample_12c_01",
+      "paper_id": null,
+      "sequence": "5",
       "type": "heat_treatment",
-      "method": "annealing",
+      "method": "Annealing and Quenching",
       "temperature": "1000",
       "unit": "C",
-      "duration": "1",
-      "cooling_medium": null,
-      "reduction_ratio": null,
-      "processing_steps_notes": null
-    },
-    {
-      "sample_id": "sample_12c",
-      "paper_id": "paper_001",
-      "sequence": "8",
-      "type": "heat_treatment",
-      "method": "water quenching",
-      "temperature": null,
-      "unit": null,
       "duration": null,
       "cooling_medium": "water",
       "reduction_ratio": null,
-      "processing_steps_notes": "To room temperature."
+      "processing_steps_notes": "Same as sample_05c_01."
     }
   ],
   "structures": [
     {
       "structure_id": "struct_05c",
-      "sample_id": "sample_05c",
+      "sample_id": "sample_05c_01",
       "overall_structure": "Duplex ferritic–austenitic structure",
       "number_of_phases": "2",
       "microstructure_counts": null,
@@ -684,7 +574,7 @@ Let's assemble.
           ],
           "defects": [
             {
-              "type": "dislocation tangles",
+              "type": "Dislocation tangles",
               "porosity": null,
               "inclusions": [],
               "dislocation_density": null,
@@ -705,9 +595,9 @@ Let's assemble.
     },
     {
       "structure_id": "struct_08c",
-      "sample_id": "sample_08c",
+      "sample_id": "sample_08c_01",
       "overall_structure": "Duplex ferritic–austenitic structure with ordered phases",
-      "number_of_phases": "4",
+      "number_of_phases": "3",
       "microstructure_counts": null,
       "microstructure_list": [
         {
@@ -731,15 +621,7 @@ Let's assemble.
               "texture": null
             },
             {
-              "phase_name": "B2",
-              "crystal_structure": null,
-              "volume_fraction": null,
-              "morphology": null,
-              "grain_size": null,
-              "texture": null
-            },
-            {
-              "phase_name": "DO3",
+              "phase_name": "Ordered phases (B2, DO3)",
               "crystal_structure": null,
               "volume_fraction": null,
               "morphology": null,
@@ -749,7 +631,7 @@ Let's assemble.
           ],
           "defects": [
             {
-              "type": "kappa carbides",
+              "type": "Kappa carbides",
               "porosity": null,
               "inclusions": [],
               "dislocation_density": null,
@@ -766,8 +648,8 @@ Let's assemble.
           },
           "precipitates": [
             {
-              "precipitate_id": "precip_08c_01",
-              "type": "kappa carbide",
+              "precipitate_id": null,
+              "type": "Kappa carbide",
               "size": {
                 "value": null,
                 "unit": null
@@ -781,7 +663,7 @@ Let's assemble.
     },
     {
       "structure_id": "struct_12c",
-      "sample_id": "sample_12c",
+      "sample_id": "sample_12c_01",
       "overall_structure": "Fully austenitic microstructure with kappa carbides",
       "number_of_phases": "2",
       "microstructure_counts": null,
@@ -793,13 +675,13 @@ Let's assemble.
             {
               "phase_name": "Austenite",
               "crystal_structure": null,
-              "volume_fraction": null,
+              "volume_fraction": "100",
               "morphology": null,
               "grain_size": null,
               "texture": null
             },
             {
-              "phase_name": "kappa carbides",
+              "phase_name": "Kappa carbides",
               "crystal_structure": null,
               "volume_fraction": null,
               "morphology": null,
@@ -809,7 +691,7 @@ Let's assemble.
           ],
           "defects": [
             {
-              "type": "annealing twins",
+              "type": "Annealing twins",
               "porosity": null,
               "inclusions": [],
               "dislocation_density": null,
@@ -826,8 +708,8 @@ Let's assemble.
           },
           "precipitates": [
             {
-              "precipitate_id": "precip_12c_01",
-              "type": "kappa carbide",
+              "precipitate_id": null,
+              "type": "Kappa carbide",
               "size": {
                 "value": null,
                 "unit": null
@@ -842,8 +724,8 @@ Let's assemble.
   ],
   "interfaces": [
     {
-      "interface_set_id": "interface_001",
-      "sample_id": "sample_05c",
+      "interface_set_id": "iface_05c",
+      "sample_id": "sample_05c_01",
       "phases": [
         {
           "interface_id": "iface_05c_01",
@@ -853,13 +735,27 @@ Let's assemble.
           "coherence": null
         }
       ],
-      "defect_interaction": [],
-      "interface_notes": [],
-      "phase_evolution": "Duplex structure maintained during deformation."
+      "defect_interaction": [
+        {
+          "interaction_id": null,
+          "microstructure_uuid": "uuid_05c_01",
+          "interaction_type": "Dislocation tangles in ferrite",
+          "quality_description": null
+        }
+      ],
+      "interface_notes": [
+        {
+          "stress_strain_distribution": null
+        },
+        {
+          "slippage_situation": null
+        }
+      ],
+      "phase_evolution": "Planar slip in austenite, dislocation tangles in ferrite during deformation."
     },
     {
-      "interface_set_id": "interface_002",
-      "sample_id": "sample_08c",
+      "interface_set_id": "iface_08c",
+      "sample_id": "sample_08c_01",
       "phases": [
         {
           "interface_id": "iface_08c_01",
@@ -867,42 +763,117 @@ Let's assemble.
           "phase_1_name": "Ferrite",
           "phase_2_name": "Austenite",
           "coherence": null
+        },
+        {
+          "interface_id": "iface_08c_02",
+          "microstructure_uuid": "uuid_08c_01",
+          "phase_1_name": "Ferrite",
+          "phase_2_name": "Ordered phases",
+          "coherence": null
+        },
+        {
+          "interface_id": "iface_08c_03",
+          "microstructure_uuid": "uuid_08c_01",
+          "phase_1_name": "Austenite",
+          "phase_2_name": "Kappa carbides",
+          "coherence": null
         }
       ],
-      "defect_interaction": [],
-      "interface_notes": [],
-      "phase_evolution": "Duplex structure maintained during deformation."
+      "defect_interaction": [
+        {
+          "interaction_id": null,
+          "microstructure_uuid": "uuid_08c_01",
+          "interaction_type": "Dislocation pairing in ferrite",
+          "quality_description": null
+        }
+      ],
+      "interface_notes": [
+        {
+          "stress_strain_distribution": null
+        },
+        {
+          "slippage_situation": null
+        }
+      ],
+      "phase_evolution": "Microbands in austenite, dense dislocation tangles in ferrite."
     },
     {
-      "interface_set_id": "interface_003",
-      "sample_id": "sample_12c",
+      "interface_set_id": "iface_12c",
+      "sample_id": "sample_12c_01",
       "phases": [
         {
           "interface_id": "iface_12c_01",
           "microstructure_uuid": "uuid_12c_01",
           "phase_1_name": "Austenite",
-          "phase_2_name": "kappa carbides",
+          "phase_2_name": "Kappa carbides",
           "coherence": null
         }
       ],
-      "defect_interaction": [],
-      "interface_notes": [],
-      "phase_evolution": "Fully austenitic matrix with dispersed kappa carbides."
+      "defect_interaction": [
+        {
+          "interaction_id": null,
+          "microstructure_uuid": "uuid_12c_01",
+          "interaction_type": "Microband interaction",
+          "quality_description": null
+        }
+      ],
+      "interface_notes": [
+        {
+          "stress_strain_distribution": null
+        },
+        {
+          "slippage_situation": null
+        }
+      ],
+      "phase_evolution": "Taylor lattice-like structure, well-developed microbands, microband interaction at high strain."
     }
   ],
   "properties": [
     {
       "property_set_id": "prop_05c",
-      "sample_id": "sample_05c",
+      "sample_id": "sample_05c_01",
       "mechanical": {
         "tensile_properties": {
-          "yield_strength": [],
-          "ultimate_tensile_strength": [],
-          "elongation": [],
+          "yield_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ],
+          "ultimate_tensile_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null,
+              "others": {
+                "uncertainty": null
+              }
+            }
+          ],
+          "elongation": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ],
           "youngs_modulus": null,
           "stress_strain_curves": null,
-          "stress_strain_distribution": [],
-          "strain_hardening_rate": []
+          "stress_strain_distribution": [
+            {
+              "direction": null,
+              "distribution": null
+            }
+          ],
+          "strain_hardening_rate": [
+            {
+              "property_id": null,
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ]
         },
         "hardness": [],
         "fracture_toughness": {
@@ -956,10 +927,16 @@ Let's assemble.
     },
     {
       "property_set_id": "prop_08c",
-      "sample_id": "sample_08c",
+      "sample_id": "sample_08c_01",
       "mechanical": {
         "tensile_properties": {
-          "yield_strength": [],
+          "yield_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ],
           "ultimate_tensile_strength": [
             {
               "direction": null,
@@ -979,8 +956,20 @@ Let's assemble.
           ],
           "youngs_modulus": null,
           "stress_strain_curves": null,
-          "stress_strain_distribution": [],
-          "strain_hardening_rate": []
+          "stress_strain_distribution": [
+            {
+              "direction": null,
+              "distribution": null
+            }
+          ],
+          "strain_hardening_rate": [
+            {
+              "property_id": null,
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ]
         },
         "hardness": [],
         "fracture_toughness": {
@@ -1034,10 +1023,16 @@ Let's assemble.
     },
     {
       "property_set_id": "prop_12c",
-      "sample_id": "sample_12c",
+      "sample_id": "sample_12c_01",
       "mechanical": {
         "tensile_properties": {
-          "yield_strength": [],
+          "yield_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ],
           "ultimate_tensile_strength": [
             {
               "direction": null,
@@ -1057,8 +1052,20 @@ Let's assemble.
           ],
           "youngs_modulus": null,
           "stress_strain_curves": null,
-          "stress_strain_distribution": [],
-          "strain_hardening_rate": []
+          "stress_strain_distribution": [
+            {
+              "direction": null,
+              "distribution": null
+            }
+          ],
+          "strain_hardening_rate": [
+            {
+              "property_id": null,
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ]
         },
         "hardness": [],
         "fracture_toughness": {
@@ -1114,12 +1121,12 @@ Let's assemble.
   "performance": [
     {
       "performance_id": "perf_05c",
-      "sample_id": "sample_05c",
+      "sample_id": "sample_05c_01",
       "service_conditions": {
         "operating_temperature": {
           "min": null,
           "max": null,
-          "unit": null
+          "unit": "C"
         },
         "stress_state": null,
         "environment": null
@@ -1138,12 +1145,12 @@ Let's assemble.
     },
     {
       "performance_id": "perf_08c",
-      "sample_id": "sample_08c",
+      "sample_id": "sample_08c_01",
       "service_conditions": {
         "operating_temperature": {
           "min": null,
           "max": null,
-          "unit": null
+          "unit": "C"
         },
         "stress_state": null,
         "environment": null
@@ -1154,7 +1161,7 @@ Let's assemble.
         "confidence_interval": null
       },
       "comparative_performance": {
-        "benchmark_alloy": null,
+        "benchmark_alloy": "Fe–20Mn–10Al–1.2C steel",
         "benchmark_process_id": null,
         "benchmark_sample_id": null,
         "improvement_percentage": null
@@ -1162,12 +1169,12 @@ Let's assemble.
     },
     {
       "performance_id": "perf_12c",
-      "sample_id": "sample_12c",
+      "sample_id": "sample_12c_01",
       "service_conditions": {
         "operating_temperature": {
           "min": null,
           "max": null,
-          "unit": null
+          "unit": "C"
         },
         "stress_state": null,
         "environment": null
@@ -1178,7 +1185,7 @@ Let's assemble.
         "confidence_interval": null
       },
       "comparative_performance": {
-        "benchmark_alloy": null,
+        "benchmark_alloy": "Fe–27Mn–12Al–0.8C steel",
         "benchmark_process_id": null,
         "benchmark_sample_id": null,
         "improvement_percentage": null
@@ -1188,7 +1195,7 @@ Let's assemble.
   "characterization_methods": [
     {
       "characterization_id": "char_05c_01",
-      "sample_id": "sample_05c",
+      "sample_id": "sample_05c_01",
       "microstructure_uuid": "uuid_05c_01",
       "technique": "Optical microscopy",
       "purpose": "Microstructure observation",
@@ -1196,31 +1203,23 @@ Let's assemble.
     },
     {
       "characterization_id": "char_05c_02",
-      "sample_id": "sample_05c",
+      "sample_id": "sample_05c_01",
       "microstructure_uuid": "uuid_05c_01",
       "technique": "TEM",
-      "purpose": "Phase identification and defect analysis",
-      "key_findings": "No precipitates in austenite and ferrite phases."
+      "purpose": "Microstructure analysis",
+      "key_findings": "No precipitates in austenite or ferrite."
     },
     {
       "characterization_id": "char_05c_03",
-      "sample_id": "sample_05c",
-      "microstructure_uuid": null,
-      "technique": "Image analysis",
-      "purpose": "Volume fraction measurement",
-      "key_findings": "Austenite fraction ~59.2%."
-    },
-    {
-      "characterization_id": "char_05c_04",
-      "sample_id": "sample_05c",
+      "sample_id": "sample_05c_01",
       "microstructure_uuid": null,
       "technique": "Tensile testing",
-      "purpose": "Mechanical property evaluation",
-      "key_findings": "Strain hardening behavior analysis."
+      "purpose": "Mechanical properties",
+      "key_findings": "Two-stage strain hardening behavior."
     },
     {
       "characterization_id": "char_08c_01",
-      "sample_id": "sample_08c",
+      "sample_id": "sample_08c_01",
       "microstructure_uuid": "uuid_08c_01",
       "technique": "Optical microscopy",
       "purpose": "Microstructure observation",
@@ -1228,82 +1227,50 @@ Let's assemble.
     },
     {
       "characterization_id": "char_08c_02",
-      "sample_id": "sample_08c",
+      "sample_id": "sample_08c_01",
       "microstructure_uuid": "uuid_08c_01",
       "technique": "TEM",
-      "purpose": "Phase identification and defect analysis",
+      "purpose": "Microstructure analysis",
       "key_findings": "B2 domains with fine DO3 particles in ferrite, kappa carbides in austenite."
     },
     {
       "characterization_id": "char_08c_03",
-      "sample_id": "sample_08c",
-      "microstructure_uuid": null,
-      "technique": "Image analysis",
-      "purpose": "Volume fraction measurement",
-      "key_findings": "Austenite fraction ~84.8%."
-    },
-    {
-      "characterization_id": "char_08c_04",
-      "sample_id": "sample_08c",
+      "sample_id": "sample_08c_01",
       "microstructure_uuid": null,
       "technique": "Tensile testing",
-      "purpose": "Mechanical property evaluation",
-      "key_findings": "Highest tensile strength ~979 MPa."
+      "purpose": "Mechanical properties",
+      "key_findings": "Two-stage strain hardening behavior."
     },
     {
       "characterization_id": "char_12c_01",
-      "sample_id": "sample_12c",
+      "sample_id": "sample_12c_01",
       "microstructure_uuid": "uuid_12c_01",
       "technique": "Optical microscopy",
       "purpose": "Microstructure observation",
-      "key_findings": "Fully austenitic microstructure with annealing twins."
+      "key_findings": "Fully austenitic with annealing twins."
     },
     {
       "characterization_id": "char_12c_02",
-      "sample_id": "sample_12c",
+      "sample_id": "sample_12c_01",
       "microstructure_uuid": "uuid_12c_01",
       "technique": "TEM",
-      "purpose": "Phase identification and defect analysis",
+      "purpose": "Microstructure analysis",
       "key_findings": "Kappa carbides in austenite matrix."
     },
     {
       "characterization_id": "char_12c_03",
-      "sample_id": "sample_12c",
-      "microstructure_uuid": null,
-      "technique": "Image analysis",
-      "purpose": "Volume fraction measurement",
-      "key_findings": "Fully austenitic."
-    },
-    {
-      "characterization_id": "char_12c_04",
-      "sample_id": "sample_12c",
+      "sample_id": "sample_12c_01",
       "microstructure_uuid": null,
       "technique": "Tensile testing",
-      "purpose": "Mechanical property evaluation",
-      "key_findings": "Superior combination of strength and ductility (UTS 946.7 MPa, Elongation 56%)."
+      "purpose": "Mechanical properties",
+      "key_findings": "Three-stage strain hardening behavior."
     }
   ],
-  "computational_details": [
-    {
-      "computation_id": "comp_001",
-      "sample_id": null,
-      "simulation_method": null,
-      "software_used": null,
-      "potential_model": null,
-      "validation_against_experiment": null,
-      "analytical_model": [
-        {
-          "model_name": "SFE calculation model",
-          "equation_role": "Calculate stacking fault energy of austenite",
-          "parameters": null,
-          "model_note": "Used previously to determine SFE values."
-        }
-      ]
-    }
-  ],
+  "computational_details": [],
   "unmapped_findings": [
-    "SFE values calculated using a model: 0.5C steel 73.4 mJ/m2, 0.8C steel 77.9 mJ/m2, 1.2C steel 84.5 mJ/m2.",
-    "Strain hardening behavior: 0.5C and 0.8C steels exhibit two-stage strain hardening, 1.2C steel exhibits three-stage strain hardening.",
-    "Specific strength of 0.8C steel is 142.3 MPa cm3/g."
+    "Table 1 (Chemical compositions) and Table 2 (Mechanical properties) content are referenced but not fully detailed in the text stream; specific values for 0.5C steel yield strength and UTS are not explicitly provided in the text summary.",
+    "Grain size comparison mentioned (0.8C smaller than 1.2C) but no numerical values provided.",
+    "Stacking fault energy (SFE) values are provided in text (73.4, 77.9, 84.5 mJ/m2) but not mapped to specific property fields in schema.",
+    "Specific strength value for 0.8C steel (142.3 MPa cm3/g) is mentioned but not mapped to standard property fields."
   ]
 }

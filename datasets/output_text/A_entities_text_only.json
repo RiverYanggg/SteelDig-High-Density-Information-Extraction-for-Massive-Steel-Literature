@@ -23,14 +23,14 @@
         "Tensile properties"
       ],
       "research_type": "experimental",
-      "paper_scope": "Investigation of the effects of alloy composition, cold rolling, and heat treatment temperature on microstructural evolution and mechanical properties of Fe-Mn-Al-C-(Ni) based austenitic low-density steels."
+      "paper_scope": "Investigation of microstructural evolution and mechanical properties of Fe-Mn-Al-C-(Ni) based austenitic low-density steels under cold rolling and subsequent heat treatment."
     }
   ],
   "alloys": [
     {
       "alloy_id": "alloy_28mn0ni",
       "paper_id": "paper_001",
-      "alloy_name": "Fe-28Mn–9Al-0.9C",
+      "alloy_name": "Fe-28Mn-9Al-0.9C",
       "aliases": [
         "28Mn0Ni"
       ],
@@ -62,7 +62,7 @@
     {
       "alloy_id": "alloy_28mn5ni",
       "paper_id": "paper_001",
-      "alloy_name": "Fe-28Mn–9Al-0.9C-5Ni",
+      "alloy_name": "Fe-28Mn-9Al-0.9C-5Ni",
       "aliases": [
         "28Mn5Ni"
       ],
@@ -95,12 +95,12 @@
           "atomic_percent": null
         }
       ],
-      "alloys_notes": "Ni-containing low-density steel."
+      "alloys_notes": "High Mn Ni-containing low-density steel."
     },
     {
       "alloy_id": "alloy_15mn5ni",
       "paper_id": "paper_001",
-      "alloy_name": "Fe-15Mn–9Al-0.9C-5Ni",
+      "alloy_name": "Fe-15Mn-9Al-0.9C-5Ni",
       "aliases": [
         "15Mn5Ni"
       ],
@@ -133,44 +133,37 @@
           "atomic_percent": null
         }
       ],
-      "alloys_notes": "Ni-containing low-density steel with lower Mn content."
+      "alloys_notes": "Lower Mn Ni-containing low-density steel."
     }
   ],
   "processes": [
     {
-      "process_id": "proc_vim_01",
-      "paper_id": "paper_001",
-      "alloy_id": null,
-      "description": "Vacuum induction melting route for preparing ingots.",
-      "processes_notes": null
-    },
-    {
-      "process_id": "proc_hom_01",
+      "process_id": "proc_homogenization",
       "paper_id": "paper_001",
       "alloy_id": null,
       "description": "Homogenization at 1423 K for 2.5 h.",
-      "processes_notes": null
+      "processes_notes": "Sound portion of 30 kg ingot."
     },
     {
-      "process_id": "proc_hr_01",
+      "process_id": "proc_hr",
       "paper_id": "paper_001",
       "alloy_id": null,
-      "description": "Hot rolling at 1323 K.",
-      "processes_notes": "Final thickness of hot rolled plate was about 13 mm."
+      "description": "Hot rolling at 1323 K. Final thickness about 13 mm.",
+      "processes_notes": "Referred to as HR."
     },
     {
-      "process_id": "proc_cr_01",
+      "process_id": "proc_cr",
       "paper_id": "paper_001",
       "alloy_id": null,
-      "description": "Cold rolling to ~50% reduction in thickness at room temperature.",
-      "processes_notes": "Samples denoted with HR + CR."
+      "description": "Cold rolling to approximately 50% reduction in thickness at room temperature.",
+      "processes_notes": "Referred to as CR. Samples denoted HR+CR."
     },
     {
-      "process_id": "proc_ht_01",
+      "process_id": "proc_ht",
       "paper_id": "paper_001",
       "alloy_id": null,
-      "description": "Heat treatment in the temperature range of 873 K–1273 K for 1 h followed by water quenching.",
-      "processes_notes": "Heat-treated samples referred with the heat treatment temperature."
+      "description": "Heat treatment in temperature range 873 K–1273 K for 1 h followed by water quenching.",
+      "processes_notes": "Referred to by heat treatment temperature."
     }
   ],
   "samples": [
@@ -178,91 +171,79 @@
       "sample_id": "sample_28mn0ni_hr",
       "paper_id": "paper_001",
       "alloy_id": "alloy_28mn0ni",
-      "process_id": "proc_hr_01"
+      "process_id": "proc_hr"
     },
     {
       "sample_id": "sample_28mn0ni_cr",
       "paper_id": "paper_001",
       "alloy_id": "alloy_28mn0ni",
-      "process_id": "proc_cr_01"
+      "process_id": "proc_cr"
     },
     {
       "sample_id": "sample_28mn0ni_ht_973",
       "paper_id": "paper_001",
       "alloy_id": "alloy_28mn0ni",
-      "process_id": "proc_ht_01"
+      "process_id": "proc_ht"
     },
     {
       "sample_id": "sample_28mn0ni_ht_1023",
       "paper_id": "paper_001",
       "alloy_id": "alloy_28mn0ni",
-      "process_id": "proc_ht_01"
+      "process_id": "proc_ht"
     },
     {
       "sample_id": "sample_28mn0ni_ht_1173",
       "paper_id": "paper_001",
       "alloy_id": "alloy_28mn0ni",
-      "process_id": "proc_ht_01"
+      "process_id": "proc_ht"
     },
     {
       "sample_id": "sample_28mn5ni_hr",
       "paper_id": "paper_001",
       "alloy_id": "alloy_28mn5ni",
-      "process_id": "proc_hr_01"
+      "process_id": "proc_hr"
     },
     {
       "sample_id": "sample_28mn5ni_cr",
       "paper_id": "paper_001",
       "alloy_id": "alloy_28mn5ni",
-      "process_id": "proc_cr_01"
+      "process_id": "proc_cr"
     },
     {
       "sample_id": "sample_28mn5ni_ht_973",
       "paper_id": "paper_001",
       "alloy_id": "alloy_28mn5ni",
-      "process_id": "proc_ht_01"
-    },
-    {
-      "sample_id": "sample_28mn5ni_ht_1023",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn5ni",
-      "process_id": "proc_ht_01"
+      "process_id": "proc_ht"
     },
     {
       "sample_id": "sample_28mn5ni_ht_1173",
       "paper_id": "paper_001",
       "alloy_id": "alloy_28mn5ni",
-      "process_id": "proc_ht_01"
+      "process_id": "proc_ht"
     },
     {
       "sample_id": "sample_15mn5ni_hr",
       "paper_id": "paper_001",
       "alloy_id": "alloy_15mn5ni",
-      "process_id": "proc_hr_01"
+      "process_id": "proc_hr"
     },
     {
       "sample_id": "sample_15mn5ni_cr",
       "paper_id": "paper_001",
       "alloy_id": "alloy_15mn5ni",
-      "process_id": "proc_cr_01"
+      "process_id": "proc_cr"
     },
     {
       "sample_id": "sample_15mn5ni_ht_973",
       "paper_id": "paper_001",
       "alloy_id": "alloy_15mn5ni",
-      "process_id": "proc_ht_01"
-    },
-    {
-      "sample_id": "sample_15mn5ni_ht_1023",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_15mn5ni",
-      "process_id": "proc_ht_01"
+      "process_id": "proc_ht"
     },
     {
       "sample_id": "sample_15mn5ni_ht_1173",
       "paper_id": "paper_001",
       "alloy_id": "alloy_15mn5ni",
-      "process_id": "proc_ht_01"
+      "process_id": "proc_ht"
     }
   ],
   "processing_steps": [
@@ -270,86 +251,164 @@
       "sample_id": "sample_28mn0ni_hr",
       "paper_id": "paper_001",
       "sequence": "1",
-      "type": "heat_treatment",
-      "method": "Vacuum induction melting",
+      "type": "thermomechanical_processing",
+      "method": "Homogenization",
       "temperature": "1423",
       "unit": "K",
       "duration": "2.5",
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "Homogenization."
+      "processing_steps_notes": "Sound portion of 30 kg ingot."
     },
     {
       "sample_id": "sample_28mn0ni_hr",
       "paper_id": "paper_001",
       "sequence": "2",
       "type": "thermomechanical_processing",
-      "method": "Hot rolling",
+      "method": "Hot Rolling",
       "temperature": "1323",
       "unit": "K",
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "Final thickness ~13 mm."
+      "processing_steps_notes": "Final thickness about 13 mm."
     },
     {
       "sample_id": "sample_28mn0ni_cr",
       "paper_id": "paper_001",
       "sequence": "3",
       "type": "mechanical_processing",
-      "method": "Cold rolling",
+      "method": "Cold Rolling",
       "temperature": null,
-      "unit": "K",
+      "unit": null,
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": "50",
-      "processing_steps_notes": "Room temperature."
+      "processing_steps_notes": "At room temperature. Samples denoted HR+CR."
     },
     {
       "sample_id": "sample_28mn0ni_ht_973",
       "paper_id": "paper_001",
       "sequence": "4",
       "type": "heat_treatment",
-      "method": "Heat treatment",
+      "method": "Heat Treatment",
       "temperature": "973",
       "unit": "K",
       "duration": "1",
-      "cooling_medium": "water",
+      "cooling_medium": "Water",
       "reduction_ratio": null,
-      "processing_steps_notes": "Water quenching."
+      "processing_steps_notes": "Quenching after heat treatment."
     },
     {
       "sample_id": "sample_28mn0ni_ht_1023",
       "paper_id": "paper_001",
       "sequence": "4",
       "type": "heat_treatment",
-      "method": "Heat treatment",
+      "method": "Heat Treatment",
       "temperature": "1023",
       "unit": "K",
       "duration": "1",
-      "cooling_medium": "water",
+      "cooling_medium": "Water",
       "reduction_ratio": null,
-      "processing_steps_notes": "Water quenching."
+      "processing_steps_notes": "Quenching after heat treatment."
     },
     {
       "sample_id": "sample_28mn0ni_ht_1173",
       "paper_id": "paper_001",
       "sequence": "4",
       "type": "heat_treatment",
-      "method": "Heat treatment",
+      "method": "Heat Treatment",
       "temperature": "1173",
       "unit": "K",
       "duration": "1",
-      "cooling_medium": "water",
+      "cooling_medium": "Water",
       "reduction_ratio": null,
-      "processing_steps_notes": "Water quenching."
+      "processing_steps_notes": "Quenching after heat treatment."
+    },
+    {
+      "sample_id": "sample_28mn5ni_cr",
+      "paper_id": "paper_001",
+      "sequence": "3",
+      "type": "mechanical_processing",
+      "method": "Cold Rolling",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": "50",
+      "processing_steps_notes": "At room temperature."
+    },
+    {
+      "sample_id": "sample_28mn5ni_ht_973",
+      "paper_id": "paper_001",
+      "sequence": "4",
+      "type": "heat_treatment",
+      "method": "Heat Treatment",
+      "temperature": "973",
+      "unit": "K",
+      "duration": "1",
+      "cooling_medium": "Water",
+      "reduction_ratio": null,
+      "processing_steps_notes": "Quenching after heat treatment."
+    },
+    {
+      "sample_id": "sample_28mn5ni_ht_1173",
+      "paper_id": "paper_001",
+      "sequence": "4",
+      "type": "heat_treatment",
+      "method": "Heat Treatment",
+      "temperature": "1173",
+      "unit": "K",
+      "duration": "1",
+      "cooling_medium": "Water",
+      "reduction_ratio": null,
+      "processing_steps_notes": "Quenching after heat treatment."
+    },
+    {
+      "sample_id": "sample_15mn5ni_cr",
+      "paper_id": "paper_001",
+      "sequence": "3",
+      "type": "mechanical_processing",
+      "method": "Cold Rolling",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": "50",
+      "processing_steps_notes": "At room temperature. Cracking beyond 50% reduction observed."
+    },
+    {
+      "sample_id": "sample_15mn5ni_ht_973",
+      "paper_id": "paper_001",
+      "sequence": "4",
+      "type": "heat_treatment",
+      "method": "Heat Treatment",
+      "temperature": "973",
+      "unit": "K",
+      "duration": "1",
+      "cooling_medium": "Water",
+      "reduction_ratio": null,
+      "processing_steps_notes": "Quenching after heat treatment."
+    },
+    {
+      "sample_id": "sample_15mn5ni_ht_1173",
+      "paper_id": "paper_001",
+      "sequence": "4",
+      "type": "heat_treatment",
+      "method": "Heat Treatment",
+      "temperature": "1173",
+      "unit": "K",
+      "duration": "1",
+      "cooling_medium": "Water",
+      "reduction_ratio": null,
+      "processing_steps_notes": "Quenching after heat treatment."
     }
   ],
   "structures": [
     {
       "structure_id": "struct_28mn0ni_hr",
       "sample_id": "sample_28mn0ni_hr",
-      "overall_structure": "Equiaxed and similar grain sizes of gamma-matrix with nearly random texture.",
+      "overall_structure": "Single-phase austenite with equiaxed grains.",
       "number_of_phases": "1",
       "microstructure_counts": null,
       "microstructure_list": [
@@ -359,11 +418,11 @@
           "phases_present": [
             {
               "phase_name": "Austenite",
-              "crystal_structure": "FCC",
+              "crystal_structure": "gamma",
               "volume_fraction": null,
               "morphology": "Equiaxed",
-              "grain_size": "5-7",
-              "texture": "Random"
+              "grain_size": null,
+              "texture": "Nearly random"
             }
           ],
           "defects": [
@@ -381,7 +440,7 @@
               "unit": "um"
             },
             "grain_size_distribution": null,
-            "texture": "Random"
+            "texture": "Nearly random"
           },
           "precipitates": []
         }
@@ -390,7 +449,7 @@
     {
       "structure_id": "struct_28mn0ni_cr",
       "sample_id": "sample_28mn0ni_cr",
-      "overall_structure": "Deformed austenite grains with planar slip bands.",
+      "overall_structure": "Deformed austenite with planar slip bands.",
       "number_of_phases": "1",
       "microstructure_counts": null,
       "microstructure_list": [
@@ -400,11 +459,11 @@
           "phases_present": [
             {
               "phase_name": "Austenite",
-              "crystal_structure": "FCC",
+              "crystal_structure": "gamma",
               "volume_fraction": null,
               "morphology": "Deformed",
               "grain_size": null,
-              "texture": "Parallel slip bands"
+              "texture": "Planar slip bands"
             }
           ],
           "defects": [
@@ -419,7 +478,7 @@
           "grain_structure": {
             "average_grain_size": null,
             "grain_size_distribution": null,
-            "texture": "Parallel slip bands"
+            "texture": "Planar slip"
           },
           "precipitates": []
         }
@@ -428,7 +487,7 @@
     {
       "structure_id": "struct_28mn0ni_ht_1173",
       "sample_id": "sample_28mn0ni_ht_1173",
-      "overall_structure": "Fully recrystallized and grain growth condition.",
+      "overall_structure": "Fully recrystallized austenite with grain growth.",
       "number_of_phases": "1",
       "microstructure_counts": null,
       "microstructure_list": [
@@ -438,9 +497,66 @@
           "phases_present": [
             {
               "phase_name": "Austenite",
-              "crystal_structure": "FCC",
+              "crystal_structure": "gamma",
               "volume_fraction": null,
               "morphology": "Recrystallized",
+              "grain_size": null,
+              "texture": "Annealing twins"
+            }
+          ],
+          "defects": [
+            {
+              "type": "Twin",
+              "porosity": null,
+              "inclusions": [],
+              "dislocation_density": null,
+              "lattice_distortion": null
+            }
+          ],
+          "grain_structure": {
+            "average_grain_size": {
+              "value": null,
+              "unit": null
+            },
+            "grain_size_distribution": null,
+            "texture": "Annealing twins"
+          },
+          "precipitates": []
+        }
+      ]
+    },
+    {
+      "structure_id": "struct_28mn5ni_ht_1173",
+      "sample_id": "sample_28mn5ni_ht_1173",
+      "overall_structure": "Partially recrystallized austenite with B2 and Kappa precipitates.",
+      "number_of_phases": "3",
+      "microstructure_counts": null,
+      "microstructure_list": [
+        {
+          "uuid": "uuid_28mn5ni_ht_1173_01",
+          "related_sequence": "4",
+          "phases_present": [
+            {
+              "phase_name": "Austenite",
+              "crystal_structure": "gamma",
+              "volume_fraction": null,
+              "morphology": "Recrystallized/Deformed",
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "B2",
+              "crystal_structure": "Ordered",
+              "volume_fraction": null,
+              "morphology": "Intragranular/Intergranular",
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "Kappa-carbide",
+              "crystal_structure": null,
+              "volume_fraction": null,
+              "morphology": null,
               "grain_size": null,
               "texture": null
             }
@@ -455,23 +571,107 @@
             }
           ],
           "grain_structure": {
-            "average_grain_size": null,
+            "average_grain_size": {
+              "value": null,
+              "unit": null
+            },
             "grain_size_distribution": null,
             "texture": null
           },
-          "precipitates": []
+          "precipitates": [
+            {
+              "precipitate_id": "precip_b2",
+              "type": "B2",
+              "size": {
+                "value": "50-200",
+                "unit": "nm"
+              },
+              "distribution": "Intragranular/Intergranular",
+              "coherency": null
+            },
+            {
+              "precipitate_id": "precip_kappa",
+              "type": "Kappa-carbide",
+              "size": {
+                "value": null,
+                "unit": null
+              },
+              "distribution": null,
+              "coherency": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "structure_id": "struct_15mn5ni_ht_1173",
+      "sample_id": "sample_15mn5ni_ht_1173",
+      "overall_structure": "Recrystallized austenite with reduced B2 fraction.",
+      "number_of_phases": "2",
+      "microstructure_counts": null,
+      "microstructure_list": [
+        {
+          "uuid": "uuid_15mn5ni_ht_1173_01",
+          "related_sequence": "4",
+          "phases_present": [
+            {
+              "phase_name": "Austenite",
+              "crystal_structure": "gamma",
+              "volume_fraction": null,
+              "morphology": "Recrystallized",
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "B2",
+              "crystal_structure": "Ordered",
+              "volume_fraction": null,
+              "morphology": "Intragranular",
+              "grain_size": null,
+              "texture": null
+            }
+          ],
+          "defects": [
+            {
+              "type": null,
+              "porosity": null,
+              "inclusions": [],
+              "dislocation_density": null,
+              "lattice_distortion": null
+            }
+          ],
+          "grain_structure": {
+            "average_grain_size": {
+              "value": null,
+              "unit": null
+            },
+            "grain_size_distribution": null,
+            "texture": null
+          },
+          "precipitates": [
+            {
+              "precipitate_id": "precip_b2",
+              "type": "B2",
+              "size": {
+                "value": null,
+                "unit": null
+              },
+              "distribution": "Intragranular",
+              "coherency": null
+            }
+          ]
         }
       ]
     }
   ],
   "interfaces": [
     {
-      "interface_set_id": "iface_001",
+      "interface_set_id": "interface_001",
       "sample_id": "sample_28mn5ni_ht_1173",
       "phases": [
         {
-          "interface_id": "iface_001_01",
-          "microstructure_uuid": null,
+          "interface_id": "int_01",
+          "microstructure_uuid": "uuid_28mn5ni_ht_1173_01",
           "phase_1_name": "Austenite",
           "phase_2_name": "B2",
           "coherence": null
@@ -486,7 +686,7 @@
         }
       ],
       "interface_notes": [],
-      "phase_evolution": "New B2 precipitates showed single crystal type orientations, but displayed some orientation relationship with the adjacent gamma grains."
+      "phase_evolution": "Precipitation of intergranular and intragranular B2 phase particles along with kappa-carbides."
     }
   ],
   "properties": [
@@ -506,77 +706,7 @@
         "hardness": [
           {
             "region": "Bulk",
-            "value": "256 ± 5",
-            "scale": "Vickers",
-            "unit": "VHN"
-          }
-        ],
-        "fracture_toughness": {
-          "value": null,
-          "unit": null
-        },
-        "fatigue_properties": {
-          "fatigue_limit": null,
-          "cycles_to_failure": null
-        },
-        "creep_properties": {
-          "steady_state_creep_rate": null,
-          "rupture_life": null
-        }
-      },
-      "physical": {
-        "density": {
-          "value": null,
-          "unit": null
-        },
-        "thermal_properties": {
-          "thermal_conductivity": null,
-          "thermal_expansion_coefficient": null,
-          "specific_heat": null
-        },
-        "electrical_properties": {
-          "electrical_conductivity": null,
-          "resistivity": null
-        },
-        "magnetic_properties": {
-          "magnetic_susceptibility": null,
-          "curie_temperature": null
-        }
-      },
-      "chemical": {
-        "corrosion_resistance": {
-          "test_medium": null,
-          "corrosion_rate": null,
-          "passivation_behavior": null
-        },
-        "oxidation_resistance": {
-          "oxidation_rate_constant": null,
-          "protective_scale": null
-        }
-      },
-      "radiation_properties": {
-        "void_swelling": null,
-        "irradiation_hardening": null,
-        "helium_embrittlement": null
-      }
-    },
-    {
-      "property_set_id": "prop_28mn0ni_cr",
-      "sample_id": "sample_28mn0ni_cr",
-      "mechanical": {
-        "tensile_properties": {
-          "yield_strength": [],
-          "ultimate_tensile_strength": [],
-          "elongation": [],
-          "youngs_modulus": null,
-          "stress_strain_curves": null,
-          "stress_strain_distribution": [],
-          "strain_hardening_rate": []
-        },
-        "hardness": [
-          {
-            "region": "Bulk",
-            "value": "450",
+            "value": "256",
             "scale": "Vickers",
             "unit": "VHN"
           }
@@ -662,14 +792,91 @@
           "youngs_modulus": null,
           "stress_strain_curves": null,
           "stress_strain_distribution": [],
-          "strain_hardening_rate": [
+          "strain_hardening_rate": []
+        },
+        "hardness": [],
+        "fracture_toughness": {
+          "value": null,
+          "unit": null
+        },
+        "fatigue_properties": {
+          "fatigue_limit": null,
+          "cycles_to_failure": null
+        },
+        "creep_properties": {
+          "steady_state_creep_rate": null,
+          "rupture_life": null
+        }
+      },
+      "physical": {
+        "density": {
+          "value": null,
+          "unit": null
+        },
+        "thermal_properties": {
+          "thermal_conductivity": null,
+          "thermal_expansion_coefficient": null,
+          "specific_heat": null
+        },
+        "electrical_properties": {
+          "electrical_conductivity": null,
+          "resistivity": null
+        },
+        "magnetic_properties": {
+          "magnetic_susceptibility": null,
+          "curie_temperature": null
+        }
+      },
+      "chemical": {
+        "corrosion_resistance": {
+          "test_medium": null,
+          "corrosion_rate": null,
+          "passivation_behavior": null
+        },
+        "oxidation_resistance": {
+          "oxidation_rate_constant": null,
+          "protective_scale": null
+        }
+      },
+      "radiation_properties": {
+        "void_swelling": null,
+        "irradiation_hardening": null,
+        "helium_embrittlement": null
+      }
+    },
+    {
+      "property_set_id": "prop_28mn5ni_ht_1173",
+      "sample_id": "sample_28mn5ni_ht_1173",
+      "mechanical": {
+        "tensile_properties": {
+          "yield_strength": [
             {
-              "property_id": null,
               "direction": null,
-              "value": "0.50",
-              "unit": null
+              "value": "900",
+              "unit": "MPa"
             }
-          ]
+          ],
+          "ultimate_tensile_strength": [
+            {
+              "direction": null,
+              "value": "1250",
+              "unit": "MPa",
+              "others": {
+                "uncertainty": null
+              }
+            }
+          ],
+          "elongation": [
+            {
+              "direction": null,
+              "value": "39",
+              "unit": "%"
+            }
+          ],
+          "youngs_modulus": null,
+          "stress_strain_curves": null,
+          "stress_strain_distribution": [],
+          "strain_hardening_rate": []
         },
         "hardness": [],
         "fracture_toughness": {
@@ -753,49 +960,41 @@
       "characterization_id": "char_001",
       "sample_id": "sample_28mn0ni_hr",
       "microstructure_uuid": "uuid_28mn0ni_hr_01",
-      "technique": "OIM-EBSD",
-      "purpose": "Grain orientations, grain size and twin fractions.",
-      "key_findings": "Equiaxed and similar grain sizes of gamma-matrix with nearly random texture."
+      "technique": "SEM-EBSD",
+      "purpose": "Microstructure characterization (IPF, IQ, Phase maps)",
+      "key_findings": "Equiaxed grains, random texture."
     },
     {
       "characterization_id": "char_002",
-      "sample_id": "sample_28mn0ni_cr",
-      "microstructure_uuid": "uuid_28mn0ni_cr_01",
-      "technique": "OIM-EBSD",
-      "purpose": "Grain orientations, grain size and twin fractions.",
-      "key_findings": "Austenite grains deformed mostly by planar slip."
+      "sample_id": "sample_28mn0ni_ht_1173",
+      "microstructure_uuid": "uuid_28mn0ni_ht_1173_01",
+      "technique": "TEM",
+      "purpose": "Phase identification (B2, Kappa-carbide)",
+      "key_findings": "No secondary phase precipitates seen."
     },
     {
       "characterization_id": "char_003",
-      "sample_id": "sample_28mn0ni_ht_1173",
-      "microstructure_uuid": "uuid_28mn0ni_ht_1173_01",
-      "technique": "OIM-EBSD",
-      "purpose": "Grain orientations, grain size and twin fractions.",
-      "key_findings": "Fully recrystallized and grain growth condition."
+      "sample_id": "sample_28mn5ni_ht_1173",
+      "microstructure_uuid": "uuid_28mn5ni_ht_1173_01",
+      "technique": "TEM",
+      "purpose": "Phase identification (B2, Kappa-carbide)",
+      "key_findings": "Intragranular B2 and Kappa-carbides observed."
     },
     {
       "characterization_id": "char_004",
       "sample_id": "sample_28mn0ni_hr",
       "microstructure_uuid": null,
-      "technique": "Hardness tester",
-      "purpose": "Bulk hardness measurement.",
-      "key_findings": "Initial hardness values ~256 ± 5 VHN."
+      "technique": "Hardness Test",
+      "purpose": "Evaluate mechanical properties",
+      "key_findings": "Bulk hardness measured as per ASTM E-140-02."
     },
     {
       "characterization_id": "char_005",
-      "sample_id": "sample_28mn0ni_cr",
+      "sample_id": "sample_28mn0ni_hr",
       "microstructure_uuid": null,
-      "technique": "Hardness tester",
-      "purpose": "Bulk hardness measurement.",
-      "key_findings": "Hardness saturated to around 450 VHN at 50% cold reduction."
-    },
-    {
-      "characterization_id": "char_006",
-      "sample_id": "sample_28mn0ni_ht_1173",
-      "microstructure_uuid": null,
-      "technique": "Tensile tester",
-      "purpose": "Strength and ductility evaluation.",
-      "key_findings": "YS ~500 MPa, UTS ~1000 MPa, Elongation ~86%."
+      "technique": "Tensile Test",
+      "purpose": "Evaluate strength and ductility",
+      "key_findings": "ASTM E8M standard."
     }
   ],
   "computational_details": [
@@ -810,20 +1009,11 @@
     }
   ],
   "unmapped_findings": [
-    "Figure 1 shows OIM-EBSD results of the three alloys in HR + CR condition with colored IPF, IQ and phase contrast maps.",
-    "Figure 2 shows XRD patterns of 28Mn0Ni and 15Mn5Ni alloys in HR + CR and heat-treated conditions.",
-    "Figure 3 shows OIM-EBSD results of the three alloys in HR + CR + 1023 K condition.",
-    "Figure 4 shows Colored IPF maps of the three alloys in HR + CR + 973 K and HR + CR + 1173 K conditions.",
-    "Figure 5 illustrates the evolution of microstructural features such as recrystallization fraction, mean grain size, twin fraction and secondary phase volume fraction as a function of heat treatment temperature and alloy composition.",
-    "Figure 6 shows TEM images of 28Mn0Ni, 28Mn5Ni and 15Mn5Ni alloys in HR + CR + 973 K condition.",
-    "Figure 7 shows TEM bright-field images captured at two different locations for 28Mn0Ni, 28Mn5Ni and 15Mn5Ni alloys in HR + CR + 1173 K condition.",
-    "Figure 8 shows variation in bulk hardness on Vickers scale as a function of degree of cold work and subsequent heat treatment temperature.",
-    "Figure 9 shows engineering stress-engineering strain curves of the three alloys in HR + CR condition and heat treated condition.",
-    "Figure 10 shows SEM-fractographs of the failed tensile specimens of the three alloys in HR + CR + 1023 K condition.",
-    "Figure 11 shows TEM images showing post tensile deformed microstructures of 28Mn0Ni alloy.",
-    "Figure 12 shows TEM images showing post tensile deformed microstructures of 15Mn5Ni alloy.",
-    "Table 1 provides the chemical composition of the three different LDs alloys used for the present study.",
-    "Table 2 provides the elemental composition analysis obtained by TEM-EDS for B2 particles in two LDS alloys in two different heat-treated conditions.",
-    "Table 3 provides tensile properties of 28Mn0Ni, 28Mn5Ni and 15Mn5Ni alloys in both cold rolled and subsequent heat-treated conditions."
+    "Fracture surface of 15Mn5Ni alloy specimen showed quasi-cleavage fracture with crack initiation-controlled failure, unlike dimple morphology in 28Mn0Ni and 28Mn5Ni.",
+    "Dislocation-twin interaction mechanisms were noticed in fully recrystallized austenite leading to enhanced strain hardening and ductility.",
+    "Planar slip activity and dynamic slip band refinement were observed in fully recrystallized austenite.",
+    "B2 stringers underwent concurrent deformation with austenite grains, resulting in significant reduction in average thickness from ~8 um to ~2 um and fragmentation.",
+    "Ni addition in lower Mn LDS (15Mn5Ni) reduced the processing temperature window of the alloy in two-phase region.",
+    "15Mn5Ni alloy exhibited cracking beyond 50% cold reduction, hence further reduction was not carried out."
   ]
 }

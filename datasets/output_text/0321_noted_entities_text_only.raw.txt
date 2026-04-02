@@ -1,210 +1,122 @@
-The user wants me to extract structured information from the provided text of a scientific paper about "On the anisotropic deformation behavior of a low-density medium manganese steel".
-I need to output a single valid JSON object following a specific schema provided in the prompt.
-The schema includes keys like `papers`, `alloys`, `processes`, `samples`, `processing_steps`, `structures`, `interfaces`, `properties`, `performance`, `characterization_methods`, `computational_details`, `unmapped_findings`.
-I must strictly follow type constraints: no `number` or `boolean` types for leaf nodes. All numbers must be strings (e.g., "2025", "7.95"). Booleans must be "true"/"false" or "yes"/"no" or null. Arrays can contain strings or objects.
-I need to parse the text to identify:
-1.  **Paper Info**: Title, Authors, Year, Journal, DOI, etc.
-2.  **Alloys**: Composition (Fe-7.95Mn-0.25C-4.94Al), Density, etc.
-3.  **Processes**: Hot rolling, Cold rolling, Inter-critical annealing (IA), Quenching.
-4.  **Samples**: RD (Rolling Direction) and TD (Transverse Direction) specimens.
-5.  **Processing Steps**: Details of the manufacturing steps.
-6.  **Structures**: Microstructure (banded δ-ferrite, α-ferrite-austenite aggregates), Grain sizes, Volume fractions.
-7.  **Interfaces**: Phase boundaries (γ/α, γ/δ, δ/γ+α).
-8.  **Properties**: Tensile properties (Yield strength, UTS, Elongation), Hardness, Dislocation density, Martensite fraction.
-9.  **Performance**: Strain hardening, Forming properties.
-10. **Characterization Methods**: EBSD, TEM, HEXRD, μ-DIC, Vickers Hardness.
-11. **Computational Details**: OC model, Thermo-Calc.
-12. **Unmapped Findings**: Any important info not fitting the schema.
+The user wants me to extract structured information from the provided text of a scientific paper and output it as a JSON object.
+The paper is titled "On the anisotropic deformation behavior of a low-density medium manganese steel".
+I need to follow the schema provided in the prompt (which mimics `paper_schema.json` / `paper_entity_schema.jsonc`).
+Key constraints:
+1.  **Output ONLY the JSON object**. No markdown, no explanations, no thinking process visible.
+2.  **Strict Type Constraints**: All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` types. Numbers must be strings (e.g., "2025", "7.95").
+3.  **Schema Compliance**: Use the provided JSON template structure.
+4.  **Content**: Extract based *only* on the text provided. Do not hallucinate data.
+5.  **IDs**: Generate unique IDs for alloys, processes, samples, etc., following the naming conventions (e.g., `alloy_05c`, `proc_05c_01`, `sample_05c_01`).
 
-Let's break down the extraction:
+**Plan:**
+1.  **Papers**: Extract title, authors, journal (implied or from text), year (implied or from text), DOI (from supplementary info text).
+2.  **Alloys**: Identify the steel composition (Fe-7.95Mn-0.25C-4.94Al).
+3.  **Processes**: Identify the processing steps (Vacuum induction, homogenization, hot rolling, cold rolling, intercritical annealing, water quenching).
+4.  **Samples**: Identify the two main sample orientations (RD and TD).
+5.  **Processing Steps**: Detail the thermal/mechanical steps for each sample type.
+6.  **Structures**: Extract microstructure details (phases: delta-ferrite, gamma-austenite, alpha-ferrite, martensite; grain sizes; volume fractions).
+7.  **Interfaces**: Mention phase boundaries, strain partitioning at interfaces.
+8.  **Properties**: Extract mechanical properties (tensile strength, elongation, hardness, strain hardening rate).
+9.  **Performance**: Service conditions (room temperature tensile).
+10. **Characterization Methods**: EBSD, TEM, HEXRD, DIC, Hardness tester.
+11. **Computational Details**: Mention the Olson-Cohen (OC) model used for fitting.
+12. **Unmapped Findings**: Capture any qualitative insights not fitting the schema.
 
-**Paper Info:**
-- Title: On the anisotropic deformation behavior of a low-density medium manganese steel
-- Authors: Shuanghong Lei, Binhan Sun, Yu Xuan, Ran Tian, Yan Ma, Mohamed Naguib Elkot, Huijie Cheng, Ning Yao, Tiwen Lu, Jianping Tan, Zhenbo Zhang, Xian-Cheng Zhang, Shan-Tung Tu
-- Year: 2025 (from Supplementary material doi: 10.1016/j.actamat.2025.121060)
-- Journal: Acta Materialia (implied by DOI prefix, though not explicitly stated in text, I should check if "Acta Materialia" is mentioned. The DOI suggests it. The text says "Full length article". I will leave journal as null or infer if clear. Actually, looking at the DOI `10.1016/j.actamat.2025.121060`, `actamat` usually stands for Acta Materialia. I will put "Acta Materialia" if confident, otherwise null. The prompt says "based on visible text". The text doesn't explicitly name the journal in the header, but the DOI is visible. I will use "Acta Materialia" as it's standard for this DOI prefix, or just leave null to be safe. Let's look for explicit mention. Not found. I will use null for journal to be strict, or infer from DOI. The instruction says "based on visible text". The DOI is visible. I will extract "Acta Materialia" as it is standard knowledge associated with the DOI, but strictly speaking, the text doesn't say "Acta Materialia". However, the DOI is a strong indicator. I will put "Acta Materialia" in `journal`. Wait, instruction 6 says "based on visible text". I will check if I can find the journal name. It is not in the text provided. I will set `journal` to `null` to be safe, or `Acta Materialia` based on the DOI. Let's assume `null` is safer for strict extraction, but `Acta Materialia` is highly likely. I'll check the DOI again. `10.1016/j.actamat`. Yes. I will put "Acta Materialia".
-- DOI: 10.1016/j.actamat.2025.121060
-- Research Type: experimental (in-situ characterization, tensile testing).
+**Specific Data Extraction:**
+*   **Title**: On the anisotropic deformation behavior of a low-density medium manganese steel
+*   **Authors**: Shuanghong Lei, Binhan Sun, Yu Xuan, Ran Tian, Yan Ma, Mohamed Naguib Elkot, Huijie Cheng, Ning Yao, Tiwen Lu, Jianping Tan, Zhenbo Zhang, Xian-Cheng Zhang, Shan-Tung Tu.
+*   **Journal**: Not explicitly stated in the text body provided, but "Full length article" suggests a journal. I will leave `journal` as `null` or infer from context if possible. The text mentions "doi:10.1016/j.actamat.2025.121060" in the Supplementary materials section. This implies *Acta Materialia*. I will use `null` for journal name if not explicitly clear, but I can infer from DOI. However, strict adherence to text says "not provided". I will check if "Acta Materialia" is mentioned. It is not in the text provided. I will set `journal` to `null`.
+*   **Year**: DOI ends in 2025. Text doesn't explicitly state publication year in the header. I will use "2025" based on DOI or `null`. Let's use "2025" as it's in the DOI string.
+*   **DOI**: 10.1016/j.actamat.2025.121060
+*   **Alloy**: Fe-7.95Mn-0.25C-4.94Al (wt.%). Density ~7.40 g/cm3.
+*   **Process**:
+    1.  Vacuum induction furnace.
+    2.  Homogenization at 1100°C.
+    3.  Hot rolling to ~3 mm (T > 1000°C).
+    4.  Cold rolling to 1.5 mm.
+    5.  Intercritical Annealing (IA) at 850°C for 10 min.
+    6.  Water quenching.
+*   **Samples**: RD (Rolling Direction), TD (Transverse Direction).
+*   **Microstructure**:
+    *   Phases: Delta-ferrite (coarse, ~38 um), Alpha-ferrite (~2 um), Austenite (~1.8 um).
+    *   Volume Fractions: Delta ~44%, Gamma+Alpha ~56%.
+    *   Grain sizes: Delta ~38 um, Alpha ~2 um, Gamma ~1.8 um.
+*   **Properties**:
+    *   Tensile Strength: ~855 MPa (avg). RD: Higher by 864 MPa? Wait, text says "The sample tested along RD has a higher strength (by 864 MPa) and ductility 69% compared to that tested along TD." Wait, 855 is the general value. Let's look closer. "tensile strength (~855±35 MPa)". "RD has a higher strength (by 864 MPa) ... compared to TD". This phrasing is ambiguous. Usually, it means RD is higher than TD. If RD is 855, TD is 855-864? That's negative. Or 855 is the RD value? "The intercritically annealed steel demonstrates a great combination of tensile strength (~855±35 MPa)... The sample tested along RD has a higher strength (by 864 MPa) ... compared to that tested along TD." This likely means RD = 855 + something? Or 855 is the average? Let's check the numbers. "RD has a higher strength (by 864 MPa) ... compared to that tested along TD." This is likely a typo in the paper text provided (864 MPa difference seems huge for 855 total). Or maybe 855 is the RD value and TD is 855-864? No. Maybe 855 is the average. Let's look at the numbers again. "strength (~855±35 MPa)". "RD has a higher strength (by 864 MPa) ... compared to that tested along TD." This is physically impossible if the average is 855. Perhaps it means "86.4 MPa"? Or "RD is 855, TD is something else". I will extract the text as is but note the ambiguity in `unmapped_findings`. Actually, looking at the text: "The sample tested along RD has a higher strength (by 864 MPa) and ductility 69% compared to that tested along TD." This might mean RD UTS is 855 + 864? No. Maybe it means RD is 855 and TD is 855 - 864? No.
+    *   Wait, re-reading: "tensile strength (~855±35 MPa) and ductility (total elongation 65 ± 5 %). The sample tested along RD has a higher strength (by 864 MPa) and ductility 69% compared to that tested along TD."
+    *   Hypothesis 1: 855 is the RD value. TD is 855 - 864 = negative. Impossible.
+    *   Hypothesis 2: 855 is the average. RD is 855 + X. TD is 855 - X.
+    *   Hypothesis 3: Typo in text provided (864 vs 64). If 64 MPa, RD ~860, TD ~820.
+    *   Hypothesis 4: "by 864 MPa" is a typo for "to 864 MPa"?
+    *   I will record the values found: RD UTS ~855 MPa (general), RD elongation 69%. TD elongation 65%.
+    *   Hardness: UFG gamma+alpha ~221 HV, Delta-ferrite ~205 HV.
+    *   Strain Hardening Rate: RD max 2052 MPa, TD max 1828 MPa.
+    *   Martensite fraction: RD higher than TD. At 0.48 strain, diff is 4 vol%.
+*   **Characterization**: EBSD (Zeiss-Crossbeam 340), TEM (FEI Talos F200X), HEXRD (PETRA III P02.1), DIC (Tescan Mira4 SEM), Hardness (JMHVS-1000ZDP).
+*   **Computational**: Olson-Cohen (OC) model.
 
-**Alloys:**
-- Alloy Name: Medium Mn steel / Low-density medium manganese steel
-- Composition: Fe-7.95Mn-0.25C-4.94Al (wt. %)
-- Density: ~7.40 g/cm^3
-- Base Element: Fe
-- Alloying Elements: Mn, C, Al
+**JSON Construction:**
+*   `papers`: 1 entry.
+*   `alloys`: 1 entry (Fe-7.95Mn-0.25C-4.94Al).
+*   `processes`: 1 entry (General processing).
+*   `samples`: 2 entries (RD, TD).
+*   `processing_steps`: 2 entries (one for each sample, though they share the same processing history, the text treats them as samples from the same batch). I will create one set of steps for the material, or separate if implied. The text says "Two types of samples taken from different orientations... were tested." Processing is the same for the material. I will link steps to the sample ID.
+*   `structures`: Microstructure details (phases, grain sizes).
+*   `properties`: Tensile, Hardness.
+*   `characterization_methods`: List of methods used.
+*   `computational_details`: OC model.
+*   `unmapped_findings`: Note the ambiguity in strength values.
 
-**Processes:**
-1. Vacuum induction furnace (Ingot preparation)
-2. Homogenization: 1100°C
-3. Hot rolling: Thickness ~3 mm, Temp > 1000°C
-4. Cold rolling: Thickness ~1.5 mm
-5. Inter-critical annealing (IA): 850°C for 10 minutes
-6. Water quenching
+**Refining IDs:**
+*   `paper_id`: "paper_001" (arbitrary)
+*   `alloy_id`: "alloy_mn795c025al494"
+*   `process_id`: "proc_mn01"
+*   `sample_id`: "sample_rd", "sample_td"
+*   `structure_id`: "struct_01"
+*   `property_set_id`: "prop_mech_01"
 
-**Samples:**
-- Sample 1: RD (Rolling Direction)
-- Sample 2: TD (Transverse Direction)
-- Both are from the same alloy and process history.
-
-**Processing Steps:**
-- Need to map steps to samples. Since both samples come from the same sheet, the processing steps are shared. I will list them once or link to both. The schema suggests `processing_steps` binds to `sample_id`. I will create entries for the main processing history.
-
-**Structures:**
-- Phases: δ-ferrite, α-ferrite, Austenite (γ), Martensite (α')
-- Grain Sizes:
-    - Austenite: ~1.8 μm
-    - α-ferrite: ~2 μm
-    - δ-ferrite: ~38 μm
-- Volume Fractions:
-    - δ-ferrite: 44 vol. %
-    - γ+α aggregate: 56 vol. % (Austenite 25%, α-ferrite 25%? Text says "25 vol. % and 44 vol. %, respectively" for austenite and δ-ferrite? Wait. Text: "average grain size... ~1.8 μm, ~2 μm, and ~38 μm for austenite, α-ferrite, and δ-ferrite, respectively... volume fractions, which are 25 vol. % and 44 vol. %, respectively." This sentence structure is ambiguous. "25 vol. % and 44 vol. %, respectively" likely refers to the two previous items mentioned before "volume fractions". The previous items were "austenite, α-ferrite, and δ-ferrite". Wait, there are 3 phases but 2 percentages.
-    - Let's re-read: "The large difference in grain size between the two types of ferrite (α and δ) allows for differentiation and calculation of their respective volume fractions, which are 25 vol. % and 44 vol. %, respectively."
-    - Context: "two types of ferrite (α and δ)". So α-ferrite = 25 vol. %, δ-ferrite = 44 vol. %.
-    - Then "The fraction of γ+α aggregate is thus estimated to be 56 vol. %."
-    - So: δ-ferrite = 44%, γ+α aggregate = 56%. Within γ+α, Austenite = 25%, α-ferrite = 25%? Or is it 25% total for α? The text says "25 vol. % and 44 vol. %, respectively" referring to "two types of ferrite (α and δ)". So α-ferrite = 25%, δ-ferrite = 44%.
-    - Total = 25 + 44 + 25 (Austenite)? No, 25+44 = 69%. The text says γ+α aggregate is 56%. This is contradictory or I am misreading.
-    - Let's re-read carefully: "The large difference in grain size between the two types of ferrite (α and δ) allows for differentiation and calculation of their respective volume fractions, which are 25 vol. % and 44 vol. %, respectively." -> This implies α = 25%, δ = 44%.
-    - "The fraction of γ+α aggregate is thus estimated to be 56 vol. %." -> This implies γ + α = 56%.
-    - If α = 25% and δ = 44%, then γ = 56% - 25% = 31%.
-    - Or maybe the 25% refers to γ? "two types of ferrite (α and δ)". No, it explicitly says ferrite.
-    - Let's check the text again: "volume fractions, which are 25 vol. % and 44 vol. %, respectively." Referring to "two types of ferrite (α and δ)". So α=25, δ=44.
-    - "The fraction of γ+α aggregate is thus estimated to be 56 vol. %."
-    - This implies γ + α = 56. If α = 25, then γ = 31. Total = 25 + 44 + 31 = 100. This makes sense.
-    - So: δ-ferrite = 44%, α-ferrite = 25%, Austenite = 31%.
-    - Wait, later text says "initial austenite fraction (46.5 vol. %)" in the OC model section. This is a discrepancy. I will use the EBSD section values for structure description (25% α, 44% δ, 31% γ implied). Or I can list the OC model value as a specific condition. I will stick to the EBSD section for microstructure description.
-    - Actually, looking at "25 vol. % and 44 vol. %, respectively" for "two types of ferrite (α and δ)".
-    - Wait, "The fraction of γ+α aggregate is thus estimated to be 56 vol. %."
-    - If α is 25% and δ is 44%, then γ must be 31% (56-25).
-    - But later OC model says "initial austenite fraction (46.5 vol. %)".
-    - I will record the EBSD values in `structures` and the OC model value in `computational_details` or `properties`.
-- Morphology: Banded, layered, ultrafine-grained (UFG) γ+α, coarse-grained δ.
-
-**Properties:**
-- Tensile Strength (UTS):
-    - RD: ~855 ± 35 MPa (Wait, text says "tensile strength (~855±35 MPa)" for the steel generally, then "The sample tested along RD has a higher strength (by 864 MPa) and ductility 69% compared to that tested along TD". This phrasing is tricky. "higher strength (by 864 MPa)"? That's huge. Or does it mean RD is 864 MPa?
-    - Text: "The intercritically annealed steel demonstrates a great combination of tensile strength (~855±35 MPa) and ductility (total elongation 65 ± 5 %)." -> General value.
-    - Text: "The sample tested along RD has a higher strength (by 864 MPa) and ductility 69% compared to that tested along TD." -> This likely means RD UTS is 864 MPa? Or RD is 855 + 864? That's impossible.
-    - Re-reading: "The sample tested along RD has a higher strength (by 864 MPa) and ductility 69% compared to that tested along TD."
-    - Maybe it means RD is 864 MPa and TD is lower? Or RD is 855 and TD is 855-864? No.
-    - Maybe it means RD is 864 MPa. The 855 is the average.
-    - Let's check the numbers. "higher strength (by 864 MPa)" is grammatically ambiguous. It could mean "strength of 864 MPa". Given the context of "855±35", 864 fits within the range.
-    - Let's assume RD UTS = 864 MPa. TD UTS = ?
-    - Text: "The strain-hardening rate of the RD sample (maximum 2052 MPa) is higher than that of the TD sample (maximum 1828 MPa)."
-    - I will record RD UTS as "864 MPa" and TD as "null" or infer from "855±35" average? No, I should extract what is explicit. "RD has a higher strength (by 864 MPa)". I will interpret this as RD UTS = 864 MPa.
-    - Elongation: RD = 69%, TD = 65% (implied by "65 ± 5 %" general, and RD is higher). Text says "ductility (total elongation 65 ± 5 %)... RD... ductility 69%". So TD is likely around 60-65%. I will record RD = "69 %", TD = "65 %" (using the general value for TD if not specified, or null).
-    - Hardness:
-        - γ+α aggregates: 221 ± 3.0 HV
-        - δ-ferrite: 205 ± 1.5 HV
-    - Dislocation Density (Austenite):
-        - RD max: ~1.51 × 10^14 m^-2
-    - Martensite Fraction:
-        - RD at 0.48 strain: 4 vol. % higher than TD.
-        - Initial austenite: 46.5 vol. % (OC model).
-
-**Characterization Methods:**
-- EBSD (Zeiss-Crossbeam 340 SEM)
-- TEM (FEI Talos F200X)
-- Vickers Hardness (JMHVS-1000ZDP)
-- Synchrotron HEXRD (PETRA III, P02.1)
-- μ-DIC (Tescan Mira4 SEM, La Vision DaVis)
-
-**Computational Details:**
-- Thermo-Calc (TCFE9 database) for phase diagram.
-- OC Model (Olson-Cohen) for martensite kinetics.
-- Rietveld refinement (MAUD software).
-- Williamson-Hall method.
-
-**Processing Steps:**
-- Homogenization: 1100°C
-- Hot Rolling: >1000°C, ~3mm
-- Cold Rolling: ~1.5mm
-- Inter-critical Annealing: 850°C, 10 min
-- Quenching: Water
-
-**Samples:**
-- Sample RD
-- Sample TD
-
-**Interfaces:**
-- γ/α, γ/δ, δ/γ+α boundaries.
-- Martensite nucleation at phase boundaries.
-
-**Unmapped Findings:**
-- Any specific image details not in text (e.g. specific grain size distribution plots).
-- The text mentions "Fig. 1", "Fig. 2", etc., but I cannot see them. I will note in `unmapped_findings` if specific visual data is crucial but missing.
-- The text mentions "Fig. 15" in conclusions but not in the provided text block (it's at the end).
-- The text mentions "Supplementary Fig. S1".
-
-**Type Constraints Check:**
-- All numbers as strings.
-- No booleans.
-- Arrays of strings/objects.
-- JSON valid.
+**Type Check:**
+*   Ensure all numbers are strings.
+*   Ensure no booleans.
+*   Ensure arrays contain strings or objects.
 
 **Drafting the JSON:**
-- `papers`: 1 entry.
-- `alloys`: 1 entry (Fe-7.95Mn-0.25C-4.94Al).
-- `processes`: 1 entry (The main processing history).
-- `samples`: 2 entries (RD, TD).
-- `processing_steps`: 5 entries (Homogenization, Hot Rolling, Cold Rolling, IA, Quenching). Linked to samples.
-- `structures`: 2 entries (one for each sample's microstructure, mostly same but orientation matters for anisotropy). Or 1 entry for the alloy microstructure. The schema allows `structures` linked to `sample_id`. I will create entries for RD and TD samples.
-- `properties`: Tensile, Hardness, Dislocation density.
-- `performance`: Strain hardening, Forming.
-- `characterization_methods`: List of techniques used.
-- `computational_details`: OC model, Thermo-Calc.
+*   Start with `{`.
+*   `papers`: Array with 1 object.
+*   `alloys`: Array with 1 object.
+*   `processes`: Array with 1 object.
+*   `samples`: Array with 2 objects.
+*   `processing_steps`: Array with 2 objects (linked to samples).
+*   `structures`: Array with 1 object (general microstructure).
+*   `interfaces`: Array with 1 object (phase boundaries).
+*   `properties`: Array with 2 objects (one for each sample).
+*   `performance`: Array with 2 objects (tensile test conditions).
+*   `characterization_methods`: Array with 5 objects.
+*   `computational_details`: Array with 1 object.
+*   `unmapped_findings`: Array with strings.
 
-Let's refine the numbers.
-- UTS: RD "864 MPa", TD "null" (or "855 MPa" as average). Text says "The sample tested along RD has a higher strength (by 864 MPa)". This is likely a typo in the paper text provided or means "strength of 864 MPa". I will write "864 MPa" for RD.
-- Elongation: RD "69 %", TD "65 %" (from general statement).
-- Hardness: "221 HV", "205 HV".
-- Grain sizes: "1.8 μm", "2 μm", "38 μm".
-- Volume fractions: "25 vol. %", "44 vol. %", "56 vol. %".
-- Dislocation density: "1.51 × 10^14 m^-2".
-- Martensite fraction: "4 vol. %".
-- Temperature: "1100°C", "1000°C", "850°C", "1.5 mm", "1.2 mm".
-- Time: "10 minutes".
+**Correction on Strength Data:**
+Text: "tensile strength (~855±35 MPa)... RD has a higher strength (by 864 MPa) ... compared to that tested along TD."
+This is definitely a typo in the source text provided (864 MPa difference is impossible if total is 855). I will extract "855±35 MPa" as the general value and "69%" for RD elongation. I will put the "864 MPa" discrepancy in `unmapped_findings`.
+Actually, looking closely: "The sample tested along RD has a higher strength (by 864 MPa) and ductility 69% compared to that tested along TD." It might mean RD is 864 MPa and TD is lower? But the previous sentence says "~855±35 MPa". I will record the explicit numbers found.
 
-I need to ensure `number` types are not used. "864" must be "864". "1.51" must be "1.51".
-I need to ensure `boolean` types are not used. "true"/"false" strings.
+**Correction on Processing Steps:**
+The text describes the processing once for the material. I will create one `process` entry and link it to both samples in `samples` (via `process_id`). `processing_steps` will be linked to `sample_id`.
 
-Let's construct the JSON.
+**Correction on Structures:**
+I will create one `structures` entry describing the general microstructure (phases, sizes, fractions).
 
-One detail: `processing_steps` needs `sample_id`. Since the processing is common to both samples (they come from the same sheet), I can link the steps to both or create one set of steps and reference it. The schema says `processing_steps` binds to `sample_id`. I will create entries for the main steps and link them to the `sample_id` of the alloy. Since there are two samples (RD and TD), I can either duplicate the steps for each sample or just list the steps once and link to a generic sample. However, the instruction says "Each `sample` must bind an `alloy_id` and a `process_id`". `processing_steps` binds to `sample_id`. I will create processing steps for the RD sample and TD sample (they are identical in history). Or I can create one set of steps and link to both. To be safe and follow the schema's implication of linking to samples, I will list the steps once and link to the first sample, or duplicate. Given the text describes the material processing once, I will list the steps once and link to `sample_rd` (or `sample_td`). Actually, since the samples are from the same sheet, the processing is the same. I will list the steps once and link to `sample_rd`. Or better, link to both if possible. I'll create one set of steps and link to `sample_rd` as the representative, noting the TD sample shares the history. Or I can create two sets. I'll create one set and link to `sample_rd`. Wait, `samples` array has `sample_id`. `processing_steps` has `sample_id`. I will create steps for `sample_rd`.
+**Correction on Characterization:**
+List specific methods mentioned.
 
-Wait, `processes` array has `process_id`. `samples` bind to `process_id`.
-So:
-1. `alloys`: `alloy_05c` (Fe-7.95Mn-0.25C-4.94Al).
-2. `processes`: `proc_05c_01` (Manufacturing).
-3. `samples`: `sample_05c_rd`, `sample_05c_td`. Both bind to `alloy_05c` and `proc_05c_01`.
-4. `processing_steps`: Bind to `sample_05c_rd` (and `sample_05c_td` if I duplicate). I will duplicate to be explicit about the steps associated with the samples.
+**Correction on Computational:**
+OC model parameters are in Table 1 (not fully visible in text, but model name is). I will note the model name.
 
-Let's check the `unmapped_findings`.
-- The text mentions "Fig. 15" in the conclusion section but the text provided ends before the figure caption for Fig 15 is fully rendered in the main body (it appears at the very end). I will note this.
-- The text mentions "Supplementary Fig. S1".
-- The text mentions "Table 1".
-- The text mentions "Fig. 2(a)" setup details.
-
-I will write the JSON now.
-
-Double check: "All numbers... written as strings".
-Example: "2025", "7.95", "864", "0", "0.44", "69".
-So "864 MPa" is a string. "1.51" is a string.
-No `number` type.
-
-One more check on `properties`: `tensile_properties` has `yield_strength`, `ultimate_tensile_strength`, `elongation`, `strain_hardening_rate`.
-- Yield strength: Not explicitly given as a number in the text provided. "yield strength along the transverse direction (TD) is higher than that along the rolling direction (RD)" is in Introduction (general). Specific values for this alloy: "The intercritically annealed steel demonstrates a great combination of tensile strength (~855±35 MPa) and ductility (total elongation 65 ± 5 %)." This is likely UTS. Yield strength is not explicitly quantified for this alloy in the Results section provided. I will leave `yield_strength` as `null` or "null".
-- UTS: "864 MPa" (RD), "null" (TD) or "855 MPa" (General). I will put "864 MPa" for RD.
-- Elongation: "69 %" (RD), "65 %" (TD - from general).
-- Strain hardening rate: "2052 MPa" (RD max), "1828 MPa" (TD max).
-
-Hardness: "221 HV", "205 HV".
-
-Dislocation density: "1.51 × 10^14 m^-2".
-
-Martensite fraction: "4 vol. %".
-
-I will ensure all keys match the schema exactly.
-Keys: `papers`, `alloys`, `processes`, `samples`, `processing_steps`, `structures`, `interfaces`, `properties`, `performance`, `characterization_methods`, `computational_details`, `unmapped_findings`.
+**Final check on constraints:**
+*   No markdown.
+*   No numbers (use strings).
+*   No booleans.
+*   Valid JSON.
 
 Let's assemble.
 </think>
@@ -231,7 +143,7 @@ Let's assemble.
         "Shan-Tung Tu"
       ],
       "publication_year": "2025",
-      "journal": "Acta Materialia",
+      "journal": null,
       "keywords": [
         "Medium Mn steels",
         "Lightweight steels",
@@ -240,16 +152,16 @@ Let's assemble.
         "Synchrotron high-energy X-ray diffraction"
       ],
       "research_type": "experimental",
-      "paper_scope": "Investigation of anisotropic deformation behavior, strain partitioning, and martensite transformation kinetics in a low-density medium manganese steel with a banded microstructure under rolling direction (RD) and transverse direction (TD) loading."
+      "paper_scope": "Investigation of anisotropic deformation behavior of a low-density medium Mn steel with banded microstructure using in-situ HEXRD and DIC techniques."
     }
   ],
   "alloys": [
     {
-      "alloy_id": "alloy_05c",
+      "alloy_id": "alloy_mn795c025al494",
       "paper_id": "paper_001",
-      "alloy_name": "Low-density medium manganese steel",
+      "alloy_name": "Medium Mn lightweight steel",
       "aliases": [
-        "Medium Mn lightweight steel"
+        "Fe-7.95Mn-0.25C-4.94Al"
       ],
       "base_element": "Fe",
       "alloying_elements": [
@@ -279,126 +191,178 @@ Let's assemble.
           "atomic_percent": null
         }
       ],
-      "alloys_notes": "Mass density calculated to be ~7.40 g/cm^3. Al addition reduces density by ~6.2% and promotes δ-ferrite formation."
+      "alloys_notes": "Mass density calculated to be ~7.40 g/cm3. Al addition reduces density by 6.2%."
     }
   ],
   "processes": [
     {
-      "process_id": "proc_05c_01",
+      "process_id": "proc_mn01",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_05c",
-      "description": "Vacuum induction furnace ingot preparation, homogenization, hot rolling, cold rolling, intercritical annealing, and water quenching.",
-      "processes_notes": "Homogenized at 1100°C. Hot rolled to ~3 mm at >1000°C. Cold rolled to ~1.5 mm. IA at 850°C for 10 min followed by water quenching."
+      "alloy_id": "alloy_mn795c025al494",
+      "description": "Vacuum induction melting, homogenization at 1100°C, hot rolling to ~3 mm (T > 1000°C), cold rolling to 1.5 mm, intercritical annealing at 850°C for 10 min, water quenching.",
+      "processes_notes": "Produces banded microstructure with coarse delta-ferrite and ultrafine gamma+alpha aggregates."
     }
   ],
   "samples": [
     {
-      "sample_id": "sample_05c_rd",
+      "sample_id": "sample_rd",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_05c",
-      "process_id": "proc_05c_01"
+      "alloy_id": "alloy_mn795c025al494",
+      "process_id": "proc_mn01"
     },
     {
-      "sample_id": "sample_05c_td",
+      "sample_id": "sample_td",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_05c",
-      "process_id": "proc_05c_01"
+      "alloy_id": "alloy_mn795c025al494",
+      "process_id": "proc_mn01"
     }
   ],
   "processing_steps": [
     {
-      "sample_id": "sample_05c_rd",
+      "sample_id": "sample_rd",
       "paper_id": "paper_001",
-      "sequence": "1",
-      "type": "heat_treatment",
-      "method": "Homogenization",
+      "sequence": "01",
+      "type": "thermomechanical_processing",
+      "method": "Vacuum induction furnace melting",
       "temperature": "1100",
-      "unit": "°C",
+      "unit": "C",
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "Ingot preparation."
+      "processing_steps_notes": "Homogenization."
     },
     {
-      "sample_id": "sample_05c_rd",
+      "sample_id": "sample_rd",
       "paper_id": "paper_001",
-      "sequence": "2",
+      "sequence": "02",
       "type": "thermomechanical_processing",
       "method": "Hot rolling",
       "temperature": ">1000",
-      "unit": "°C",
+      "unit": "C",
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "Thickness reduced to ~3 mm."
+      "processing_steps_notes": "To thickness ~3 mm."
     },
     {
-      "sample_id": "sample_05c_rd",
+      "sample_id": "sample_rd",
       "paper_id": "paper_001",
-      "sequence": "3",
-      "type": "mechanical_processing",
+      "sequence": "03",
+      "type": "thermomechanical_processing",
       "method": "Cold rolling",
       "temperature": null,
       "unit": null,
       "duration": null,
       "cooling_medium": null,
       "reduction_ratio": null,
-      "processing_steps_notes": "Final thickness ~1.5 mm."
+      "processing_steps_notes": "To thickness 1.5 mm."
     },
     {
-      "sample_id": "sample_05c_rd",
+      "sample_id": "sample_rd",
       "paper_id": "paper_001",
-      "sequence": "4",
+      "sequence": "04",
       "type": "heat_treatment",
-      "method": "Inter-critical annealing (IA)",
+      "method": "Intercritical annealing",
       "temperature": "850",
-      "unit": "°C",
+      "unit": "C",
       "duration": "10 minutes",
-      "cooling_medium": "Water",
+      "cooling_medium": "water",
       "reduction_ratio": null,
-      "processing_steps_notes": "To produce ultrafine γ+α aggregate and δ ferrite."
+      "processing_steps_notes": "Quenching to room temperature."
+    },
+    {
+      "sample_id": "sample_td",
+      "paper_id": "paper_001",
+      "sequence": "01",
+      "type": "thermomechanical_processing",
+      "method": "Vacuum induction furnace melting",
+      "temperature": "1100",
+      "unit": "C",
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "Homogenization."
+    },
+    {
+      "sample_id": "sample_td",
+      "paper_id": "paper_001",
+      "sequence": "02",
+      "type": "thermomechanical_processing",
+      "method": "Hot rolling",
+      "temperature": ">1000",
+      "unit": "C",
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "To thickness ~3 mm."
+    },
+    {
+      "sample_id": "sample_td",
+      "paper_id": "paper_001",
+      "sequence": "03",
+      "type": "thermomechanical_processing",
+      "method": "Cold rolling",
+      "temperature": null,
+      "unit": null,
+      "duration": null,
+      "cooling_medium": null,
+      "reduction_ratio": null,
+      "processing_steps_notes": "To thickness 1.5 mm."
+    },
+    {
+      "sample_id": "sample_td",
+      "paper_id": "paper_001",
+      "sequence": "04",
+      "type": "heat_treatment",
+      "method": "Intercritical annealing",
+      "temperature": "850",
+      "unit": "C",
+      "duration": "10 minutes",
+      "cooling_medium": "water",
+      "reduction_ratio": null,
+      "processing_steps_notes": "Quenching to room temperature."
     }
   ],
   "structures": [
     {
-      "structure_id": "struct_05c_rd",
-      "sample_id": "sample_05c_rd",
-      "overall_structure": "Banded or layered structure with ultrafine-grained (UFG) γ+α phases and coarse-grained δ-ferrite.",
+      "structure_id": "struct_001",
+      "sample_id": "sample_rd",
+      "overall_structure": "Banded or layered structure with ultrafine-grained gamma+alpha phases and coarse-grained delta-ferrite.",
       "number_of_phases": "3",
       "microstructure_counts": null,
       "microstructure_list": [
         {
-          "uuid": "uuid_rd_001",
-          "related_sequence": "4",
+          "uuid": "uuid_struct_01",
+          "related_sequence": "04",
           "phases_present": [
             {
-              "phase_name": "δ-ferrite",
+              "phase_name": "delta-ferrite",
               "crystal_structure": "BCC",
               "volume_fraction": "44",
-              "morphology": "Coarse-grained, banded",
+              "morphology": "Coarse-grained",
               "grain_size": "38",
               "texture": null
             },
             {
-              "phase_name": "Austenite",
+              "phase_name": "austenite",
               "crystal_structure": "FCC",
-              "volume_fraction": "31",
-              "morphology": "Ultrafine-grained (UFG), reverted from martensite",
+              "volume_fraction": null,
+              "morphology": "Ultrafine-grained",
               "grain_size": "1.8",
               "texture": null
             },
             {
-              "phase_name": "α-ferrite",
+              "phase_name": "alpha-ferrite",
               "crystal_structure": "BCC",
-              "volume_fraction": "25",
-              "morphology": "Ultrafine-grained (UFG)",
+              "volume_fraction": null,
+              "morphology": "Ultrafine-grained",
               "grain_size": "2",
               "texture": null
             }
           ],
           "defects": [
             {
-              "type": "Dislocation tangles",
+              "type": "dislocation",
               "porosity": null,
               "inclusions": [],
               "dislocation_density": null,
@@ -407,170 +371,50 @@ Let's assemble.
           ],
           "grain_structure": {
             "average_grain_size": {
-              "value": "1.8",
-              "unit": "μm"
+              "value": "38",
+              "unit": "um"
             },
             "grain_size_distribution": null,
             "texture": null
           },
-          "precipitates": [
-            {
-              "precipitate_id": null,
-              "type": "Strain-induced α'-martensite",
-              "size": {
-                "value": null,
-                "unit": null
-              },
-              "distribution": "Nucleated at phase boundaries",
-              "coherency": null
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "structure_id": "struct_05c_td",
-      "sample_id": "sample_05c_td",
-      "overall_structure": "Banded or layered structure with ultrafine-grained (UFG) γ+α phases and coarse-grained δ-ferrite.",
-      "number_of_phases": "3",
-      "microstructure_counts": null,
-      "microstructure_list": [
-        {
-          "uuid": "uuid_td_001",
-          "related_sequence": "4",
-          "phases_present": [
-            {
-              "phase_name": "δ-ferrite",
-              "crystal_structure": "BCC",
-              "volume_fraction": "44",
-              "morphology": "Coarse-grained, banded",
-              "grain_size": "38",
-              "texture": null
-            },
-            {
-              "phase_name": "Austenite",
-              "crystal_structure": "FCC",
-              "volume_fraction": "31",
-              "morphology": "Ultrafine-grained (UFG), reverted from martensite",
-              "grain_size": "1.8",
-              "texture": null
-            },
-            {
-              "phase_name": "α-ferrite",
-              "crystal_structure": "BCC",
-              "volume_fraction": "25",
-              "morphology": "Ultrafine-grained (UFG)",
-              "grain_size": "2",
-              "texture": null
-            }
-          ],
-          "defects": [
-            {
-              "type": "Dislocation tangles",
-              "porosity": null,
-              "inclusions": [],
-              "dislocation_density": null,
-              "lattice_distortion": null
-            }
-          ],
-          "grain_structure": {
-            "average_grain_size": {
-              "value": "1.8",
-              "unit": "μm"
-            },
-            "grain_size_distribution": null,
-            "texture": null
-          },
-          "precipitates": [
-            {
-              "precipitate_id": null,
-              "type": "Strain-induced α'-martensite",
-              "size": {
-                "value": null,
-                "unit": null
-              },
-              "distribution": "Nucleated at phase boundaries",
-              "coherency": null
-            }
-          ]
+          "precipitates": []
         }
       ]
     }
   ],
   "interfaces": [
     {
-      "interface_set_id": "interface_05c_01",
-      "sample_id": "sample_05c_rd",
+      "interface_set_id": "interface_001",
+      "sample_id": "sample_rd",
       "phases": [
         {
-          "interface_id": "int_001",
-          "microstructure_uuid": "uuid_rd_001",
-          "phase_1_name": "δ-ferrite",
-          "phase_2_name": "γ+α aggregate",
-          "coherence": null
-        },
-        {
-          "interface_id": "int_002",
-          "microstructure_uuid": "uuid_rd_001",
-          "phase_1_name": "Austenite",
-          "phase_2_name": "α-ferrite",
+          "interface_id": "int_01",
+          "microstructure_uuid": "uuid_struct_01",
+          "phase_1_name": "delta-ferrite",
+          "phase_2_name": "gamma+alpha aggregate",
           "coherence": null
         }
       ],
       "defect_interaction": [
         {
-          "interaction_id": "def_001",
-          "microstructure_uuid": "uuid_rd_001",
-          "interaction_type": "Strain incompatibility",
-          "quality_description": "High GNDs at phase boundaries due to mechanical contrast."
+          "interaction_id": "def_01",
+          "microstructure_uuid": "uuid_struct_01",
+          "interaction_type": "strain_incompatibility",
+          "quality_description": "High density of GNDs at phase boundaries due to mechanical contrast."
         }
       ],
       "interface_notes": [
         {
-          "stress_strain_distribution": "Iso-strain condition when layered structure is parallel to loading direction (RD)."
+          "stress_strain_distribution": "Higher strain concentration in delta-ferrite for TD sample."
         }
       ],
-      "phase_evolution": "Martensite nucleation primarily at phase boundaries between austenite and ferrite (α-ferrite or δ-ferrite)."
-    },
-    {
-      "interface_set_id": "interface_05c_02",
-      "sample_id": "sample_05c_td",
-      "phases": [
-        {
-          "interface_id": "int_003",
-          "microstructure_uuid": "uuid_td_001",
-          "phase_1_name": "δ-ferrite",
-          "phase_2_name": "γ+α aggregate",
-          "coherence": null
-        },
-        {
-          "interface_id": "int_004",
-          "microstructure_uuid": "uuid_td_001",
-          "phase_1_name": "Austenite",
-          "phase_2_name": "α-ferrite",
-          "coherence": null
-        }
-      ],
-      "defect_interaction": [
-        {
-          "interaction_id": "def_002",
-          "microstructure_uuid": "uuid_td_001",
-          "interaction_type": "Strain incompatibility",
-          "quality_description": "Strain concentration in δ-ferrite phase."
-        }
-      ],
-      "interface_notes": [
-        {
-          "stress_strain_distribution": "Iso-stress deformation condition when layer direction is perpendicular to loading direction (TD)."
-        }
-      ],
-      "phase_evolution": "Martensite nucleation primarily at phase boundaries between austenite and ferrite (α-ferrite or δ-ferrite)."
+      "phase_evolution": "Strain-induced alpha'-martensite nucleates primarily at phase boundaries between austenite and ferrite."
     }
   ],
   "properties": [
     {
-      "property_set_id": "prop_05c_mechanical",
-      "sample_id": "sample_05c_rd",
+      "property_set_id": "prop_mech_01",
+      "sample_id": "sample_rd",
       "mechanical": {
         "tensile_properties": {
           "yield_strength": [
@@ -583,10 +427,10 @@ Let's assemble.
           "ultimate_tensile_strength": [
             {
               "direction": "RD",
-              "value": "864",
+              "value": "855",
               "unit": "MPa",
               "others": {
-                "uncertainty": null
+                "uncertainty": "35"
               }
             }
           ],
@@ -599,12 +443,7 @@ Let's assemble.
           ],
           "youngs_modulus": null,
           "stress_strain_curves": null,
-          "stress_strain_distribution": [
-            {
-              "direction": "RD",
-              "distribution": null
-            }
-          ],
+          "stress_strain_distribution": null,
           "strain_hardening_rate": [
             {
               "property_id": null,
@@ -616,70 +455,29 @@ Let's assemble.
         },
         "hardness": [
           {
-            "region": "γ+α aggregates",
+            "region": "UFG gamma+alpha",
             "value": "221",
-            "scale": "Vickers",
-            "unit": "HV"
+            "scale": "HV",
+            "unit": null
           },
           {
-            "region": "δ-ferrite",
+            "region": "delta-ferrite",
             "value": "205",
-            "scale": "Vickers",
-            "unit": "HV"
+            "scale": "HV",
+            "unit": null
           }
         ],
-        "fracture_toughness": {
-          "value": null,
-          "unit": null
-        },
-        "fatigue_properties": {
-          "fatigue_limit": null,
-          "cycles_to_failure": null
-        },
-        "creep_properties": {
-          "steady_state_creep_rate": null,
-          "rupture_life": null
-        }
+        "fracture_toughness": null,
+        "fatigue_properties": null,
+        "creep_properties": null
       },
-      "physical": {
-        "density": {
-          "value": "7.40",
-          "unit": "g/cm^3"
-        },
-        "thermal_properties": {
-          "thermal_conductivity": null,
-          "thermal_expansion_coefficient": null,
-          "specific_heat": null
-        },
-        "electrical_properties": {
-          "electrical_conductivity": null,
-          "resistivity": null
-        },
-        "magnetic_properties": {
-          "magnetic_susceptibility": null,
-          "curie_temperature": null
-        }
-      },
-      "chemical": {
-        "corrosion_resistance": {
-          "test_medium": null,
-          "corrosion_rate": null,
-          "passivation_behavior": null
-        },
-        "oxidation_resistance": {
-          "oxidation_rate_constant": null,
-          "protective_scale": null
-        }
-      },
-      "radiation_properties": {
-        "void_swelling": null,
-        "irradiation_hardening": null,
-        "helium_embrittlement": null
-      }
+      "physical": null,
+      "chemical": null,
+      "radiation_properties": null
     },
     {
-      "property_set_id": "prop_05c_mechanical_td",
-      "sample_id": "sample_05c_td",
+      "property_set_id": "prop_mech_02",
+      "sample_id": "sample_td",
       "mechanical": {
         "tensile_properties": {
           "yield_strength": [
@@ -708,12 +506,7 @@ Let's assemble.
           ],
           "youngs_modulus": null,
           "stress_strain_curves": null,
-          "stress_strain_distribution": [
-            {
-              "direction": "TD",
-              "distribution": null
-            }
-          ],
+          "stress_strain_distribution": null,
           "strain_hardening_rate": [
             {
               "property_id": null,
@@ -725,194 +518,124 @@ Let's assemble.
         },
         "hardness": [
           {
-            "region": "γ+α aggregates",
+            "region": "UFG gamma+alpha",
             "value": "221",
-            "scale": "Vickers",
-            "unit": "HV"
+            "scale": "HV",
+            "unit": null
           },
           {
-            "region": "δ-ferrite",
+            "region": "delta-ferrite",
             "value": "205",
-            "scale": "Vickers",
-            "unit": "HV"
+            "scale": "HV",
+            "unit": null
           }
         ],
-        "fracture_toughness": {
-          "value": null,
-          "unit": null
-        },
-        "fatigue_properties": {
-          "fatigue_limit": null,
-          "cycles_to_failure": null
-        },
-        "creep_properties": {
-          "steady_state_creep_rate": null,
-          "rupture_life": null
-        }
+        "fracture_toughness": null,
+        "fatigue_properties": null,
+        "creep_properties": null
       },
-      "physical": {
-        "density": {
-          "value": "7.40",
-          "unit": "g/cm^3"
-        },
-        "thermal_properties": {
-          "thermal_conductivity": null,
-          "thermal_expansion_coefficient": null,
-          "specific_heat": null
-        },
-        "electrical_properties": {
-          "electrical_conductivity": null,
-          "resistivity": null
-        },
-        "magnetic_properties": {
-          "magnetic_susceptibility": null,
-          "curie_temperature": null
-        }
-      },
-      "chemical": {
-        "corrosion_resistance": {
-          "test_medium": null,
-          "corrosion_rate": null,
-          "passivation_behavior": null
-        },
-        "oxidation_resistance": {
-          "oxidation_rate_constant": null,
-          "protective_scale": null
-        }
-      },
-      "radiation_properties": {
-        "void_swelling": null,
-        "irradiation_hardening": null,
-        "helium_embrittlement": null
-      }
+      "physical": null,
+      "chemical": null,
+      "radiation_properties": null
     }
   ],
   "performance": [
     {
-      "performance_id": "perf_05c_rd",
-      "sample_id": "sample_05c_rd",
+      "performance_id": "perf_01",
+      "sample_id": "sample_rd",
       "service_conditions": {
         "operating_temperature": {
           "min": null,
           "max": null,
           "unit": null
         },
-        "stress_state": "Uniaxial tensile",
-        "environment": "Room temperature"
+        "stress_state": "uniaxial tensile",
+        "environment": "room temperature"
       },
-      "lifetime_prediction": {
-        "model_used": null,
-        "predicted_lifetime": null,
-        "confidence_interval": null
-      },
-      "comparative_performance": {
-        "benchmark_alloy": null,
-        "benchmark_process_id": null,
-        "benchmark_sample_id": null,
-        "improvement_percentage": null
-      }
+      "lifetime_prediction": null,
+      "comparative_performance": null
     },
     {
-      "performance_id": "perf_05c_td",
-      "sample_id": "sample_05c_td",
+      "performance_id": "perf_02",
+      "sample_id": "sample_td",
       "service_conditions": {
         "operating_temperature": {
           "min": null,
           "max": null,
           "unit": null
         },
-        "stress_state": "Uniaxial tensile",
-        "environment": "Room temperature"
+        "stress_state": "uniaxial tensile",
+        "environment": "room temperature"
       },
-      "lifetime_prediction": {
-        "model_used": null,
-        "predicted_lifetime": null,
-        "confidence_interval": null
-      },
-      "comparative_performance": {
-        "benchmark_alloy": null,
-        "benchmark_process_id": null,
-        "benchmark_sample_id": null,
-        "improvement_percentage": null
-      }
+      "lifetime_prediction": null,
+      "comparative_performance": null
     }
   ],
   "characterization_methods": [
     {
-      "characterization_id": "char_001",
-      "sample_id": "sample_05c_rd",
-      "microstructure_uuid": "uuid_rd_001",
-      "technique": "EBSD",
-      "purpose": "Microstructure characterization (phase fraction, grain size, orientation)",
-      "key_findings": "Banded structure, UFG γ+α, coarse δ-ferrite."
+      "characterization_id": "char_01",
+      "sample_id": "sample_rd",
+      "microstructure_uuid": "uuid_struct_01",
+      "technique": "Electron backscatter diffraction (EBSD)",
+      "purpose": "Microstructure characterization, phase fraction, grain size",
+      "key_findings": "Banded structure, UFG gamma+alpha, coarse delta-ferrite."
     },
     {
-      "characterization_id": "char_002",
-      "sample_id": "sample_05c_rd",
-      "microstructure_uuid": "uuid_rd_001",
-      "technique": "TEM",
-      "purpose": "Deformation substructure analysis (dislocation tangles, stacking faults, martensite nucleation)",
-      "key_findings": "Martensite nucleated at phase boundaries, dislocation tangles in ferrite."
-    },
-    {
-      "characterization_id": "char_003",
-      "sample_id": "sample_05c_rd",
+      "characterization_id": "char_02",
+      "sample_id": "sample_rd",
       "microstructure_uuid": null,
-      "technique": "Synchrotron HEXRD",
-      "purpose": "In-situ phase transformation, lattice strain, dislocation density analysis",
-      "key_findings": "Faster martensite transformation kinetics in RD, higher dislocation density in austenite."
+      "technique": "Transmission electron microscopy (TEM)",
+      "purpose": "Deformation substructure, martensite nucleation",
+      "key_findings": "Martensite nucleates at phase boundaries, dislocation tangles in ferrite."
     },
     {
-      "characterization_id": "char_004",
-      "sample_id": "sample_05c_rd",
+      "characterization_id": "char_03",
+      "sample_id": "sample_rd",
       "microstructure_uuid": null,
-      "technique": "μ-DIC",
-      "purpose": "Strain partitioning behavior between phases",
-      "key_findings": "Iso-strain condition in RD, iso-stress condition in TD, strain concentration in δ-ferrite for TD."
+      "technique": "In-situ synchrotron high-energy X-ray diffraction (HEXRD)",
+      "purpose": "Lattice strain, dislocation density, phase transformation kinetics",
+      "key_findings": "RD sample shows higher martensite transformation kinetics and dislocation density."
     },
     {
-      "characterization_id": "char_005",
-      "sample_id": "sample_05c_rd",
+      "characterization_id": "char_04",
+      "sample_id": "sample_rd",
       "microstructure_uuid": null,
-      "technique": "Vickers Hardness",
-      "purpose": "Local hardness measurement",
-      "key_findings": "γ+α aggregates harder than δ-ferrite."
+      "technique": "High-resolution microscopic digital image correlation (DIC)",
+      "purpose": "Strain partitioning behavior",
+      "key_findings": "TD sample shows strain concentration in delta-ferrite; RD sample shows iso-strain condition."
+    },
+    {
+      "characterization_id": "char_05",
+      "sample_id": "sample_rd",
+      "microstructure_uuid": null,
+      "technique": "Vickers microhardness tester",
+      "purpose": "Hardness measurement of localized regions",
+      "key_findings": "UFG gamma+alpha ~221 HV, delta-ferrite ~205 HV."
     }
   ],
   "computational_details": [
     {
-      "computation_id": "comp_001",
-      "sample_id": null,
-      "simulation_method": "Thermodynamic calculation",
-      "software_used": "Thermo-Calc",
+      "computation_id": "comp_01",
+      "sample_id": "sample_rd",
+      "simulation_method": "Analytical modeling",
+      "software_used": null,
       "potential_model": null,
-      "validation_against_experiment": null,
+      "validation_against_experiment": "Olson-Cohen (OC) model fitted to HEXRD data",
       "analytical_model": [
         {
-          "model_name": "Olson-Cohen (OC) Model",
-          "equation_role": "Martensite transformation kinetics prediction",
-          "parameters": [
-            {
-              "name": "n",
-              "value": "2",
-              "unit": null
-            },
-            {
-              "name": "F_γ0",
-              "value": "46.5",
-              "unit": "vol. %"
-            }
-          ],
-          "model_note": "Used to calculate martensite fraction based on plastic strain."
+          "model_name": "Olson-Cohen (OC) model",
+          "equation_role": "Martensite transformation kinetics",
+          "parameters": null,
+          "model_note": "Fitting parameters determined from TD sample and applied to RD sample with adjusted plastic strain."
         }
       ]
     }
   ],
   "unmapped_findings": [
-    "Fig. 15 shows local strain distribution close to phase boundary of δ-ferrite and UFG γ+α aggregates of RD sample, but image pixel data is not available.",
-    "Supplementary Fig. S1 shows texture analysis of δ-phase, which is not fully described in the main text body provided.",
-    "Table 1 summarizes parameters of the OC model, but the table content is not fully extracted in text.",
-    "The text mentions 'Fig. 2(a)' setup details for HEXRD, but image is not available.",
-    "Yield strength values for RD and TD are not explicitly quantified in the Results section, only UTS and elongation are given."
+    "Text states RD sample has higher strength by 864 MPa compared to TD, but general tensile strength is listed as ~855 MPa; this numerical discrepancy is noted as potentially erroneous in the source text.",
+    "Martensite fraction difference at true strain ~0.48 is reported as high as 4 vol% between RD and TD samples.",
+    "Strain hardening rate maximum values: RD 2052 MPa, TD 1828 MPa.",
+    "Texture analysis showed maximum intensity of 2.57 for rotated cube texture, deemed insignificant for anisotropic behavior.",
+    "Taylor factors were similar between RD (2.83) and TD (2.78)."
   ]
 }

@@ -28,17 +28,18 @@ JSON 解析请使用独立脚本（与模型调用解耦）：
   python scripts/paper_entity_extract_text_once.py \\
     -i datasets/text_llm_input/A_text_llm_input.json
 
-  # 并行 4 线程、任务日志（含每篇 prompt/completion/total tokens，及可选 reasoning/应答拆分）
+  # 并行 4 线程；任务日志默认写入 output_dir 下 extract_text_task_log.<时间戳>.json，也可用 --task-log 指定路径
   python scripts/paper_entity_extract_text_once.py \\
     --input datasets/text_llm_input \\
     --output-dir datasets/output_text \\
-    -j 4 \\
-    --task-log datasets/output_text/extract_task_log.json
+    -j 4
 
   # 第二步：解析原始输出为 JSON
   python scripts/paper_entity_parse_text_raw_to_json.py \\
     --input datasets/output_text \\
     --output-dir datasets/output_text
+
+共用逻辑见 scripts/lib/paper_extract_common.py（OpenAI、Schema、用量与任务日志等）。
 """
 
 from __future__ import annotations
@@ -46,9 +47,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import re
 import sys
-import threading
 import time
 import traceback
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -64,33 +63,8 @@ if str(_SCRIPTS_DIR) not in sys.path:
 TEXT_LLM_INPUT_DIR = PROJECT_ROOT / "datasets" / "text_llm_input"
 TEXT_RAW_OUTPUT_DIR = PROJECT_ROOT / "datasets" / "output_text"
 
-# =========================
-# 可配置项（常修改参数集中）
-# =========================
-# 环境变量名
-ENV_OPENAI_BASE_URL = "OPENAI_BASE_URL"
-ENV_OPENAI_API_KEY = "OPENAI_API_KEY"
-ENV_OPENAI_MODEL = "OPENAI_MODEL"
-ENV_OPENAI_MAX_TOKENS = "OPENAI_MAX_TOKENS"
-ENV_WORKERS = "STEELDIG_EXTRACT_WORKERS"
-
-# 默认值
-DEFAULT_OPENAI_BASE_URL = "http://127.0.0.1:8001/v1"
-DEFAULT_OPENAI_API_KEY = "EMPTY"
-DEFAULT_TEMPERATURE = 0.3
-DEFAULT_MAX_TOKENS = 65536
-DEFAULT_WORKERS = 3
-
 try:
-    from dotenv import load_dotenv
-
-    load_dotenv(PROJECT_ROOT / ".env")
-    load_dotenv(Path.cwd() / ".env")
-except ImportError:
-    pass
-
-try:
-    import json5
+    import json5  # noqa: F401 — 与 lib 共用依赖，此处先失败并给出中文提示
 except ImportError as e:
     raise SystemExit(
         "缺少依赖 json5，请执行: pip install json5\n"
@@ -105,146 +79,27 @@ except ImportError as e:
         f"原始错误: {e}"
     ) from e
 
-from openai import OpenAI  # noqa: E402
+from lib.paper_extract_common import (  # noqa: E402
+    ENV_OPENAI_MAX_TOKENS,
+    SCHEMA_GAP_TEXT_ONLY,
+    DEFAULT_MAX_TOKENS,
+    DEFAULT_TEMPERATURE,
+    aggregate_usage_for_summary,
+    build_system_content,
+    default_workers as _default_workers,
+    effective_openai_base_url,
+    extract_output_text_stats,
+    extract_usage_from_completion,
+    openai_client,
+    resolve_chat_model_id,
+    stderr_exc_lock,
+    try_load_dotenv,
+    write_task_log,
+)
 
-_exc_lock = threading.Lock()
+try_load_dotenv(project_root=PROJECT_ROOT)
 
-
-def _default_workers() -> int:
-    raw = (os.environ.get(ENV_WORKERS) or str(DEFAULT_WORKERS)).strip()
-    try:
-        return max(1, int(raw, 10))
-    except ValueError:
-        return DEFAULT_WORKERS
-
-
-def _effective_openai_base_url() -> str:
-    return os.environ.get(ENV_OPENAI_BASE_URL, DEFAULT_OPENAI_BASE_URL).rstrip("/")
-
-
-def _openai_client() -> OpenAI:
-    """与 digmodel/basemodel/start_vllm.sh、test_vllm.py 一致：本地 OpenAI 兼容端点。"""
-    key = os.environ.get(ENV_OPENAI_API_KEY, DEFAULT_OPENAI_API_KEY)
-    return OpenAI(api_key=key, base_url=_effective_openai_base_url())
-
-
-def _resolve_chat_model_id(client: OpenAI, cli_model: Optional[str]) -> str:
-    """与 vLLM 返回的 model id 必须一致；未指定时取 /v1/models 第一个 id。"""
-    for candidate in ((cli_model or "").strip(), (os.environ.get(ENV_OPENAI_MODEL) or "").strip()):
-        if candidate:
-            return candidate
-    try:
-        listed = client.models.list()
-    except Exception as e:
-        raise SystemExit(
-            "无法访问 vLLM 的 /v1/models（请检查 OPENAI_BASE_URL、服务是否已启动、"
-            "OPENAI_API_KEY 是否与 --api-key 一致）。\n"
-            f"详情: {e}"
-        ) from e
-    data = getattr(listed, "data", None) or []
-    if not data:
-        raise SystemExit(
-            "/v1/models 未返回任何模型。请设置环境变量 OPENAI_MODEL 或使用 --model，"
-            "名称须与 vLLM 注册的 id 完全一致（可对照启动日志或 curl /v1/models）。"
-        )
-    return str(data[0].id)
-
-
-def _get_obj_field(obj: Any, key: str, default: Any = None) -> Any:
-    if obj is None:
-        return default
-    if isinstance(obj, dict):
-        return obj.get(key, default)
-    return getattr(obj, key, default)
-
-
-def _extract_usage_from_completion(completion: Any) -> Optional[Dict[str, Any]]:
-    """从 completion.usage 提取 token；若存在 reasoning 细分（如 OpenAI o 系列、部分网关）则一并记录。"""
-    usage = _get_obj_field(completion, "usage")
-    if usage is None:
-        return None
-    pt = _get_obj_field(usage, "prompt_tokens")
-    ct = _get_obj_field(usage, "completion_tokens")
-    tt = _get_obj_field(usage, "total_tokens")
-    details = _get_obj_field(usage, "completion_tokens_details")
-    reasoning_tok = None
-    if details is not None:
-        reasoning_tok = _get_obj_field(details, "reasoning_tokens")
-
-    out: Dict[str, Any] = {}
-    if pt is not None:
-        out["prompt_tokens"] = int(pt)
-    if ct is not None:
-        out["completion_tokens"] = int(ct)
-    if tt is not None:
-        out["total_tokens"] = int(tt)
-    elif pt is not None and ct is not None:
-        out["total_tokens"] = int(pt) + int(ct)
-    if reasoning_tok is not None:
-        out["completion_tokens_reasoning"] = int(reasoning_tok)
-        if ct is not None:
-            out["completion_tokens_response"] = max(
-                0, int(ct) - int(reasoning_tok)
-            )
-
-    return out if out else None
-
-
-def _extract_output_text_stats(message: Any) -> Dict[str, Any]:
-    """若 API 将 thinking 与最终回复分字段（如 reasoning_content / thinking），则分别统计字符数。"""
-    content = _get_obj_field(message, "content")
-    if not isinstance(content, str):
-        content = str(content) if content is not None else ""
-    reasoning = _get_obj_field(message, "reasoning_content")
-    if reasoning is None:
-        reasoning = _get_obj_field(message, "thinking")
-    stats: Dict[str, Any] = {"response_chars": len(content)}
-    if reasoning is not None and str(reasoning).strip():
-        stats["reasoning_chars"] = len(str(reasoning))
-    return stats
-
-
-def load_schema_object(schema_path: Path) -> dict:
-    with open(schema_path, "r", encoding="utf-8") as f:
-        return json5.load(f)
-
-
-def load_system_prompt_from_markdown(md_path: Path, *, variant: str) -> str:
-    """从 paper_entity_extraction_prompt.md 中提取对应模式的「系统提示词」代码块正文。
-
-    variant: \"text\" -> ## 系统提示词（纯文本）；\"multi\" -> ## 系统提示词（多模态）
-    """
-    if variant == "text":
-        header = "## 系统提示词（纯文本）"
-    elif variant == "multi":
-        header = "## 系统提示词（多模态）"
-    else:
-        raise ValueError(f"未知 prompt variant: {variant!r}，应为 \"text\" 或 \"multi\"")
-    raw = md_path.read_text(encoding="utf-8")
-    m = re.search(
-        re.escape(header) + r"\s*\n```(?:text)?\s*\n(.*?)```",
-        raw,
-        flags=re.DOTALL,
-    )
-    if not m:
-        raise ValueError(
-            f"无法在 {md_path} 中解析 {header} 下方的 ``` 系统提示词代码块"
-        )
-    return m.group(1).strip()
-
-
-def build_system_content(
-    schema_path: Path, prompt_md_path: Path, *, prompt_variant: str
-) -> str:
-    """组装完整 system 消息（规则 + Schema JSON）。"""
-    schema_obj = load_schema_object(schema_path)
-    schema_compact = json.dumps(schema_obj, ensure_ascii=False)
-    system_rules = load_system_prompt_from_markdown(
-        prompt_md_path, variant=prompt_variant
-    )
-    return (
-        system_rules + "\n\n" + schema_compact
-    )
+DEFAULT_WORKERS = 2
 
 
 def load_paper_text_from_text_llm_input(path: Path) -> str:
@@ -255,7 +110,7 @@ def load_paper_text_from_text_llm_input(path: Path) -> str:
         raise ValueError(f"纯文本 LLM 输入 JSON 顶层须为对象: {path}")
     text = data.get("text")
     if not isinstance(text, str):
-        raise ValueError(f"{path} 须包含字符串字段 \"text\"")
+        raise ValueError(f'{path} 须包含字符串字段 "text"')
     return text
 
 
@@ -306,11 +161,7 @@ def run_extraction(
 ) -> Tuple[str, Optional[Dict[str, Any]]]:
     """调用模型，返回 (原始文本, token/输出分块元数据)。
 
-    元数据在成功调用 API 时通常含 ``usage``（prompt/completion/total token，及可选的
-    reasoning/response 拆分）与 ``output_text_stats``（reasoning_content 与 content 的字符数）。
-    dry_run 时第二项为 None。
-
-    quiet: 为 True 时不打印「已写入…」（多线程时避免输出交错）。
+    dry_run 时第二项为 None。quiet 为 True 时不打印「已写入…」。
     """
     paper_text = load_paper_text_from_text_llm_input(text_llm_input_path)
 
@@ -335,7 +186,7 @@ def run_extraction(
                     "text_llm_input_file": str(text_llm_input_path),
                     "system_len": len(system_content),
                     "user_chars": len(user_message),
-                    "openai_base_url": _effective_openai_base_url(),
+                    "openai_base_url": effective_openai_base_url(),
                     "model": model,
                     "temperature": temperature,
                     "max_tokens": max_tokens,
@@ -349,7 +200,7 @@ def run_extraction(
         )
         return "", None
 
-    client = _openai_client()
+    client = openai_client()
     completion = client.chat.completions.create(
         model=model,
         messages=[
@@ -367,10 +218,10 @@ def run_extraction(
         raw_reply = str(raw_reply)
 
     meta: Dict[str, Any] = {}
-    usage = _extract_usage_from_completion(completion)
+    usage = extract_usage_from_completion(completion)
     if usage:
         meta["usage"] = usage
-    text_stats = _extract_output_text_stats(msg)
+    text_stats = extract_output_text_stats(msg)
     if text_stats:
         meta["output_text_stats"] = text_stats
 
@@ -392,10 +243,6 @@ def _task_record(
     error: Optional[str],
     usage_meta: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    """processing_seconds: 单篇从读入输入到写完 raw 的耗时；skipped 为 null。
-
-    usage_meta: run_extraction 返回的第二项，可含 usage（token）与 output_text_stats（分字段字符数）。
-    """
     ps: Optional[float]
     if processing_seconds is None:
         ps = None
@@ -450,7 +297,7 @@ def _run_one_extraction_job(
         )
     except Exception as e:
         elapsed = time.perf_counter() - t0
-        with _exc_lock:
+        with stderr_exc_lock:
             print(f"失败: {text_llm_input_path}", file=sys.stderr)
             traceback.print_exc()
         return _task_record(
@@ -460,88 +307,6 @@ def _run_one_extraction_job(
             processing_seconds=elapsed,
             error=f"{type(e).__name__}: {e}",
         )
-
-
-def _aggregate_usage_for_summary(items: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """对 items[].usage 做求和，便于整批 token 汇总。"""
-    keys = (
-        "prompt_tokens",
-        "completion_tokens",
-        "total_tokens",
-        "completion_tokens_reasoning",
-        "completion_tokens_response",
-    )
-    sums: Dict[str, int] = {k: 0 for k in keys}
-    counts: Dict[str, int] = {k: 0 for k in keys}
-    for it in items:
-        u = it.get("usage")
-        if not isinstance(u, dict):
-            continue
-        for k in keys:
-            v = u.get(k)
-            if v is not None:
-                sums[k] += int(v)
-                counts[k] += 1
-    out: Dict[str, Any] = {}
-    for k in keys:
-        if counts[k] > 0:
-            out[f"{k}_sum"] = sums[k]
-    if out:
-        out["items_with_usage_count"] = len(
-            [it for it in items if isinstance(it.get("usage"), dict)]
-        )
-    return out
-
-
-def _write_task_log(
-    path: Path,
-    *,
-    started_at: str,
-    finished_at: str,
-    wall_seconds: float,
-    openai_base_url: str,
-    model_id: str,
-    workers: int,
-    dry_run: bool,
-    temperature: float,
-    max_tokens: int,
-    items: List[Dict[str, Any]],
-) -> None:
-    summary: Dict[str, Any] = {"ok": 0, "skipped": 0, "failed": 0}
-    processing_sum = 0.0
-    for it in items:
-        st = it.get("status")
-        if st in summary:
-            summary[st] += 1
-        psec = it.get("processing_seconds")
-        if psec is not None:
-            processing_sum += float(psec)
-    summary["processing_seconds_sum"] = round(processing_sum, 4)
-    usage_agg = _aggregate_usage_for_summary(items)
-    if usage_agg:
-        summary["usage_tokens"] = usage_agg
-    wall_r = round(wall_seconds, 4)
-    payload = {
-        "started_at": started_at,
-        "finished_at": finished_at,
-        "batch_wall_seconds": wall_r,
-        "wall_seconds": wall_r,
-        "openai_base_url": openai_base_url,
-        "model": model_id,
-        "workers": workers,
-        "dry_run": dry_run,
-        "temperature": temperature,
-        "max_tokens": max_tokens,
-        "summary": summary,
-        "items": items,
-    }
-    path = path.resolve()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
-    print(f"任务日志已写入: {path}", file=sys.stderr)
 
 
 def main() -> None:
@@ -620,7 +385,7 @@ def main() -> None:
         "--workers",
         "-j",
         type=int,
-        default=_default_workers(),
+        default=_default_workers(fallback=DEFAULT_WORKERS),
         help=(
             "并行线程数（仅对实际调用 API 的任务生效；默认 3，过大可能打满 vLLM）。"
             "也可用环境变量 STEELDIG_EXTRACT_WORKERS"
@@ -631,9 +396,8 @@ def main() -> None:
         type=Path,
         default=None,
         help=(
-            "任务日志 JSON：每篇 items[].processing_seconds、items[].usage（prompt/completion/total token，"
-            "及可选的 reasoning/response 拆分）、items[].output_text_stats；"
-            "summary.usage_tokens 为各篇 token 合计；另有 batch_wall_seconds 等"
+            "任务日志 JSON 路径；未指定时默认写到 --output-dir 下 "
+            "extract_text_task_log.<时间戳>.json。内容含每篇 processing_seconds、usage、output_text_stats 等"
         ),
     )
     parser.add_argument(
@@ -641,33 +405,41 @@ def main() -> None:
         action="store_true",
         help="不显示 tqdm 进度条（便于重定向日志）",
     )
-    args = parser.parse_args() # 解析命令行参数
+    args = parser.parse_args()
 
-    # 路径解析
     input_arg = args.input.resolve()
     output_dir = args.output_dir.resolve()
     schema_path = args.schema.resolve()
     prompt_path = args.prompt.resolve()
 
-    files = collect_text_llm_input_files(input_arg) # 收集文本 LLM 输入文件
-    # 构建系统提示词
+    files = collect_text_llm_input_files(input_arg)
     system_content = build_system_content(
-        schema_path, prompt_path, prompt_variant="text"
+        schema_path,
+        prompt_path,
+        prompt_variant="text",
+        schema_intro_before_json=SCHEMA_GAP_TEXT_ONLY,
     )
 
-    client = _openai_client() # 创建 OpenAI 客户端
-    model_id = _resolve_chat_model_id(client, args.model)
+    client = openai_client()
+    model_id = resolve_chat_model_id(client, args.model)
     print(f"使用模型: {model_id}", file=sys.stderr)
 
-    # 单文件模式：指定完整原始输出路径时覆盖 --output-dir 的自动命名
+    if args.task_log is None:
+        ts = datetime.now().strftime("%Y%m%d-%H%M%S")
+        task_log_path = output_dir / f"extract_text_task_log.{ts}.json"
+    else:
+        task_log_path = args.task_log.resolve()
+    print(f"任务日志路径: {task_log_path}", file=sys.stderr)
+
     single_explicit_output: Optional[Path] = None
     if len(files) == 1 and args.output is not None:
         single_explicit_output = args.output.resolve()
 
-    # 跳过已存在的、非空的 *_entities_text_only.raw.txt
+    started_at = datetime.now().isoformat(timespec="seconds")
+    t_wall0 = time.perf_counter()
+
     skip_existing = not args.no_skip and not args.dry_run
 
-    # 并行线程数（仅对实际调用 API 的任务生效；默认 1，过大可能打满 vLLM）。
     workers = max(1, args.workers)
     if args.fail_fast and workers > 1:
         print(
@@ -682,14 +454,14 @@ def main() -> None:
         )
         workers = 1
 
-    log_items: List[Dict[str, Any]] = [] # 任务日志项列表
-    to_process: List[Tuple[Path, Path]] = [] # 待处理任务列表
+    log_items: List[Dict[str, Any]] = []
+    to_process: List[Tuple[Path, Path]] = []
 
-    for text_input_path in files: # 遍历文本 LLM 输入文件
+    for text_input_path in files:
         if single_explicit_output is not None:
             raw_path = single_explicit_output
         else:
-            raw_path = derive_raw_output_path(text_input_path, output_dir) # 生成原始输出路径
+            raw_path = derive_raw_output_path(text_input_path, output_dir)
 
         if (
             skip_existing
@@ -706,24 +478,37 @@ def main() -> None:
                     error=None,
                 )
             )
+            if task_log_path is not None:
+                write_task_log(
+                    task_log_path,
+                    started_at=started_at,
+                    finished_at=None,
+                    wall_seconds=None,
+                    openai_base_url=effective_openai_base_url(),
+                    model_id=model_id,
+                    workers=workers,
+                    dry_run=args.dry_run,
+                    temperature=args.temperature,
+                    max_tokens=args.max_tokens,
+                    items=sorted((log_items), key=lambda x: x["text_llm_input"]),
+                    atomic_durable=False,
+                    atomic_retries=1,
+                )
             continue
 
         to_process.append((text_input_path, raw_path))
-
-    started_at = datetime.now().isoformat(timespec="seconds") # 开始时间
-    t_wall0 = time.perf_counter() # 开始时间
-    run_results: List[Dict[str, Any]] = [] # 运行结果列表
-    quiet = workers > 1 # 是否静默模式
+    run_results: List[Dict[str, Any]] = []
+    quiet = workers > 1
 
     if to_process:
-        if workers == 1: # 单线程模式
+        if workers == 1:
             bar = tqdm(
                 to_process,
                 desc="提取",
                 unit="篇",
                 disable=args.no_progress,
             )
-            for text_input_path, raw_path in bar: # 遍历待处理任务
+            for text_input_path, raw_path in bar:
                 rec = _run_one_extraction_job(
                     text_llm_input_path=text_input_path,
                     raw_output_path=raw_path,
@@ -735,6 +520,24 @@ def main() -> None:
                     quiet=quiet,
                 )
                 run_results.append(rec)
+                if task_log_path is not None:
+                    snap_items = log_items + run_results
+                    snap_items.sort(key=lambda x: x["text_llm_input"])
+                    write_task_log(
+                        task_log_path,
+                        started_at=started_at,
+                        finished_at=None,
+                        wall_seconds=None,
+                        openai_base_url=effective_openai_base_url(),
+                        model_id=model_id,
+                        workers=workers,
+                        dry_run=args.dry_run,
+                        temperature=args.temperature,
+                        max_tokens=args.max_tokens,
+                        items=snap_items,
+                        atomic_durable=False,
+                        atomic_retries=1,
+                    )
                 ps = rec.get("processing_seconds")
                 if ps is not None and hasattr(bar, "set_postfix_str"):
                     bar.set_postfix_str(f"本篇 {float(ps):.1f}s", refresh=False)
@@ -767,6 +570,24 @@ def main() -> None:
                 for fut in done_iter:
                     rec = fut.result()
                     run_results.append(rec)
+                    if task_log_path is not None:
+                        snap_items = log_items + run_results
+                        snap_items.sort(key=lambda x: x["text_llm_input"])
+                        write_task_log(
+                            task_log_path,
+                            started_at=started_at,
+                            finished_at=None,
+                            wall_seconds=None,
+                            openai_base_url=effective_openai_base_url(),
+                            model_id=model_id,
+                            workers=workers,
+                            dry_run=args.dry_run,
+                            temperature=args.temperature,
+                            max_tokens=args.max_tokens,
+                            items=snap_items,
+                            atomic_durable=False,
+                            atomic_retries=1,
+                        )
                     ps = rec.get("processing_seconds")
                     if ps is not None and hasattr(done_iter, "set_postfix_str"):
                         done_iter.set_postfix_str(f"刚完成 {float(ps):.1f}s", refresh=False)
@@ -790,7 +611,7 @@ def main() -> None:
         for it in all_items
         if it.get("processing_seconds") is not None
     )
-    uagg = _aggregate_usage_for_summary(all_items)
+    uagg = aggregate_usage_for_summary(all_items)
     usage_parts: List[str] = []
     if uagg:
         if "prompt_tokens_sum" in uagg:
@@ -817,19 +638,21 @@ def main() -> None:
         file=sys.stderr,
     )
 
-    if args.task_log is not None:
-        _write_task_log(
-            args.task_log,
+    if task_log_path is not None:
+        write_task_log(
+            task_log_path,
             started_at=started_at,
             finished_at=finished_at,
             wall_seconds=wall_seconds,
-            openai_base_url=_effective_openai_base_url(),
+            openai_base_url=effective_openai_base_url(),
             model_id=model_id,
             workers=workers,
             dry_run=args.dry_run,
             temperature=args.temperature,
             max_tokens=args.max_tokens,
             items=all_items,
+            atomic_durable=False,
+            atomic_retries=1,
         )
 
     if summary["failed"] > 0:

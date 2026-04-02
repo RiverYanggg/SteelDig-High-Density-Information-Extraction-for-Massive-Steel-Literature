@@ -1,0 +1,116 @@
+{
+  "started_at": "2026-03-31T17:30:46",
+  "finished_at": "2026-03-31T18:09:05",
+  "batch_wall_seconds": 2298.3286,
+  "wall_seconds": 2298.3286,
+  "openai_base_url": "http://127.0.0.1:8001/v1",
+  "model": "/home/caep-xuben/chenchengbing/yzj/digmodel/basemodel/Qwen/Qwen3.5-9B",
+  "workers": 2,
+  "dry_run": false,
+  "temperature": 0.3,
+  "max_tokens": 65536,
+  "summary": {
+    "ok": 6,
+    "skipped": 0,
+    "failed": 0,
+    "processing_seconds_sum": 4404.452,
+    "usage_tokens": {
+      "prompt_tokens_sum": 134055,
+      "completion_tokens_sum": 57268,
+      "total_tokens_sum": 191323,
+      "items_with_usage_count": 6
+    }
+  },
+  "items": [
+    {
+      "text_llm_input": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/text_llm_input/0321_noted_text_llm_input.json",
+      "raw_output": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/output_text/0321_noted_entities_text_only.raw.txt",
+      "status": "ok",
+      "processing_seconds": 1509.7379,
+      "error": null,
+      "usage": {
+        "prompt_tokens": 19638,
+        "completion_tokens": 7507,
+        "total_tokens": 27145
+      },
+      "output_text_stats": {
+        "response_chars": 25232
+      }
+    },
+    {
+      "text_llm_input": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/text_llm_input/1-s2.0-S007964251730066X-main_text_llm_input.json",
+      "raw_output": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/output_text/1-s2.0-S007964251730066X-main_entities_text_only.raw.txt",
+      "status": "ok",
+      "processing_seconds": 1193.4087,
+      "error": null,
+      "usage": {
+        "prompt_tokens": 62335,
+        "completion_tokens": 7342,
+        "total_tokens": 69677
+      },
+      "output_text_stats": {
+        "response_chars": 25290
+      }
+    },
+    {
+      "text_llm_input": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/text_llm_input/1-s2.0-S0167577X24006608-main_text_llm_input.json",
+      "raw_output": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/output_text/1-s2.0-S0167577X24006608-main_entities_text_only.raw.txt",
+      "status": "ok",
+      "processing_seconds": 364.717,
+      "error": null,
+      "usage": {
+        "prompt_tokens": 8357,
+        "completion_tokens": 8333,
+        "total_tokens": 16690
+      },
+      "output_text_stats": {
+        "response_chars": 28243
+      }
+    },
+    {
+      "text_llm_input": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/text_llm_input/A_text_llm_input.json",
+      "raw_output": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/output_text/A_entities_text_only.raw.txt",
+      "status": "ok",
+      "processing_seconds": 501.7034,
+      "error": null,
+      "usage": {
+        "prompt_tokens": 20087,
+        "completion_tokens": 11895,
+        "total_tokens": 31982
+      },
+      "output_text_stats": {
+        "response_chars": 38680
+      }
+    },
+    {
+      "text_llm_input": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/text_llm_input/B_text_llm_input.json",
+      "raw_output": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/output_text/B_entities_text_only.raw.txt",
+      "status": "ok",
+      "processing_seconds": 548.0023,
+      "error": null,
+      "usage": {
+        "prompt_tokens": 12314,
+        "completion_tokens": 13359,
+        "total_tokens": 25673
+      },
+      "output_text_stats": {
+        "response_chars": 43216
+      }
+    },
+    {
+      "text_llm_input": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/text_llm_input/C_text_llm_input.json",
+      "raw_output": "/home/caep-xuben/chenchengbing/yzj/SteelDig-High-Density-Information-Extraction-for-Massive-Steel-Literature/datasets/output_text/C_entities_text_only.raw.txt",
+      "status": "ok",
+      "processing_seconds": 286.8827,
+      "error": null,
+      "usage": {
+        "prompt_tokens": 11324,
+        "completion_tokens": 8832,
+        "total_tokens": 20156
+      },
+      "output_text_stats": {
+        "response_chars": 29677
+      }
+    }
+  ]
+}

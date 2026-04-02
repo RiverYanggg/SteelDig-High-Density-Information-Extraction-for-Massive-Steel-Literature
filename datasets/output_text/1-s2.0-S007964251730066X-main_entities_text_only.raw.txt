@@ -1,134 +1,82 @@
-The user wants me to extract structured information from the provided text of a review paper titled "Current state of Fe-Mn-Al-C low density steels".
-I need to output a single valid JSON object following the provided schema template.
-The constraints are strict:
-1.  **Leaf values** must be `null`, `string`, or `array`. No `number` or `boolean` types.
-2.  **Numbers** (years, values, percentages, etc.) must be strings (e.g., "2017", "7.8").
-3.  **Booleans** must be strings ("true"/"false") or `null`.
-4.  **Arrays** contain strings or objects.
-5.  **Keys** must match the template exactly.
-6.  **Unmapped findings** should capture important info not fitting the schema.
-7.  **No Markdown** in the output.
-8.  **No explanation** in the output.
+The user wants me to extract structured information from the provided text of a scientific paper titled "Current state of Fe-Mn-Al-C low density steels".
+I need to output a single valid JSON object following a specific schema provided in the prompt.
+The schema includes keys like `papers`, `alloys`, `processes`, `samples`, `processing_steps`, `structures`, `interfaces`, `properties`, `performance`, `characterization_methods`, `computational_details`, and `unmapped_findings`.
+I must strictly follow the type constraints: all leaf values must be `null`, `string`, or `array`. No `number` or `boolean` types are allowed. All numbers must be strings (e.g., "2017", "7.8").
+I need to parse the text to identify:
+1.  **Paper Metadata**: Title, Authors, Year, Journal, DOI (if available), Keywords, Research Type (Review), Scope.
+2.  **Alloys**: Fe-Mn-Al-C steels mentioned with specific compositions (e.g., Fe-30Mn-10Al-1C).
+3.  **Processes**: General processing routes (Hot rolling, Cold rolling, Solution treatment, Aging, etc.).
+4.  **Samples**: Specific alloy/process combinations mentioned in the text (often linked to specific studies cited).
+5.  **Processing Steps**: Detailed steps for samples (Temperatures, times, cooling).
+6.  **Structures**: Microstructures described (Austenite, Ferrite, Kappa-carbide, etc.).
+7.  **Interfaces**: Grain boundaries, phase boundaries.
+8.  **Properties**: Tensile properties (Yield strength, UTS, Elongation), Hardness, Impact toughness, etc.
+9.  **Performance**: Application properties (Formability, Fatigue, Corrosion, Weldability).
+10. **Characterization Methods**: TEM, XRD, Tensile testing, etc.
+11. **Computational Details**: Thermodynamic calculations (CALPHAD, FactSage).
+12. **Unmapped Findings**: Important info not fitting the schema.
+
+**Constraints Checklist & Confidence Score:**
+1.  **JSON only**: Yes.
+2.  **No Markdown**: Yes.
+3.  **No Numbers/Booleans**: Yes (convert all to strings).
+4.  **Schema Compliance**: Yes.
+5.  **Text Only**: Yes (no image data).
+
+**Mental Sandbox:**
+-   **Paper Info**: Title is "Current state of Fe-Mn-Al-C low density steels". Authors: Shangping Chen, Radhakanta Rana, Arunansu Haldar, Ranjit Kumar Ray. Year: 2017. Journal: Likely "Materials Science and Engineering: A" or similar based on Elsevier copyright, but text says "© 2017 Elsevier Ltd." and "Article history". I will check if journal name is explicitly stated. It is not explicitly in the text provided, just "Elsevier Ltd.". I will use "Elsevier" or leave journal null if not clear. Wait, looking closely at the text: "Article history... Available online 31 May 2017". No specific journal name like "Materials Science and Engineering A" is explicitly in the text snippet provided, though it's a standard Elsevier format. I will set journal to "Elsevier" or null to be safe based strictly on text. Actually, often these reviews are in "Materials Science and Engineering: A". I will stick to text: "Elsevier Ltd." implies the publisher. I will put null for journal if not explicitly named, or "Elsevier" as publisher. Let's look for "Journal". Not found. I will use null or "Elsevier". Let's use "Elsevier" for publisher context or null. Better to use null for specific journal name if not found.
+-   **Research Type**: It is a review paper ("This paper provides a review..."). So `research_type` = "review".
+-   **Alloys**: Many specific compositions are mentioned (e.g., Fe-30Mn-10Al-1C, Fe-28Mn-9Al-0.8C). I should extract these into `alloys`.
+-   **Processes**: Hot rolling, Cold rolling, Solution treatment, Aging, Quenching.
+-   **Properties**: Yield strength, UTS, Elongation, Hardness, Impact Energy. Values are often ranges or specific numbers. I need to convert numbers to strings.
+-   **Computational**: FactSage, CALPHAD mentioned.
 
 **Plan:**
-1.  **Analyze the Paper:** It's a review paper (2017) on Fe-Mn-Al-C low density steels. It covers physical metallurgy, processing, microstructure, strengthening mechanisms, and properties (tensile, impact, fatigue, etc.).
-2.  **Map to Schema:**
-    *   `papers`: Extract metadata (title, authors, year, journal, etc.).
-    *   `alloys`: Identify specific alloy systems mentioned (e.g., Fe-Mn-Al-C generally, specific compositions like Fe-28Mn-9Al-0.8C).
-    *   `processes`: Extract processing routes (hot rolling, cold rolling, solution treatment, aging, etc.).
-    *   `samples`: Create sample entries linking alloys and processes (since it's a review, specific samples are often cited from literature, I will generalize or cite specific compositions mentioned as case studies).
-    *   `processing_steps`: Detail the steps (homogenization, hot rolling, cooling, aging).
-    *   `structures`: Describe microstructures (ferritic, austenitic, duplex, precipitates like $\kappa'$-carbide, SRO).
-    *   `interfaces`: Phase interfaces (grain boundaries, phase boundaries).
-    *   `properties`: Mechanical properties (yield strength, UTS, elongation, hardness, etc.) and physical properties (density, Young's modulus).
-    *   `performance`: Application properties (impact toughness, fatigue, formability, corrosion).
-    *   `characterization_methods`: Techniques used (TEM, XRD, tensile testing, etc.).
-    *   `computational_details`: Thermodynamic calculations (CALPHAD, FactSage), SFE maps.
-    *   `unmapped_findings`: Capture specific review conclusions or limitations not fitting standard fields.
+1.  Construct the `papers` object.
+2.  Extract `alloys` from the text (e.g., Fe-30Mn-10Al-1C).
+3.  Extract `processes` (General processing).
+4.  Create `samples` linking alloys to processes where specific data is discussed (e.g., specific tensile tests).
+5.  Fill `processing_steps` with details (Temp, time).
+6.  Fill `structures` with microstructure descriptions (Austenite, Kappa-carbide).
+7.  Fill `properties` with mechanical data (Strength, Elongation).
+8.  Fill `performance` with application data (Formability, Corrosion).
+9.  Fill `characterization_methods` (TEM, XRD, Tensile).
+10. Fill `computational_details` (FactSage, CALPHAD).
+11. Fill `unmapped_findings` for things like specific figure captions that can't be fully quantified or general statements.
+12. Ensure all numbers are strings.
 
-3.  **Drafting Content (Mental Check for Constraints):**
-    *   *Numbers:* Convert "2017" to "2017", "1.3%" to "1.3%", "7.8 g/cm^3" to "7.8".
-    *   *Booleans:* "true"/"false" if needed (e.g., age hardenable).
-    *   *Arrays:* Use arrays for lists of alloys, properties, steps.
-    *   *Keys:* Ensure `papers`, `alloys`, `processes`, `samples`, `processing_steps`, `structures`, `interfaces`, `properties`, `performance`, `characterization_methods`, `computational_details`, `unmapped_findings` exist.
+**Refinement on Types:**
+-   `yield_strength`: Array of objects with `value` (string), `unit` (string).
+-   `publication_year`: String "2017".
+-   `authors`: Array of strings.
+-   `keywords`: Array of strings.
 
-4.  **Specific Extraction:**
-    *   **Paper Info:** Title, Authors (Shangping Chen et al.), Year (2017), Journal (implied Elsevier/Materials Science and Engineering: A based on copyright notice, but text says "Elsevier Ltd"), Scope (Review of Fe-Mn-Al-C low density steels).
-    *   **Alloys:** Fe-Mn-Al-C system generally. Specific examples: Fe-28Mn-9Al-0.8C, Fe-30Mn-10Al-1C, Fe-8Al, Fe-22Mn-8Al-0.8C.
-    *   **Processes:** Hot rolling, Cold rolling, Solution treatment, Water quenching, Aging (550 C, 450 C, etc.).
-    *   **Microstructures:** Ferrite (alpha/alpha-delta), Austenite (gamma), Kappa carbide (kappa/kappa-prime), SRO, B2/DO3.
-    *   **Properties:** Density (7.87 g/cm3 -> 7.87), Young's Modulus (195-207 GPa), Yield Strength (0.4-1.0 GPa), UTS (0.6-2.0 GPa), Elongation (30-100%), Hardness (Brinell).
-    *   **Mechanisms:** TRIP, TWIP, MBIP, DSBR, SIP, Planar glide, Precipitation hardening, Solid solution strengthening.
-    *   **Computational:** CALPHAD, FactSage, SFE maps.
+**Drafting Content:**
+-   **Paper**: Title, Authors, Year "2017", Research Type "review".
+-   **Alloys**: Fe-30Mn-10Al-1C, Fe-28Mn-9Al-0.8C, Fe-8Al, etc.
+-   **Processes**: Hot rolling, Cold rolling, Solution treatment, Aging.
+-   **Properties**: UTS ranges (e.g., "0.6-2.0 GPa"), Yield strength ranges.
+-   **Computational**: FactSage 6.4, CALPHAD.
 
-5.  **Refining JSON Structure:**
-    *   Ensure all numeric values are strings.
-    *   Ensure no empty objects `{}` unless necessary (schema allows `null` for empty groups).
-    *   Check `samples`: Since this is a review, I will create representative samples based on the specific alloys discussed in the text (e.g., `sample_28mn9al08c`).
-    *   Check `processing_steps`: Map the general processing routes described in Section 5.
-    *   Check `properties`: Aggregate the ranges and specific values mentioned in Sections 2, 6, 7.
-    *   Check `unmapped_findings`: Add notes about the limitations of the review (e.g., lack of formability data, welding data).
+**Self-Correction on JSON Structure:**
+-   Must be a single JSON object.
+-   Keys must match the schema provided in the prompt.
+-   No markdown code blocks.
+-   No numbers.
 
-6.  **Final Review against Constraints:**
-    *   No `number` type? Yes, convert all.
-    *   No `boolean` type? Yes, convert all.
-    *   Valid JSON? Yes.
-    *   Keys match schema? Yes.
+Let's start building the JSON.
 
-Let's construct the JSON.
+*Note on Journal:* The text says "© 2017 Elsevier Ltd." and "Article history". It doesn't explicitly name the journal title in the provided text snippet (e.g., "Materials Science and Engineering A"). I will leave `journal` as null or "Elsevier" based on publisher info. I will use null to be strict with "provided text".
+*Note on Authors:* "Shangping Chen a,⇑ , Radhakanta Rana a , Arunansu Haldar b , Ranjit Kumar Ray b".
+*Note on Keywords:* "Low density steels", "Deformation mechanisms", "Phase transformation", "Short-range ordering", "j-carbide", "Planar glide", "TRIP steel", "TWIP steel", "Stacking fault energy".
 
-*Self-Correction during drafting:*
-*   *Issue:* The text mentions "Elsevier Ltd" in copyright. I should put "Elsevier" or "Materials Science and Engineering: A" if known, but the text only explicitly says "Elsevier Ltd". I will use "Elsevier" or leave journal as "Elsevier" based on text "© 2017 Elsevier Ltd".
-*   *Issue:* Numbers like "1.3%" need to be "1.3%".
-*   *Issue:* "true"/"false" for booleans. E.g., "age_hardenable" -> "true".
-*   *Issue:* `samples` array needs to be populated. I will create entries for the specific alloys mentioned as case studies in the text (e.g., Fe-28Mn-9Al-0.8C).
-*   *Issue:* `computational_details` needs to reflect the thermodynamic calculations mentioned (FactSage, CALPHAD).
+*Note on Numbers:* "1.3%", "2%", "7.8 g/cm3", "100%". All must be "1.3%", "2%", "7.8 g/cm3", "100%".
 
-Let's start building the JSON content.
+*Note on Samples:* Since this is a review paper, specific "samples" are often cited from other works. I will create sample entries representing the alloys discussed in the context of specific properties (e.g., "sample_30mn10al1c").
 
-*Paper:*
-- paper_id: "paper_001" (auto-generated style)
-- title: "Current state of Fe-Mn-Al-C low density steels"
-- authors: ["Shangping Chen", "Radhakanta Rana", "Arunansu Haldar", "Ranjit Kumar Ray"]
-- publication_year: "2017"
-- research_type: "review"
-- paper_scope: "Review of physical metallurgy, processing strategies, strengthening mechanisms, and mechanical properties of Fe-Mn-Al-C low density steels for automotive applications."
+*Note on Unmapped:* Some specific figure data (e.g., exact CVN values from curves) might be hard to extract precisely without the image, but text gives some values (e.g., "200 J/cm2"). I will include these in properties.
 
-*Alloys:*
-- alloy_01: Fe-Mn-Al-C (General)
-- alloy_02: Fe-28Mn-9Al-0.8C
-- alloy_03: Fe-30Mn-10Al-1C
-- alloy_04: Fe-8Al (Ferritic)
-- alloy_05: Fe-22Mn-8Al-0.8C (Duplex/Austenitic)
-
-*Processes:*
-- proc_01: Hot rolling
-- proc_02: Cold rolling
-- proc_03: Solution treatment
-- proc_04: Aging (Precipitation hardening)
-- proc_05: Annealing
-
-*Samples:*
-- sample_01: Linked to alloy_02, proc_03/04
-- sample_02: Linked to alloy_03, proc_03/04
-- sample_03: Linked to alloy_04, proc_02/05
-
-*Processing Steps:*
-- Homogenization (1100-1250 C, 1-3 h)
-- Hot rolling (850-1000 C)
-- Cooling (Water/Air)
-- Aging (450-700 C, 5-20 h)
-
-*Structures:*
-- Ferritic (BCC)
-- Austenitic (FCC)
-- Duplex (Ferrite + Austenite)
-- Precipitates: Kappa (kappa-prime), SRO, B2, DO3.
-
-*Properties:*
-- Density: 7.87 g/cm3 (Fe), 7.8 g/cm3 (Steel)
-- Young's Modulus: 195-207 GPa
-- Yield Strength: 0.4-1.0 GPa
-- UTS: 0.6-2.0 GPa
-- Elongation: 30-100%
-
-*Performance:*
-- Impact Toughness: 200 J/cm2 (solution treated), reduced after aging.
-- Fatigue: Limited data.
-- Corrosion: Inferior to 304 SS.
-- Weldability: Limited data.
-
-*Computational:*
-- FactSage 6.4
-- CALPHAD
-- SFE maps
-
-*Unmapped:*
-- Lack of industrial scale data.
-- Formability data is limited.
-- Weldability/coatability not well documented.
-
-I will now generate the JSON ensuring all numbers are strings.
+Let's assemble.
 </think>
 
 {
@@ -144,7 +92,7 @@ I will now generate the JSON ensuring all numbers are strings.
         "Ranjit Kumar Ray"
       ],
       "publication_year": "2017",
-      "journal": "Elsevier",
+      "journal": null,
       "keywords": [
         "Low density steels",
         "Deformation mechanisms",
@@ -157,75 +105,12 @@ I will now generate the JSON ensuring all numbers are strings.
         "Stacking fault energy"
       ],
       "research_type": "review",
-      "paper_scope": "Review of physical metallurgy, processing strategies, strengthening mechanisms, and mechanical properties of Fe-Mn-Al-C low density steels for automotive applications."
+      "paper_scope": "A review on the physical metallurgy, processing strategies, strengthening mechanisms, and mechanical properties of Fe-Mn-Al-C steels for automotive applications."
     }
   ],
   "alloys": [
     {
-      "alloy_id": "alloy_femnalc_general",
-      "paper_id": "paper_001",
-      "alloy_name": "Fe-Mn-Al-C low density steels",
-      "aliases": [
-        "Low density steels",
-        "Lightweight steels"
-      ],
-      "base_element": "Fe",
-      "alloying_elements": [
-        "Mn",
-        "Al",
-        "C"
-      ],
-      "nominal_composition": [
-        {
-          "element": "Al",
-          "weight_percent": "7-10",
-          "atomic_percent": null
-        },
-        {
-          "element": "Mn",
-          "weight_percent": "15-30",
-          "atomic_percent": null
-        },
-        {
-          "element": "C",
-          "weight_percent": "0.7-1.2",
-          "atomic_percent": null
-        }
-      ],
-      "alloys_notes": "Main alloying element is Al for density reduction. Mn and C stabilize austenite."
-    },
-    {
-      "alloy_id": "alloy_28mn9al08c",
-      "paper_id": "paper_001",
-      "alloy_name": "Fe-28Mn-9Al-0.8C",
-      "aliases": [],
-      "base_element": "Fe",
-      "alloying_elements": [
-        "Mn",
-        "Al",
-        "C"
-      ],
-      "nominal_composition": [
-        {
-          "element": "Mn",
-          "weight_percent": "28",
-          "atomic_percent": null
-        },
-        {
-          "element": "Al",
-          "weight_percent": "9",
-          "atomic_percent": null
-        },
-        {
-          "element": "C",
-          "weight_percent": "0.8",
-          "atomic_percent": null
-        }
-      ],
-      "alloys_notes": "Austenitic steel, high elongation (~100%)."
-    },
-    {
-      "alloy_id": "alloy_30mn10al1c",
+      "alloy_id": "alloy_fe30mn10al1c",
       "paper_id": "paper_001",
       "alloy_name": "Fe-30Mn-10Al-1C",
       "aliases": [],
@@ -252,15 +137,43 @@ I will now generate the JSON ensuring all numbers are strings.
           "atomic_percent": null
         }
       ],
-      "alloys_notes": "Austenitic steel."
+      "alloys_notes": "Austenitic steel, high SFE, used for MBIP/DSBR/SIP mechanism studies."
     },
     {
-      "alloy_id": "alloy_8al",
+      "alloy_id": "alloy_fe28mn9al08c",
+      "paper_id": "paper_001",
+      "alloy_name": "Fe-28Mn-9Al-0.8C",
+      "aliases": [],
+      "base_element": "Fe",
+      "alloying_elements": [
+        "Mn",
+        "Al",
+        "C"
+      ],
+      "nominal_composition": [
+        {
+          "element": "Mn",
+          "weight_percent": "28",
+          "atomic_percent": null
+        },
+        {
+          "element": "Al",
+          "weight_percent": "9",
+          "atomic_percent": null
+        },
+        {
+          "element": "C",
+          "weight_percent": "0.8",
+          "atomic_percent": null
+        }
+      ],
+      "alloys_notes": "Austenitic steel, SFE ~85 mJ/m2, studied for elongation ~100%."
+    },
+    {
+      "alloy_id": "alloy_fe8al",
       "paper_id": "paper_001",
       "alloy_name": "Fe-8Al",
-      "aliases": [
-        "Ferritic Fe-Al steel"
-      ],
+      "aliases": [],
       "base_element": "Fe",
       "alloying_elements": [
         "Al"
@@ -275,185 +188,186 @@ I will now generate the JSON ensuring all numbers are strings.
       "alloys_notes": "Ferritic low density steel."
     },
     {
-      "alloy_id": "alloy_22mn8al08c",
+      "alloy_id": "alloy_fe30mn04c",
       "paper_id": "paper_001",
-      "alloy_name": "Fe-22Mn-8Al-0.8C",
+      "alloy_name": "Fe-30Mn-0.4C",
       "aliases": [],
       "base_element": "Fe",
       "alloying_elements": [
         "Mn",
-        "Al",
         "C"
       ],
       "nominal_composition": [
         {
           "element": "Mn",
-          "weight_percent": "22",
-          "atomic_percent": null
-        },
-        {
-          "element": "Al",
-          "weight_percent": "8",
+          "weight_percent": "30",
           "atomic_percent": null
         },
         {
           "element": "C",
-          "weight_percent": "0.8",
+          "weight_percent": "0.4",
           "atomic_percent": null
         }
       ],
-      "alloys_notes": "Austenitic steel."
+      "alloys_notes": "TWIP steel baseline for Al addition studies."
     }
   ],
   "processes": [
     {
       "process_id": "proc_general",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_femnalc_general",
-      "description": "General processing for Fe-Mn-Al-C steels including melting, casting, hot rolling, and heat treatment.",
-      "processes_notes": "Ingot casting, homogenization, hot rolling, cooling, cold rolling, annealing, aging."
+      "alloy_id": null,
+      "description": "General processing routes for Fe-Mn-Al-C steels including melting, ingot casting, homogenization, hot rolling, cold rolling, solution treatment, quenching, and aging.",
+      "processes_notes": "Homogenization at 1100-1250 C for 1-3 h. Hot rolling to 2-5 mm at 850-1000 C. Aging typically 500-700 C for 5-20 h."
     },
     {
-      "process_id": "proc_solution_treatment",
+      "process_id": "proc_ferritic",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_femnalc_general",
-      "description": "Solution treatment in single austenite phase area followed by quenching.",
-      "processes_notes": "Temperature range 900-1100 C, water/oil quenching."
+      "alloy_id": "alloy_fe8al",
+      "description": "Cold rolling and recrystallization annealing for ferritic Fe-Al steels.",
+      "processes_notes": "Cold rolled and heated to 700-1000 C for recrystallization annealing."
     },
     {
-      "process_id": "proc_aging",
+      "process_id": "proc_austenitic",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_femnalc_general",
-      "description": "Aging treatment for precipitation hardening.",
-      "processes_notes": "Temperature range 450-700 C, duration 5-20 h."
+      "alloy_id": "alloy_fe30mn10al1c",
+      "description": "Solution treatment and water quenching for austenitic steels, followed by optional aging.",
+      "processes_notes": "Solution treated at 900-1100 C, water quenched. Aging at 500-700 C."
     },
     {
-      "process_id": "proc_hot_rolling",
+      "process_id": "proc_duplex",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_femnalc_general",
-      "description": "Hot rolling to reduce thickness.",
-      "processes_notes": "Finishing temperature 850-1000 C."
-    },
-    {
-      "process_id": "proc_cold_rolling",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_femnalc_general",
-      "description": "Cold rolling for grain refinement and texture control.",
-      "processes_notes": "Reduction up to 70%."
+      "alloy_id": null,
+      "description": "Intercritical annealing and austempering for duplex steels.",
+      "processes_notes": "Annealing at 700-900 C, followed by austempering at 400 C."
     }
   ],
   "samples": [
     {
-      "sample_id": "sample_28mn9al08c_sol",
+      "sample_id": "sample_30mn10al1c_01",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn9al08c",
-      "process_id": "proc_solution_treatment"
+      "alloy_id": "alloy_fe30mn10al1c",
+      "process_id": "proc_austenitic"
     },
     {
-      "sample_id": "sample_28mn9al08c_age",
+      "sample_id": "sample_28mn9al08c_01",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn9al08c",
-      "process_id": "proc_aging"
+      "alloy_id": "alloy_fe28mn9al08c",
+      "process_id": "proc_austenitic"
     },
     {
-      "sample_id": "sample_30mn10al1c_sol",
+      "sample_id": "sample_fe8al_01",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_30mn10al1c",
-      "process_id": "proc_solution_treatment"
+      "alloy_id": "alloy_fe8al",
+      "process_id": "proc_ferritic"
     },
     {
-      "sample_id": "sample_8al_ferritic",
+      "sample_id": "sample_30mn04c_01",
       "paper_id": "paper_001",
-      "alloy_id": "alloy_8al",
-      "process_id": "proc_cold_rolling"
-    },
-    {
-      "sample_id": "sample_22mn8al08c",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_22mn8al08c",
+      "alloy_id": "alloy_fe30mn04c",
       "process_id": "proc_general"
     }
   ],
   "processing_steps": [
     {
-      "sample_id": "sample_28mn9al08c_sol",
+      "sample_id": "sample_30mn10al1c_01",
       "paper_id": "paper_001",
       "sequence": "1",
       "type": "heat_treatment",
       "method": "Solution treatment",
-      "temperature": "900-1100",
+      "temperature": "1000-1100",
       "unit": "C",
-      "duration": "1-3",
-      "cooling_medium": "Water",
-      "processing_steps_notes": "Homogenization at 1100-1250 C for 1-3 h prior to rolling."
+      "duration": "1-2",
+      "cooling_medium": "water",
+      "processing_steps_notes": "To obtain single phase austenite."
     },
     {
-      "sample_id": "sample_28mn9al08c_age",
+      "sample_id": "sample_30mn10al1c_01",
       "paper_id": "paper_001",
       "sequence": "2",
       "type": "heat_treatment",
       "method": "Aging",
-      "temperature": "450-700",
+      "temperature": "550",
       "unit": "C",
-      "duration": "5-20",
-      "cooling_medium": null,
-      "processing_steps_notes": "Isothermal holding for precipitation hardening."
+      "duration": "16-24",
+      "cooling_medium": "air",
+      "processing_steps_notes": "For precipitation hardening."
     },
     {
-      "sample_id": "sample_8al_ferritic",
+      "sample_id": "sample_fe8al_01",
       "paper_id": "paper_001",
-      "sequence": "3",
+      "sequence": "1",
       "type": "mechanical_processing",
       "method": "Cold rolling",
       "temperature": null,
       "unit": null,
       "duration": null,
       "cooling_medium": null,
-      "processing_steps_notes": "Followed by recrystallization annealing at 700-1000 C."
+      "processing_steps_notes": "Reduction to control grain size."
+    },
+    {
+      "sample_id": "sample_fe8al_01",
+      "paper_id": "paper_001",
+      "sequence": "2",
+      "type": "heat_treatment",
+      "method": "Recrystallization annealing",
+      "temperature": "700-950",
+      "unit": "C",
+      "duration": null,
+      "cooling_medium": null,
+      "processing_steps_notes": "To obtain fully recrystallized microstructure."
     }
   ],
   "structures": [
     {
       "structure_id": "struct_austenitic",
-      "sample_id": "sample_28mn9al08c_sol",
-      "overall_structure": "Single-phase austenite (gamma) with SRO or nano-sized kappa-prime carbides.",
+      "sample_id": "sample_30mn10al1c_01",
+      "overall_structure": "Single phase austenite (gamma) with SRO or nano-sized kappa-prime carbides.",
       "number_of_phases": "1-2",
       "microstructure_counts": null,
       "microstructure_list": [
         {
-          "uuid": "uuid_austenite_001",
+          "uuid": "uuid_a1",
           "related_sequence": "1",
           "phases_present": [
             {
               "phase_name": "Austenite",
               "crystal_structure": "FCC",
-              "volume_fraction": "100",
+              "volume_fraction": null,
               "morphology": "Equiaxed",
-              "grain_size": "38-80",
-              "texture": "Random"
+              "grain_size": null,
+              "texture": null
+            },
+            {
+              "phase_name": "Kappa-prime carbide",
+              "crystal_structure": "E2_1",
+              "volume_fraction": null,
+              "morphology": "Cuboidal",
+              "grain_size": null,
+              "texture": null
             }
           ],
           "defects": [
             {
-              "type": "Dislocations",
+              "type": "Dislocation",
               "porosity": null,
               "inclusions": [],
               "dislocation_density": null,
-              "lattice_distortion": "SRO"
+              "lattice_distortion": null
             }
           ],
           "grain_structure": {
             "average_grain_size": {
-              "value": "50",
-              "unit": "um"
+              "value": null,
+              "unit": null
             },
             "grain_size_distribution": null,
             "texture": null
           },
           "precipitates": [
             {
-              "precipitate_id": "precip_kappa_prime",
-              "type": "Kappa-prime carbide",
+              "precipitate_id": "precip_kappa",
+              "type": "Kappa-prime",
               "size": {
                 "value": "2-5",
                 "unit": "nm"
@@ -467,50 +381,50 @@ I will now generate the JSON ensuring all numbers are strings.
     },
     {
       "structure_id": "struct_ferritic",
-      "sample_id": "sample_8al_ferritic",
-      "overall_structure": "Ferritic (alpha-delta) with possible B2 or DO3 ordering.",
-      "number_of_phases": "1",
+      "sample_id": "sample_fe8al_01",
+      "overall_structure": "Ferritic (alpha/delta) with possible Kappa carbides.",
+      "number_of_phases": "1-2",
       "microstructure_counts": null,
       "microstructure_list": [
         {
-          "uuid": "uuid_ferrite_001",
-          "related_sequence": "3",
+          "uuid": "uuid_f1",
+          "related_sequence": "2",
           "phases_present": [
             {
               "phase_name": "Ferrite",
               "crystal_structure": "BCC",
-              "volume_fraction": "100",
-              "morphology": "Equiaxed",
-              "grain_size": "40-90",
-              "texture": "Cube fiber"
+              "volume_fraction": null,
+              "morphology": "Equiaxed or Elongated",
+              "grain_size": null,
+              "texture": "Cube fibre"
             }
           ],
           "defects": [
             {
-              "type": "Dislocations",
+              "type": "Dislocation",
               "porosity": null,
               "inclusions": [],
               "dislocation_density": null,
-              "lattice_distortion": "Solid solution"
+              "lattice_distortion": null
             }
           ],
           "grain_structure": {
             "average_grain_size": {
-              "value": "65",
+              "value": "40-90",
               "unit": "um"
             },
             "grain_size_distribution": null,
-            "texture": "Cube"
+            "texture": "Random with Cube fibre"
           },
           "precipitates": [
             {
-              "precipitate_id": "precip_kappa",
+              "precipitate_id": "precip_kappa_ferr",
               "type": "Kappa carbide",
               "size": {
-                "value": "Thick/elongated",
-                "unit": "nm"
+                "value": null,
+                "unit": null
               },
-              "distribution": "Grain boundaries",
+              "distribution": null,
               "coherency": "Semicoherent"
             }
           ]
@@ -521,11 +435,11 @@ I will now generate the JSON ensuring all numbers are strings.
   "interfaces": [
     {
       "interface_set_id": "interface_gamma_kappa",
-      "sample_id": "sample_28mn9al08c_sol",
+      "sample_id": "sample_30mn10al1c_01",
       "phases": [
         {
-          "interface_id": "int_001",
-          "microstructure_uuid": "uuid_austenite_001",
+          "interface_id": "int_1",
+          "microstructure_uuid": "uuid_a1",
           "phase_1_name": "Austenite",
           "phase_2_name": "Kappa-prime carbide",
           "coherence": "Coherent"
@@ -533,24 +447,20 @@ I will now generate the JSON ensuring all numbers are strings.
       ],
       "defect_interaction": [
         {
-          "interaction_id": "int_001",
-          "microstructure_uuid": "uuid_austenite_001",
+          "interaction_id": "int_1",
+          "microstructure_uuid": "uuid_a1",
           "interaction_type": "Dislocation shearing",
-          "quality_description": "Planar glide"
+          "quality_description": "Dislocations shear kappa-prime precipitates leading to planar slip."
         }
       ],
-      "interface_notes": [
-        {
-          "stress_strain_distribution": "Planar slip bands"
-        }
-      ],
-      "phase_evolution": "SRO -> Kappa-prime -> Kappa (overaging)"
+      "interface_notes": [],
+      "phase_evolution": "Kappa-prime precipitates form during aging, increasing with time and temperature, eventually coarsening to intergranular kappa-star."
     }
   ],
   "properties": [
     {
-      "property_set_id": "prop_mechanical",
-      "sample_id": "sample_28mn9al08c_sol",
+      "property_set_id": "prop_tensile",
+      "sample_id": "sample_30mn10al1c_01",
       "mechanical": {
         "tensile_properties": {
           "yield_strength": [
@@ -564,10 +474,7 @@ I will now generate the JSON ensuring all numbers are strings.
             {
               "direction": null,
               "value": "0.6-2.0",
-              "unit": "GPa",
-              "others": {
-                "uncertainty": null
-              }
+              "unit": "GPa"
             }
           ],
           "elongation": [
@@ -579,7 +486,7 @@ I will now generate the JSON ensuring all numbers are strings.
           ],
           "youngs_modulus": null,
           "stress_strain_curves": null,
-          "stress_strain_distribution": null,
+          "stress_strain_distribution": [],
           "strain_hardening_rate": [
             {
               "property_id": null,
@@ -645,12 +552,75 @@ I will now generate the JSON ensuring all numbers are strings.
         "irradiation_hardening": null,
         "helium_embrittlement": null
       }
+    },
+    {
+      "property_set_id": "prop_impact",
+      "sample_id": "sample_30mn10al1c_01",
+      "mechanical": {
+        "tensile_properties": {
+          "yield_strength": [],
+          "ultimate_tensile_strength": [],
+          "elongation": [],
+          "youngs_modulus": null,
+          "stress_strain_curves": null,
+          "stress_strain_distribution": [],
+          "strain_hardening_rate": []
+        },
+        "hardness": [],
+        "fracture_toughness": {
+          "value": "200",
+          "unit": "J/cm2"
+        },
+        "fatigue_properties": {
+          "fatigue_limit": null,
+          "cycles_to_failure": null
+        },
+        "creep_properties": {
+          "steady_state_creep_rate": null,
+          "rupture_life": null
+        }
+      },
+      "physical": {
+        "density": {
+          "value": null,
+          "unit": null
+        },
+        "thermal_properties": {
+          "thermal_conductivity": null,
+          "thermal_expansion_coefficient": null,
+          "specific_heat": null
+        },
+        "electrical_properties": {
+          "electrical_conductivity": null,
+          "resistivity": null
+        },
+        "magnetic_properties": {
+          "magnetic_susceptibility": null,
+          "curie_temperature": null
+        }
+      },
+      "chemical": {
+        "corrosion_resistance": {
+          "test_medium": null,
+          "corrosion_rate": null,
+          "passivation_behavior": null
+        },
+        "oxidation_resistance": {
+          "oxidation_rate_constant": null,
+          "protective_scale": null
+        }
+      },
+      "radiation_properties": {
+        "void_swelling": null,
+        "irradiation_hardening": null,
+        "helium_embrittlement": null
+      }
     }
   ],
   "performance": [
     {
-      "performance_id": "perf_impact",
-      "sample_id": "sample_28mn9al08c_sol",
+      "performance_id": "perf_formability",
+      "sample_id": "sample_30mn10al1c_01",
       "service_conditions": {
         "operating_temperature": {
           "min": null,
@@ -666,7 +636,31 @@ I will now generate the JSON ensuring all numbers are strings.
         "confidence_interval": null
       },
       "comparative_performance": {
-        "benchmark_alloy": "Cr-Ni stainless steel",
+        "benchmark_alloy": "Mn TWIP steel",
+        "benchmark_process_id": null,
+        "benchmark_sample_id": null,
+        "improvement_percentage": null
+      }
+    },
+    {
+      "performance_id": "perf_corrosion",
+      "sample_id": "sample_30mn10al1c_01",
+      "service_conditions": {
+        "operating_temperature": {
+          "min": null,
+          "max": null,
+          "unit": null
+        },
+        "stress_state": null,
+        "environment": "Aqueous"
+      },
+      "lifetime_prediction": {
+        "model_used": null,
+        "predicted_lifetime": null,
+        "confidence_interval": null
+      },
+      "comparative_performance": {
+        "benchmark_alloy": "304 Stainless Steel",
         "benchmark_process_id": null,
         "benchmark_sample_id": null,
         "improvement_percentage": null
@@ -676,56 +670,53 @@ I will now generate the JSON ensuring all numbers are strings.
   "characterization_methods": [
     {
       "characterization_id": "char_tensile",
-      "sample_id": "sample_28mn9al08c_sol",
+      "sample_id": "sample_30mn10al1c_01",
       "microstructure_uuid": null,
       "technique": "Tensile testing",
-      "purpose": "Mechanical properties evaluation",
-      "key_findings": "High elongation and strength."
+      "purpose": "Measure yield strength, UTS, elongation",
+      "key_findings": "High elongation up to 100% observed in solution treated condition."
     },
     {
-      "characterization_id": "char_micro",
-      "sample_id": "sample_28mn9al08c_sol",
-      "microstructure_uuid": "uuid_austenite_001",
+      "characterization_id": "char_metallography",
+      "sample_id": "sample_30mn10al1c_01",
+      "microstructure_uuid": "uuid_a1",
       "technique": "TEM",
-      "purpose": "Microstructure and precipitate analysis",
+      "purpose": "Microstructure analysis, precipitate characterization",
       "key_findings": "Observation of SRO and kappa-prime carbides."
     },
     {
-      "characterization_id": "char_xrd",
-      "sample_id": "sample_28mn9al08c_sol",
+      "characterization_id": "char_calphad",
+      "sample_id": null,
       "microstructure_uuid": null,
-      "technique": "X-ray diffraction",
-      "purpose": "Phase identification",
-      "key_findings": "Detection of SRO superlattice reflections."
+      "technique": "Thermodynamic calculation",
+      "purpose": "Phase diagram prediction",
+      "key_findings": "FactSage and CALPHAD used for phase equilibria."
     }
   ],
   "computational_details": [
     {
-      "computation_id": "comp_thermo",
+      "computation_id": "comp_phase",
       "sample_id": null,
       "simulation_method": "CALPHAD",
       "software_used": "FactSage 6.4",
       "potential_model": null,
-      "validation_against_experiment": "Comparison with experimental phase diagrams",
+      "validation_against_experiment": "Comparison with experimental phase fields",
       "analytical_model": [
         {
-          "model_name": "Phase diagram calculation",
-          "equation_role": "Predict phase equilibria",
-          "parameters": [
-            "Al content",
-            "Mn content",
-            "C content"
-          ],
-          "model_note": "Used to predict kappa carbide formation and solvus temperatures."
+          "model_name": "Phase Equilibrium Model",
+          "equation_role": "Predict phase boundaries",
+          "parameters": null,
+          "model_note": "Used to predict gamma stability and kappa formation."
         }
       ]
     }
   ],
   "unmapped_findings": [
-    "The review indicates that the fatigue behaviour and formability of Fe-Mn-Al-C steels cannot be properly understood at this stage due to limited experimental results.",
-    "Information on weldability and coatability of these materials is still very much lacking.",
-    "The Young's modulus of these steels is significantly lower than conventional high strength steels, which is a main issue for automotive applications.",
-    "Industrial scale production remains a challenge due to high Al content causing processing problems like surface defects and cracking.",
-    "The exact cause of the large difference in total elongation between studies on the same alloy composition is still unclear."
+    "The specific Young's modulus reduction per 1 wt% Al addition is stated as 2% in the abstract but 1.3% density reduction is also mentioned.",
+    "Deformation mechanisms such as MBIP, DSBR, and SIP are introduced to describe plastic deformation in high SFe Fe-Mn-Al-C steels.",
+    "The formation of intergranular kappa-star carbides is detrimental to ductility and toughness.",
+    "Weldability and coatability are not well documented in the literature.",
+    "The effective Al composition range for best mechanical properties in austenitic steels is narrow (7-10% Al).",
+    "Industrial scale production remains a challenge due to high Al content processing issues like alumina formation."
   ]
 }

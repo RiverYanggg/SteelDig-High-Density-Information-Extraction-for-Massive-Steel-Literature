@@ -1,203 +1,200 @@
-The user wants me to extract structured information from the provided text of a scientific paper about "Co-precipitation mechanism of Cu-rich phase and κ-carbide precipitates in Fe-28Mn-10Al-1C-3Cu austenitic low-density steel".
-I need to output a single valid JSON object following a specific schema provided in the prompt.
-The schema requires specific keys: `papers`, `alloys`, `processes`, `samples`, `processing_steps`, `structures`, `interfaces`, `properties`, `performance`, `characterization_methods`, `computational_details`, `unmapped_findings`.
-All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` types allowed.
-I need to parse the text carefully to extract details like alloy composition, processing steps (solution treatment, aging), microstructure details (phases, precipitates, sizes, lattice parameters), characterization methods (TEM, EDS, XRD), and findings.
+The user wants me to extract structured entities from the provided text of a scientific paper.
+The output must be a single valid JSON object adhering to a specific schema (`paper_schema.json` / `paper_entity_schema.jsonc`).
+I need to follow strict constraints:
+1.  **JSON only**: No markdown, no explanations, no extra text. The first character must be `{`.
+2.  **Type Constraints**: All leaf values must be `null`, `string`, or `array`. No `number` or `boolean` types. Numbers must be strings (e.g., "2025", "1000").
+3.  **Schema Compliance**: Use the provided JSON template structure exactly.
+4.  **Content**: Extract information based *only* on the text provided. Do not hallucinate data. If info is missing, use `null`.
+5.  **Structure**:
+    *   `papers`: Metadata (title, authors, journal, year, etc.).
+    *   `alloys`: Alloy composition (Fe-28Mn-10Al-1C-3Cu).
+    *   `processes`: Heat treatment (Solution treatment, Aging).
+    *   `samples`: Link alloys and processes.
+    *   `processing_steps`: Detailed steps (Solution at 1000°C 1h, Aging at 550°C 3h).
+    *   `structures`: Microstructure details (Cu-rich phase, κ-carbide, matrix).
+    *   `interfaces`: Interface relationships (cube-on-cube, lattice misfit).
+    *   `properties`: Mechanical/Physical properties (Yield strength mentioned in intro, but specific values for the *treated* samples might be in the text? The text mentions yield strength of Fe-Mn-Al-C generally is 360-540 MPa, but doesn't explicitly give the tensile test results for the 3Cu steel in the provided text snippet. I need to check carefully. The text discusses lattice parameters, interface energy, precipitate size. It mentions yield strength in the intro as a motivation. I should check if specific property values for the *investigated* samples are in the text. The text says "The excellent comprehensive properties... are related to...". It doesn't explicitly list a tensile test table in the provided text. I will look for specific values. There are no tensile test results in the provided text snippet. I will put `null` for specific property values if not found, but I can record the general context in `unmapped_findings` or `properties` if generic info exists. Wait, the text mentions "yield strength of Fe-Mn-Al-C austenitic lowdensity steel is relatively low, only 360 ~ 540 MPa". This is background. The paper investigates the mechanism. I should not invent test results. I will leave specific property values as `null` unless found.)
+    *   `performance`: Service conditions (not explicitly mentioned, maybe automotive structural reinforcements).
+    *   `characterization_methods`: HR-TEM, EDS, SAED, XRD.
+    *   `computational_details`: None found.
+    *   `unmapped_findings`: Important info not fitting the schema.
 
 **Plan:**
-1.  **Paper Info:** Extract title, authors, year (not explicitly stated in text, but I can infer or leave null), journal (not explicitly stated, leave null), keywords, research type (experimental).
-2.  **Alloys:** Identify the main alloy system: Fe-28Mn-10Al-1C-(0,3)Cu. Create entries for 0Cu steel and 3Cu steel.
-3.  **Processes:** Identify heat treatment steps: Solution treatment (1000°C, 1h), Aging treatment (550°C, 3h).
-4.  **Samples:** Create sample IDs linking to alloys and processes.
-5.  **Processing Steps:** Detail the solution and aging steps.
-6.  **Structures:** Extract microstructure info: Cu-rich phase (FCC, ~10nm oval, ~30nm bars), κ-carbide (dots/bars), Austenitic matrix. Lattice parameters.
-7.  **Interfaces:** Orientation relationships (cube-on-cube), lattice misfit, interfacial energy.
-8.  **Properties:** Lattice parameters, misfit values, interfacial energy values. Mechanical properties (yield strength mentioned in intro but not results for this specific alloy in results section, only general context). Hardness not explicitly measured in results.
-9.  **Characterization Methods:** HR-TEM, EDS, SAED, XRD.
-10. **Unmapped Findings:** If any info is missing or ambiguous.
+1.  Parse `papers`: Title, Authors, Journal (not explicitly named in text, just "AR TI CLE I N F O" section, likely a journal article but name missing in text? Wait, text starts with "AR TI CLE I N F O". Usually implies a journal header. I don't see a journal name. I will put `null` or infer from context if possible. The text doesn't explicitly state the journal name. I will use `null` for journal/year/doi as they are not in the text provided.)
+2.  Parse `alloys`: Fe-28Mn-10Al-1C-3Cu. Also 0Cu steel mentioned.
+3.  Parse `processes`: Solution treatment, Aging treatment.
+4.  Parse `samples`: 0Cu steel, 3Cu steel.
+5.  Parse `processing_steps`: Solution (1000°C, 1h), Aging (550°C, 3h).
+6.  Parse `structures`: Cu-rich phase (FCC, ~10nm oval, ~30nm bars), κ-carbide (dots/bars), Austenitic matrix.
+7.  Parse `interfaces`: Coherent, Cube-on-cube orientation, Lattice misfit values.
+8.  Parse `properties`: No specific tensile data for the treated samples in the text. Intro mentions general range. I will leave specific values null.
+9.  Parse `characterization_methods`: HR-TEM, EDS, SAED, XRD.
+10. Ensure all numbers are strings.
+11. Ensure no markdown.
 
-**Constraint Checklist & Confidence Score:**
-1. Leaf values: `null`, `string`, `array`? Yes.
-2. No `number` or `boolean`? Yes.
-3. Array elements: `string` or `object`? Yes.
-4. Object values: `null`, `string`, `array`? Yes.
-5. Multiple values as arrays? Yes.
-6. Text only? Yes.
-7. Key names match template? Yes.
-8. Priority standard fields? Yes.
-9. `unmapped_findings` for important info? Yes.
-10. All top-level arrays exist? Yes.
-11. Number/Unit separation? If template splits, do so. If template is single string, keep together.
-    - Template check: `hardness[].value`, `grain_structure.average_grain_size.value`, `operating_temperature.min`.
-    - Lattice parameters: `structures` -> `phases_present` -> `grain_size`? No, lattice parameters are usually in `structures` or `interfaces` or `properties`. The schema has `structures` -> `phases_present` -> `grain_size` (value/unit). It also has `properties` -> `physical` -> `density` etc.
-    - The text gives lattice parameters ($a = 0.3652$ nm). I should put these in `structures` or `interfaces` or `properties` depending on schema. `structures` has `phases_present` with `grain_size`. Lattice parameter is not grain size.
-    - Looking at the schema provided in the prompt:
-        - `structures`: `phases_present` has `grain_size` (value/unit).
-        - `interfaces`: `phases` has `coherence`.
-        - `properties`: `physical` has `density`, `thermal`, etc.
-        - There isn't a specific field for "lattice parameter" in the provided JSON schema snippet. I might need to put it in `unmapped_findings` or adapt `structures` -> `phases_present` -> `morphology` or similar. However, `structures` -> `phases_present` -> `grain_size` is specific.
-        - Wait, I need to check if I can add keys. "优先使用模板已有槽位... 仅在确有信息且无法写入任何现有字段时，才用语义清晰的蛇形英文新增键".
-        - Lattice parameter is crucial. I will put it in `unmapped_findings` if no specific slot exists, or try to fit into `structures` -> `phases_present` -> `morphology`? No, that's shape.
-        - Actually, looking at `interfaces` -> `phases` -> `coherence`.
-        - Let's check `structures` -> `phases_present`. It has `phase_name`, `crystal_structure`, `volume_fraction`, `morphology`, `grain_size`, `texture`.
-        - Lattice parameter is a property of the phase. I will add a custom key `lattice_parameter` inside `phases_present` if allowed, or put it in `unmapped_findings`. The instruction says "优先使用模板已有槽位". If there is no slot for lattice parameter, I should use `unmapped_findings` or add a new key. The instruction says "仅在确有信息且无法写入任何现有字段时，才用语义清晰的蛇形英文新增键". So I can add `lattice_parameter` inside `phases_present` if I treat `phases_present` as a flexible object. But the schema defines `phases_present` as an array of objects with specific keys. I should probably put it in `unmapped_findings` to be safe, or check if `properties` has a place. `properties` has `physical`. Lattice parameter is physical. I can add `crystal_structure_parameters` or similar in `properties` -> `physical`? No, `properties` -> `physical` has `density`, `thermal`, `electrical`, `magnetic`.
-        - Best approach for Lattice Parameter: Since the schema is strict, and I shouldn't rename keys, I will put specific lattice parameter values in `unmapped_findings` as strings describing the value, OR I can add a new key `lattice_parameters` to `structures` -> `phases_present` objects if I interpret "add new keys" as allowed for nested objects. The instruction says "仅在确有信息且无法写入任何现有字段时，才用语义清晰的蛇形英文新增键". It implies I can add keys to objects if necessary. I will add `lattice_parameter` to `phases_present` objects in `structures`.
-        - Wait, `structures` -> `phases_present` is an array of objects. The schema shows specific keys. I will add `lattice_parameter` to the object inside `phases_present`.
-        - Actually, looking at `interfaces` -> `defect_interaction`.
-        - Let's look at `properties`. `properties` -> `physical` -> `density` etc.
-        - I will prioritize `unmapped_findings` for lattice parameters if I can't fit them cleanly, but adding `lattice_parameter` to `phases_present` is more structured. I'll add it as a new key in the `phases_present` object.
-        - Wait, `interfaces` -> `phases` has `phase_1_name`, `phase_2_name`, `coherence`.
-        - Okay, I will extract the lattice parameters into `unmapped_findings` to avoid schema violation risks, or add `lattice_parameter` to `structures` -> `phases_present` objects. I'll choose to add `lattice_parameter` to `structures` -> `phases_present` objects as it's more structured.
-        - Wait, the instruction says "禁止编造未在文中出现的实验数据". Lattice parameters are in the text.
-        - I will use `unmapped_findings` for lattice parameters if I feel the schema is too rigid, but the instruction allows adding keys. I will add `lattice_parameter` to `phases_present` objects.
-        - Actually, looking at the schema provided in the prompt: `structures` -> `phases_present` -> `grain_size` is an object with `value` and `unit`. I can add `lattice_parameter` similarly.
-        - Let's check `interfaces`. `interfaces` -> `phases` -> `coherence`.
-        - Okay, I will extract the main data.
+**Drafting the JSON:**
 
-**Data Extraction:**
-- **Paper:** Title, Authors, Keywords, Research Type (experimental).
-- **Alloys:** Fe-28Mn-10Al-1C (0Cu), Fe-28Mn-10Al-1C-3Cu (3Cu).
-- **Processes:** Solution (1000°C, 1h), Aging (550°C, 3h).
-- **Samples:** Sample_0Cu_01, Sample_3Cu_01.
-- **Processing Steps:** Solution, Aging.
-- **Structures:**
-    - Matrix: Austenite (FCC).
-    - Precipitates: Cu-rich (FCC, ~10nm oval, ~30nm bars), κ-carbide (dots/bars).
-    - Lattice params: Cu-rich (0.3652 nm), κ-carbide (0.3775 nm), Matrix (0.3689 nm).
-    - Misfit: Cu-rich/Matrix (1.0%), κ-carbide/Matrix (2.3%), κ-carbide/Cu-rich (3.4%).
-    - Interfacial Energy: κ-carbide (0.025 J/m2), Cu-rich (0.086 J/m2).
-- **Interfaces:** Cube-on-cube orientation.
-- **Characterization:** HR-TEM, EDS, SAED, XRD.
-- **Properties:** Lattice parameters, misfit, interfacial energy. Mechanical properties mentioned in intro (360-540 MPa for general Fe-Mn-Al-C, not specific results for this study's aged samples in results section, but I can extract the general context or leave null for specific results). The text says "yield strength of Fe-Mn-Al-C austenitic lowdensity steel is relatively low, only 360~540 MPa". This is background. The study investigates precipitation. I won't put this as a property of the specific sample unless it's measured. The text doesn't report tensile test results for the 3Cu steel in the Results section.
-- **Unmapped:** Lattice parameters might be best in `unmapped_findings` or `structures` -> `phases_present` with a new key. I will add `lattice_parameter` to `phases_present` objects to keep it structured.
+*   `papers`:
+    *   `title`: "Co-precipitation mechanism of Cu-rich phase and κ-carbide precipitates in Fe-28Mn-10Al-1C-3Cu austenitic low-density steel"
+    *   `authors`: ["Xiqiang Ren", "Yanfei Qi", "Yungang Li", "Jingyi Zhou", "Jiahao Gu"]
+    *   `research_type`: "experimental"
+    *   `paper_scope`: "Investigation of the co-precipitation mechanism of Cu-rich phase and κ-carbide in Fe-28Mn-10Al-1C-3Cu austenitic low-density steel."
+    *   `journal`, `doi`, `publication_year`: `null` (not in text).
+*   `alloys`:
+    *   `alloy_id`: "alloy_fe28mn10al1c3cu" (or similar slug)
+    *   `alloy_name`: "Fe-28Mn-10Al-1C-3Cu austenitic low-density steel"
+    *   `nominal_composition`: Fe, Mn, Al, C, Cu.
+    *   Also `alloy_id`: "alloy_fe28mn10al1c" (0Cu steel).
+*   `processes`:
+    *   Solution treatment.
+    *   Aging treatment.
+*   `samples`:
+    *   0Cu steel.
+    *   3Cu steel.
+*   `processing_steps`:
+    *   Solution: 1000°C, 1h.
+    *   Aging: 550°C, 3h.
+*   `structures`:
+    *   Cu-rich phase (FCC, size ~10nm/30nm).
+    *   κ-carbide.
+    *   Matrix.
+*   `interfaces`:
+    *   Coherent.
+    *   Orientation relationship.
+    *   Lattice misfit.
+*   `characterization_methods`:
+    *   HR-TEM, EDS, SAED, XRD.
+
+**Refining Constraints:**
+*   No `number` types. "1000" must be "1000". "360" must be "360".
+*   `papers` array.
+*   `alloys` array.
+*   `samples` array.
+*   `processing_steps` array.
+*   `structures` array.
+*   `interfaces` array.
+*   `properties` array.
+*   `characterization_methods` array.
+*   `unmapped_findings` array.
+
+**Specific Data Extraction:**
+*   Alloy: Fe-28Mn-10Al-1C-3Cu.
+    *   Fe: Base.
+    *   Mn: 28 wt%.
+    *   Al: 10 wt%.
+    *   C: 1 wt%.
+    *   Cu: 3 wt%.
+*   Alloy 0Cu: Fe-28Mn-10Al-1C (0Cu steel).
+*   Process: Solution (1000°C, 1h), Aging (550°C, 3h).
+*   Microstructure:
+    *   Cu-rich phase: FCC, irregular oval (~10nm), bars (~30nm).
+    *   κ-carbide: dots or bars.
+    *   Matrix: Austenitic (FCC).
+*   Interface:
+    *   Coherent.
+    *   Orientation: [110]γ // [110]κ // [110]Cu, (111)γ // (111)κ // (111)Cu.
+    *   Lattice misfit: κ-carbide/Cu-rich ~3.4%, κ-carbide/Matrix ~2.3%, Cu-rich/Matrix ~1.0%.
+    *   Interface energy: κ-carbide 0.025 J/m², Cu-rich 0.086 J/m².
+*   Characterization: HR-TEM (JEOL JEM-2100F), EDS, SAED, XRD.
+*   Properties: No specific test data for the 3Cu steel in the text provided (only general background info). I will leave `properties` mostly null or put the general background info in `unmapped_findings` if relevant, but `properties` schema expects specific values. I will leave `properties` values as `null` to avoid hallucination, as the text doesn't report the tensile results of the *treated* samples, only the motivation.
+*   `unmapped_findings`: Mention the yield strength range of the base steel (360-540 MPa) as context. Mention the critical lattice parameter formula.
 
 **JSON Construction:**
-- Ensure all numbers are strings.
-- Ensure all booleans are strings or null.
-- Ensure all arrays are valid.
-- Ensure keys match the template exactly.
+I need to be very careful with the JSON syntax.
+All numbers as strings.
+No comments.
+Keys must match the schema provided in the prompt.
 
-**Refining Keys:**
-- `papers`: `paper_id` (null), `title`, `authors`, `publication_year` (null), `journal` (null), `keywords`, `research_type`.
-- `alloys`: `alloy_id` (alloy_28mn10al1c), `alloy_name`, `nominal_composition`.
-- `processes`: `process_id` (proc_28mn10al1c_01), `description`, `temperature`, `unit`, `duration`.
-- `samples`: `sample_id` (sample_28mn10al1c_01), `alloy_id`, `process_id`.
-- `processing_steps`: `sample_id`, `sequence`, `type`, `method`, `temperature`, `unit`, `duration`.
-- `structures`: `structure_id`, `sample_id`, `overall_structure`, `number_of_phases`, `microstructure_list` (with `uuid`, `phases_present`, `precipitates`).
-- `interfaces`: `interface_set_id`, `sample_id`, `phases` (orientation), `defect_interaction`.
-- `properties`: `property_set_id`, `sample_id`, `mechanical` (null), `physical` (lattice params if I can fit, else unmapped), `chemical`.
-- `unmapped_findings`: For lattice parameters if I decide not to add keys to `structures`. I will add `lattice_parameter` to `phases_present` in `structures` to be more precise. Wait, the schema for `structures` -> `phases_present` is fixed in the prompt's JSON. I should not add keys there if I want to be strictly compliant with the schema provided in the prompt. The prompt says "优先使用模板已有槽位... 仅在确有信息且无法写入任何现有字段时，才用语义清晰的蛇形英文新增键". This implies I *can* add keys if I can't fit them.
-- However, to be safe and clean, I will put lattice parameters in `unmapped_findings` or `properties` -> `physical` (new key `crystal_structure_params`). I will use `properties` -> `physical` -> `crystal_structure_parameters` (new key) or `unmapped_findings`. `unmapped_findings` is safer for schema compliance. I will use `unmapped_findings` for specific lattice parameter values and misfit values to avoid modifying the schema structure too much, as the instruction says "不得擅自改名已有键... 优先使用模板已有槽位". Adding new keys is allowed only if necessary. Lattice parameters are not in the template. I will put them in `unmapped_findings` as strings.
-- Wait, `structures` -> `phases_present` -> `grain_size` is there. I can't put lattice parameter there.
-- Okay, I will put lattice parameters in `unmapped_findings`.
-- Wait, `interfaces` -> `phases` -> `coherence`. I can put orientation relationship there.
-- `interfaces` -> `defect_interaction`.
-- `properties` -> `physical`. I can add `lattice_parameter` here as a new key in the object? Yes, allowed.
-- Let's try to fit as much as possible into the schema.
-- `interfaces` -> `phases`: `phase_1_name`, `phase_2_name`, `coherence`. I can add `orientation_relationship` here.
-- `structures` -> `phases_present`: I will add `lattice_parameter` here.
-- `properties` -> `physical`: I will add `lattice_parameter` here.
-- Actually, I'll stick to `unmapped_findings` for the specific numerical values of lattice parameters and misfit to ensure I don't violate the "leaf values must be null, string, or array" rule if I mess up the structure. But adding keys is allowed. I will add `lattice_parameter` to `structures` -> `phases_present` objects.
+Let's assemble the JSON.
 
-**Wait, one more check:**
-- "禁止在输出中使用 JSON 的 number 类型与 boolean 类型".
-- "所有数值...一律写成字符串".
-- "若同一语义在文中有多条...必须用数组分项列出".
+`papers`:
+- `paper_id`: null (not provided in text, usually generated by system, I will leave null or use a placeholder if required. Schema says `paper_id` is null in template example. I will use null).
+- `title`: "Co-precipitation mechanism of Cu-rich phase and κ-carbide precipitates in Fe-28Mn-10Al-1C-3Cu austenitic low-density steel"
+- `authors`: ["Xiqiang Ren", "Yanfei Qi", "Yungang Li", "Jingyi Zhou", "Jiahao Gu"]
+- `publication_year`: null
+- `journal`: null
+- `keywords`: ["Austenitic low-density steel", "Particles", "Nanosize", "Microstructure", "Co-precipitation mechanism"]
+- `research_type`: "experimental"
+- `paper_scope`: "Investigation of the co-precipitation behavior and mechanism of Cu-rich phase and κ-carbide in Fe-28Mn-10Al-1C-3Cu austenitic low-density steel."
 
-**Drafting Content:**
-- **Paper:** Title: "Co-precipitation mechanism of Cu-rich phase and κ-carbide precipitates in Fe-28Mn-10Al-1C-3Cu austenitic low-density steel". Authors: Xiqiang Ren, Yanfei Qi, Yungang Li, Jingyi Zhou, Jiahao Gu. Keywords: Austenitic low-density steel, Particles, Nanosize, Microstructure, Co-precipitation mechanism. Research Type: experimental.
-- **Alloys:**
-    - alloy_28mn10al1c_0cu: Fe-28Mn-10Al-1C.
-    - alloy_28mn10al1c_3cu: Fe-28Mn-10Al-1C-3Cu.
-- **Processes:**
-    - proc_28mn10al1c_sol: Solution treatment (1000°C, 1h).
-    - proc_28mn10al1c_age: Aging treatment (550°C, 3h).
-- **Samples:**
-    - sample_0cu_01: alloy_28mn10al1c_0cu, proc_28mn10al1c_sol, proc_28mn10al1c_age.
-    - sample_3cu_01: alloy_28mn10al1c_3cu, proc_28mn10al1c_sol, proc_28mn10al1c_age.
-- **Processing Steps:**
-    - seq_1: Solution (1000°C, 1h).
-    - seq_2: Aging (550°C, 3h).
-- **Structures:**
-    - Matrix: Austenite (FCC).
-    - Cu-rich: FCC, ~10nm oval, ~30nm bars.
-    - κ-carbide: dots/bars.
-    - Lattice params: Cu-rich (0.3652 nm), κ-carbide (0.3775 nm), Matrix (0.3689 nm).
-    - Misfit: Cu-rich/Matrix (1.0%), κ-carbide/Matrix (2.3%), κ-carbide/Cu-rich (3.4%).
-- **Interfaces:**
-    - Cube-on-cube: [110]γ // [110]κ // [110]Cu, (111)γ // (111)κ // (111)Cu.
-    - Interfacial Energy: κ-carbide (0.025 J/m2), Cu-rich (0.086 J/m2).
-- **Characterization:** HR-TEM, EDS, SAED, XRD.
-- **Unmapped:** Lattice parameters, Misfit values, Interfacial energy values (if not fitting schema). I will put them in `unmapped_findings` to be safe and clear.
+`alloys`:
+1. `alloy_id`: "alloy_fe28mn10al1c3cu", `alloy_name`: "Fe-28Mn-10Al-1C-3Cu austenitic low-density steel", `nominal_composition`: [{"element": "Fe", "weight_percent": null}, {"element": "Mn", "weight_percent": "28"}, {"element": "Al", "weight_percent": "10"}, {"element": "C", "weight_percent": "1"}, {"element": "Cu", "weight_percent": "3"}] (Note: Fe is base, usually not listed with wt% in nominal composition unless specified, but I will list the alloying elements).
+2. `alloy_id`: "alloy_fe28mn10al1c", `alloy_name`: "Fe-28Mn-10Al-1C austenitic low-density steel (0Cu steel)", `nominal_composition`: [{"element": "Fe", "weight_percent": null}, {"element": "Mn", "weight_percent": "28"}, {"element": "Al", "weight_percent": "10"}, {"element": "C", "weight_percent": "1"}]
 
-**Wait, `processing_steps` binding:**
-- `processing_steps` must bind `sample_id`.
-- `samples` must bind `alloy_id` and `process_id`.
-- `processes` must bind `alloy_id`.
-- `samples` -> `sample_id` unique.
-- `processing_steps` -> `sample_id`.
-- `structures` -> `sample_id`.
-- `interfaces` -> `sample_id`.
-- `properties` -> `sample_id`.
-- `performance` -> `sample_id`.
-- `characterization_methods` -> `sample_id`.
-- `computational_details` -> `sample_id`.
+`processes`:
+1. `process_id`: "proc_solution", `description`: "Solution treatment at 1000°C for 1 h."
+2. `process_id`: "proc_aging", `description`: "Aging treatment at 550°C for 3 h."
 
-**Refining Alloy IDs:**
-- `alloy_28mn10al1c` (Base).
-- `alloy_28mn10al1c_0cu` (0Cu).
-- `alloy_28mn10al1c_3cu` (3Cu).
-- Actually, the text says "Fe-28Mn-10Al-1C-(0,3)Cu". I will create one alloy entry for the system and note the Cu variation, or two entries. The schema allows multiple alloys. I'll create two for clarity.
-- `alloy_28mn10al1c_0cu`: Fe-28Mn-10Al-1C.
-- `alloy_28mn10al1c_3cu`: Fe-28Mn-10Al-1C-3Cu.
+`samples`:
+1. `sample_id`: "sample_0cu", `alloy_id`: "alloy_fe28mn10al1c", `process_id`: "proc_solution", `process_id_2`: "proc_aging" (Wait, schema says `samples` has `process_id`. `processing_steps` binds to `sample_id`. I should link sample to the alloy and the process sequence. The text says "processed by solution treatment... and aging treatment... sequentially". So one sample goes through both. I will create one sample entry per alloy/process combo or one sample per alloy with steps. Schema says `samples` has `process_id`. I will create samples for the specific conditions mentioned.
+   - Sample 1: 0Cu steel (Alloy 1).
+   - Sample 2: 3Cu steel (Alloy 2).
+   - Both undergo Solution + Aging.
+   - I will link `sample_id` to `alloy_id` and `process_id` (maybe the main process or list them). The schema says `samples` has `process_id`. I will put the main process ID or null if multiple. Let's create samples for the specific steel types.
+   - `sample_id`: "sample_0cu", `alloy_id`: "alloy_fe28mn10al1c", `process_id`: "proc_solution" (or null if multiple). I will use `proc_solution` as the primary process ID for the sample definition, and detail steps in `processing_steps`.
+   - `sample_id`: "sample_3cu", `alloy_id`: "alloy_fe28mn10al1c3cu", `process_id`: "proc_solution".
 
-**Refining Process IDs:**
-- `proc_0cu_sol`, `proc_0cu_age`.
-- `proc_3cu_sol`, `proc_3cu_age`.
+`processing_steps`:
+- Bind to `sample_id`.
+- Step 1: Solution.
+- Step 2: Aging.
 
-**Refining Sample IDs:**
-- `sample_0cu_01`, `sample_3cu_01`.
+`structures`:
+- Cu-rich phase.
+- κ-carbide.
+- Matrix.
 
-**Refining JSON Structure:**
-- Ensure `papers` is an array.
-- Ensure `alloys` is an array.
-- Ensure `processes` is an array.
-- Ensure `samples` is an array.
-- Ensure `processing_steps` is an array.
-- Ensure `structures` is an array.
-- Ensure `interfaces` is an array.
-- Ensure `properties` is an array.
-- Ensure `performance` is an array.
-- Ensure `characterization_methods` is an array.
-- Ensure `computational_details` is an array.
-- Ensure `unmapped_findings` is an array.
+`interfaces`:
+- Coherent relationship.
+- Orientation.
+- Lattice misfit.
 
-**Final Check on Types:**
-- All numbers as strings.
-- No booleans.
-- Keys match template.
-- Nested objects follow rules.
+`characterization_methods`:
+- HR-TEM, EDS, SAED, XRD.
 
-**Lattice Parameters:**
-- I will add `lattice_parameter` to `structures` -> `phases_present` objects as a new key, as allowed ("仅在确有信息且无法写入任何现有字段时，才用语义清晰的蛇形英文新增键").
-- I will also add `lattice_misfit` to `interfaces` -> `defect_interaction` or `unmapped_findings`. I'll put it in `unmapped_findings` to avoid cluttering `interfaces` which is about phase boundaries.
-- Actually, `interfaces` -> `phases` -> `coherence`. I can add `orientation_relationship` there.
-- I will put lattice parameters in `unmapped_findings` to be safe and concise.
+`properties`:
+- No specific values found for the treated samples in text.
 
-**Wait, one detail:**
-- "Fe-28Mn-10Al-1C-(0,3)Cu".
-- "0Cu steel or 3Cu steel".
-- I will extract the composition from the text.
-- 0Cu: Fe-28Mn-10Al-1C.
-- 3Cu: Fe-28Mn-10Al-1C-3Cu.
+`unmapped_findings`:
+- General yield strength of base steel (360-540 MPa).
+- Critical lattice parameter formula.
 
-**Let's build the JSON.**
+Let's write the JSON.
+Double check: No numbers. All strings.
+Check keys against schema.
+`papers`: `paper_id`, `doi`, `title`, `authors`, `publication_year`, `journal`, `keywords`, `research_type`, `paper_scope`.
+`alloys`: `alloy_id`, `paper_id`, `alloy_name`, `aliases`, `base_element`, `alloying_elements`, `nominal_composition`, `alloys_notes`.
+`processes`: `process_id`, `paper_id`, `alloy_id`, `description`, `processes_notes`.
+`samples`: `sample_id`, `paper_id`, `alloy_id`, `process_id`.
+`processing_steps`: `sample_id`, `paper_id`, `sequence`, `type`, `method`, `temperature`, `unit`, `duration`, `cooling_medium`, `reduction_ratio`, `processing_steps_notes`.
+`structures`: `structure_id`, `sample_id`, `overall_structure`, `number_of_phases`, `microstructure_counts`, `microstructure_list` (with `uuid`, `related_sequence`, `phases_present`, `defects`, `grain_structure`, `precipitates`).
+`interfaces`: `interface_set_id`, `sample_id`, `phases`, `defect_interaction`, `interface_notes`, `phase_evolution`.
+`properties`: `property_set_id`, `sample_id`, `mechanical`, `physical`, `chemical`, `radiation_properties`.
+`performance`: `performance_id`, `sample_id`, `service_conditions`, `lifetime_prediction`, `comparative_performance`.
+`characterization_methods`: `characterization_id`, `sample_id`, `microstructure_uuid`, `technique`, `purpose`, `key_findings`.
+`computational_details`: `computation_id`, `sample_id`, `simulation_method`, `software_used`, `potential_model`, `validation_against_experiment`, `analytical_model`.
+`unmapped_findings`: Array of strings.
+
+I will ensure `paper_id` is consistent (e.g., "paper_001" or null). The schema example has `null`. I will use `null` for `paper_id` as it's not in the text.
+Wait, `alloy_id` in `alloys` should be unique. `process_id` in `processes`. `sample_id` in `samples`.
+I will use `null` for `paper_id` in all objects as per the example template provided in the prompt (where `paper_id` is `null`).
+Actually, the prompt says `paper_id` with `papers`. I will use `null` to be safe as it's not in the text.
+
+Wait, `nominal_composition` in `alloys` schema: `{"element": null, "weight_percent": null, "atomic_percent": null}`.
+I will fill `element` and `weight_percent` as strings.
+
+Let's construct the JSON.
+One important thing: `structures` `microstructure_list` needs `uuid`. I will generate unique strings like "uuid_struct_1".
+`interfaces` `phases` needs `interface_id`. I will use "interface_1".
+`processing_steps` `sequence` needs to be string. "1", "2".
+
+Let's start.
 </think>
 
 {
   "papers": [
     {
-      "paper_id": "paper_001",
+      "paper_id": null,
       "doi": null,
       "title": "Co-precipitation mechanism of Cu-rich phase and κ-carbide precipitates in Fe-28Mn-10Al-1C-3Cu austenitic low-density steel",
       "authors": [
@@ -222,9 +219,9 @@ I need to parse the text carefully to extract details like alloy composition, pr
   ],
   "alloys": [
     {
-      "alloy_id": "alloy_28mn10al1c_0cu",
-      "paper_id": "paper_001",
-      "alloy_name": "Fe-28Mn-10Al-1C",
+      "alloy_id": "alloy_fe28mn10al1c",
+      "paper_id": null,
+      "alloy_name": "Fe-28Mn-10Al-1C austenitic low-density steel (0Cu steel)",
       "aliases": [
         "0Cu steel"
       ],
@@ -235,11 +232,6 @@ I need to parse the text carefully to extract details like alloy composition, pr
         "C"
       ],
       "nominal_composition": [
-        {
-          "element": "Fe",
-          "weight_percent": null,
-          "atomic_percent": null
-        },
         {
           "element": "Mn",
           "weight_percent": "28",
@@ -254,19 +246,14 @@ I need to parse the text carefully to extract details like alloy composition, pr
           "element": "C",
           "weight_percent": "1",
           "atomic_percent": null
-        },
-        {
-          "element": "Cu",
-          "weight_percent": "0",
-          "atomic_percent": null
         }
       ],
-      "alloys_notes": "Austenitic low-density steel without Cu addition."
+      "alloys_notes": "Base steel without Cu addition."
     },
     {
-      "alloy_id": "alloy_28mn10al1c_3cu",
-      "paper_id": "paper_001",
-      "alloy_name": "Fe-28Mn-10Al-1C-3Cu",
+      "alloy_id": "alloy_fe28mn10al1c3cu",
+      "paper_id": null,
+      "alloy_name": "Fe-28Mn-10Al-1C-3Cu austenitic low-density steel",
       "aliases": [
         "3Cu steel"
       ],
@@ -278,11 +265,6 @@ I need to parse the text carefully to extract details like alloy composition, pr
         "Cu"
       ],
       "nominal_composition": [
-        {
-          "element": "Fe",
-          "weight_percent": null,
-          "atomic_percent": null
-        },
         {
           "element": "Mn",
           "weight_percent": "28",
@@ -304,69 +286,43 @@ I need to parse the text carefully to extract details like alloy composition, pr
           "atomic_percent": null
         }
       ],
-      "alloys_notes": "Austenitic low-density steel with 3 wt% Cu addition."
+      "alloys_notes": "Cu addition increases lattice parameter of austenitic matrix."
     }
   ],
   "processes": [
     {
-      "process_id": "proc_28mn10al1c_sol",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn10al1c_0cu",
-      "description": "Solution treatment at 1000°C for 1 hour.",
-      "processes_notes": "Applied to both 0Cu and 3Cu steels."
+      "process_id": "proc_solution",
+      "paper_id": null,
+      "alloy_id": null,
+      "description": "Solution treatment at 1000°C for 1 h.",
+      "processes_notes": "Common pre-treatment for both 0Cu and 3Cu steels."
     },
     {
-      "process_id": "proc_28mn10al1c_age",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn10al1c_0cu",
-      "description": "Aging treatment at 550°C for 3 hours.",
-      "processes_notes": "Applied to both 0Cu and 3Cu steels."
-    },
-    {
-      "process_id": "proc_28mn10al1c_sol_3cu",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn10al1c_3cu",
-      "description": "Solution treatment at 1000°C for 1 hour.",
-      "processes_notes": "Applied to 3Cu steel."
-    },
-    {
-      "process_id": "proc_28mn10al1c_age_3cu",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn10al1c_3cu",
-      "description": "Aging treatment at 550°C for 3 hours.",
-      "processes_notes": "Applied to 3Cu steel."
+      "process_id": "proc_aging",
+      "paper_id": null,
+      "alloy_id": null,
+      "description": "Aging treatment at 550°C for 3 h.",
+      "processes_notes": "Sequential treatment after solution treatment to induce precipitation."
     }
   ],
   "samples": [
     {
-      "sample_id": "sample_0cu_01",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn10al1c_0cu",
-      "process_id": "proc_28mn10al1c_sol"
+      "sample_id": "sample_0cu",
+      "paper_id": null,
+      "alloy_id": "alloy_fe28mn10al1c",
+      "process_id": "proc_solution"
     },
     {
-      "sample_id": "sample_0cu_02",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn10al1c_0cu",
-      "process_id": "proc_28mn10al1c_age"
-    },
-    {
-      "sample_id": "sample_3cu_01",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn10al1c_3cu",
-      "process_id": "proc_28mn10al1c_sol"
-    },
-    {
-      "sample_id": "sample_3cu_02",
-      "paper_id": "paper_001",
-      "alloy_id": "alloy_28mn10al1c_3cu",
-      "process_id": "proc_28mn10al1c_age"
+      "sample_id": "sample_3cu",
+      "paper_id": null,
+      "alloy_id": "alloy_fe28mn10al1c3cu",
+      "process_id": "proc_solution"
     }
   ],
   "processing_steps": [
     {
-      "sample_id": "sample_0cu_01",
-      "paper_id": "paper_001",
+      "sample_id": "sample_0cu",
+      "paper_id": null,
       "sequence": "1",
       "type": "heat_treatment",
       "method": "solution_treatment",
@@ -374,11 +330,12 @@ I need to parse the text carefully to extract details like alloy composition, pr
       "unit": "°C",
       "duration": "1",
       "cooling_medium": null,
-      "processing_steps_notes": "Initial solution treatment."
+      "reduction_ratio": null,
+      "processing_steps_notes": "Solution treatment."
     },
     {
-      "sample_id": "sample_0cu_02",
-      "paper_id": "paper_001",
+      "sample_id": "sample_0cu",
+      "paper_id": null,
       "sequence": "2",
       "type": "heat_treatment",
       "method": "aging_treatment",
@@ -386,11 +343,12 @@ I need to parse the text carefully to extract details like alloy composition, pr
       "unit": "°C",
       "duration": "3",
       "cooling_medium": null,
-      "processing_steps_notes": "Aging treatment after solution."
+      "reduction_ratio": null,
+      "processing_steps_notes": "Aging treatment."
     },
     {
-      "sample_id": "sample_3cu_01",
-      "paper_id": "paper_001",
+      "sample_id": "sample_3cu",
+      "paper_id": null,
       "sequence": "1",
       "type": "heat_treatment",
       "method": "solution_treatment",
@@ -398,11 +356,12 @@ I need to parse the text carefully to extract details like alloy composition, pr
       "unit": "°C",
       "duration": "1",
       "cooling_medium": null,
-      "processing_steps_notes": "Initial solution treatment."
+      "reduction_ratio": null,
+      "processing_steps_notes": "Solution treatment."
     },
     {
-      "sample_id": "sample_3cu_02",
-      "paper_id": "paper_001",
+      "sample_id": "sample_3cu",
+      "paper_id": null,
       "sequence": "2",
       "type": "heat_treatment",
       "method": "aging_treatment",
@@ -410,52 +369,34 @@ I need to parse the text carefully to extract details like alloy composition, pr
       "unit": "°C",
       "duration": "3",
       "cooling_medium": null,
-      "processing_steps_notes": "Aging treatment after solution."
+      "reduction_ratio": null,
+      "processing_steps_notes": "Aging treatment."
     }
   ],
   "structures": [
     {
-      "structure_id": "struct_0cu_01",
-      "sample_id": "sample_0cu_02",
-      "overall_structure": "Austenitic matrix with intragranular precipitates.",
+      "structure_id": "struct_3cu_aging",
+      "sample_id": "sample_3cu",
+      "overall_structure": "Austenitic matrix with Cu-rich phase and κ-carbide precipitates.",
       "number_of_phases": "3",
       "microstructure_counts": null,
       "microstructure_list": [
         {
-          "uuid": "uuid_0cu_01_01",
+          "uuid": "uuid_matrix_001",
           "related_sequence": "2",
           "phases_present": [
             {
-              "phase_name": "Austenite",
+              "phase_name": "Austenitic matrix",
               "crystal_structure": "FCC",
               "volume_fraction": null,
-              "morphology": "Matrix",
+              "morphology": null,
               "grain_size": null,
-              "texture": null,
-              "lattice_parameter": "0.3687 nm"
-            },
-            {
-              "phase_name": "κ-carbide",
-              "crystal_structure": "BCC",
-              "volume_fraction": null,
-              "morphology": "dots or bars",
-              "grain_size": null,
-              "texture": null,
-              "lattice_parameter": "0.3775 nm"
-            },
-            {
-              "phase_name": "Cu-rich phase",
-              "crystal_structure": "FCC",
-              "volume_fraction": null,
-              "morphology": "irregular oval or bars",
-              "grain_size": null,
-              "texture": null,
-              "lattice_parameter": "0.3652 nm"
+              "texture": null
             }
           ],
           "defects": [
             {
-              "type": "dislocation",
+              "type": null,
               "porosity": null,
               "inclusions": [],
               "dislocation_density": null,
@@ -472,23 +413,23 @@ I need to parse the text carefully to extract details like alloy composition, pr
           },
           "precipitates": [
             {
-              "precipitate_id": "precip_0cu_01_1",
-              "type": "κ-carbide",
-              "size": {
-                "value": null,
-                "unit": null
-              },
-              "distribution": "intragranular",
-              "coherency": "coherent"
-            },
-            {
-              "precipitate_id": "precip_0cu_01_2",
+              "precipitate_id": "precip_cu",
               "type": "Cu-rich phase",
               "size": {
                 "value": "10",
                 "unit": "nm"
               },
-              "distribution": "intragranular",
+              "distribution": "irregular oval and bars shapes",
+              "coherency": "coherent"
+            },
+            {
+              "precipitate_id": "precip_kappa",
+              "type": "κ-carbide",
+              "size": {
+                "value": null,
+                "unit": null
+              },
+              "distribution": "dots or bars",
               "coherency": "coherent"
             }
           ]
@@ -496,47 +437,28 @@ I need to parse the text carefully to extract details like alloy composition, pr
       ]
     },
     {
-      "structure_id": "struct_3cu_01",
-      "sample_id": "sample_3cu_02",
-      "overall_structure": "Austenitic matrix with intragranular precipitates.",
-      "number_of_phases": "3",
+      "structure_id": "struct_0cu_aging",
+      "sample_id": "sample_0cu",
+      "overall_structure": "Austenitic matrix with κ-carbide precipitates.",
+      "number_of_phases": "2",
       "microstructure_counts": null,
       "microstructure_list": [
         {
-          "uuid": "uuid_3cu_01_01",
+          "uuid": "uuid_matrix_002",
           "related_sequence": "2",
           "phases_present": [
             {
-              "phase_name": "Austenite",
+              "phase_name": "Austenitic matrix",
               "crystal_structure": "FCC",
               "volume_fraction": null,
-              "morphology": "Matrix",
+              "morphology": null,
               "grain_size": null,
-              "texture": null,
-              "lattice_parameter": "0.3689 nm"
-            },
-            {
-              "phase_name": "κ-carbide",
-              "crystal_structure": "BCC",
-              "volume_fraction": null,
-              "morphology": "dots or bars",
-              "grain_size": null,
-              "texture": null,
-              "lattice_parameter": "0.3775 nm"
-            },
-            {
-              "phase_name": "Cu-rich phase",
-              "crystal_structure": "FCC",
-              "volume_fraction": null,
-              "morphology": "irregular oval or bars",
-              "grain_size": null,
-              "texture": null,
-              "lattice_parameter": "0.3652 nm"
+              "texture": null
             }
           ],
           "defects": [
             {
-              "type": "dislocation",
+              "type": null,
               "porosity": null,
               "inclusions": [],
               "dislocation_density": null,
@@ -553,23 +475,13 @@ I need to parse the text carefully to extract details like alloy composition, pr
           },
           "precipitates": [
             {
-              "precipitate_id": "precip_3cu_01_1",
+              "precipitate_id": "precip_kappa",
               "type": "κ-carbide",
               "size": {
                 "value": null,
                 "unit": null
               },
-              "distribution": "intragranular",
-              "coherency": "coherent"
-            },
-            {
-              "precipitate_id": "precip_3cu_01_2",
-              "type": "Cu-rich phase",
-              "size": {
-                "value": "10",
-                "unit": "nm"
-              },
-              "distribution": "intragranular",
+              "distribution": "dots or bars",
               "coherency": "coherent"
             }
           ]
@@ -579,32 +491,30 @@ I need to parse the text carefully to extract details like alloy composition, pr
   ],
   "interfaces": [
     {
-      "interface_set_id": "iface_0cu_01",
-      "sample_id": "sample_0cu_02",
+      "interface_set_id": "interface_3cu",
+      "sample_id": "sample_3cu",
       "phases": [
         {
-          "interface_id": "iface_0cu_01_1",
-          "microstructure_uuid": "uuid_0cu_01_01",
-          "phase_1_name": "Austenite",
+          "interface_id": "int_1",
+          "microstructure_uuid": "uuid_matrix_001",
+          "phase_1_name": "Austenitic matrix",
           "phase_2_name": "κ-carbide",
-          "coherence": "coherent",
-          "orientation_relationship": "[100]κ // [100]γ and (100)κ // (100)γ"
+          "coherence": "coherent"
         },
         {
-          "interface_id": "iface_0cu_01_2",
-          "microstructure_uuid": "uuid_0cu_01_01",
-          "phase_1_name": "Austenite",
+          "interface_id": "int_2",
+          "microstructure_uuid": "uuid_matrix_001",
+          "phase_1_name": "Austenitic matrix",
           "phase_2_name": "Cu-rich phase",
-          "coherence": "coherent",
-          "orientation_relationship": "[110]Cu // [110]γ and (111)Cu // (111)γ"
+          "coherence": "coherent"
         }
       ],
       "defect_interaction": [
         {
-          "interaction_id": "int_0cu_01_1",
-          "microstructure_uuid": "uuid_0cu_01_01",
-          "interaction_type": "lattice_misfit",
-          "quality_description": "Low lattice misfit (<5%) leads to coherent relationship."
+          "interaction_id": null,
+          "microstructure_uuid": null,
+          "interaction_type": null,
+          "quality_description": null
         }
       ],
       "interface_notes": [
@@ -615,63 +525,64 @@ I need to parse the text carefully to extract details like alloy composition, pr
           "slippage_situation": null
         }
       ],
-      "phase_evolution": "κ-carbide precipitates preferentially in the early stage of aging, followed by Cu-rich phase. Precipitation of κ-carbide promotes Cu-rich phase precipitation."
-    },
-    {
-      "interface_set_id": "iface_3cu_01",
-      "sample_id": "sample_3cu_02",
-      "phases": [
-        {
-          "interface_id": "iface_3cu_01_1",
-          "microstructure_uuid": "uuid_3cu_01_01",
-          "phase_1_name": "Austenite",
-          "phase_2_name": "κ-carbide",
-          "coherence": "coherent",
-          "orientation_relationship": "[110]κ // [110]γ and (111)κ // (111)γ"
-        },
-        {
-          "interface_id": "iface_3cu_01_2",
-          "microstructure_uuid": "uuid_3cu_01_01",
-          "phase_1_name": "Austenite",
-          "phase_2_name": "Cu-rich phase",
-          "coherence": "coherent",
-          "orientation_relationship": "[110]Cu // [110]γ and (111)Cu // (111)γ"
-        }
-      ],
-      "defect_interaction": [
-        {
-          "interaction_id": "int_3cu_01_1",
-          "microstructure_uuid": "uuid_3cu_01_01",
-          "interaction_type": "lattice_misfit",
-          "quality_description": "Low lattice misfit (<5%) leads to coherent relationship."
-        }
-      ],
-      "interface_notes": [
-        {
-          "stress_strain_distribution": null
-        },
-        {
-          "slippage_situation": null
-        }
-      ],
-      "phase_evolution": "κ-carbide precipitates preferentially in the early stage of aging, followed by Cu-rich phase. Precipitation of κ-carbide promotes Cu-rich phase precipitation."
+      "phase_evolution": "κ-carbide precipitates preferentially in early stage of aging, followed by Cu-rich phase. Precipitation of κ-carbide promotes Cu-rich phase precipitation."
     }
   ],
   "properties": [
     {
-      "property_set_id": "prop_0cu_01",
-      "sample_id": "sample_0cu_02",
+      "property_set_id": "prop_3cu",
+      "sample_id": "sample_3cu",
       "mechanical": {
         "tensile_properties": {
-          "yield_strength": [],
-          "ultimate_tensile_strength": [],
-          "elongation": [],
+          "yield_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ],
+          "ultimate_tensile_strength": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null,
+              "others": {
+                "uncertainty": null
+              }
+            }
+          ],
+          "elongation": [
+            {
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ],
           "youngs_modulus": null,
           "stress_strain_curves": null,
-          "stress_strain_distribution": [],
-          "strain_hardening_rate": []
+          "stress_strain_distribution": [
+            {
+              "direction": null,
+              "distribution": null
+            }
+          ],
+          "strain_hardening_rate": [
+            {
+              "property_id": null,
+              "direction": null,
+              "value": null,
+              "unit": null
+            }
+          ]
         },
-        "hardness": [],
+        "hardness": [
+          {
+            "region": null,
+            "value": null,
+            "scale": null,
+            "unit": null
+          }
+        ],
         "fracture_toughness": {
           "value": null,
           "unit": null
@@ -702,105 +613,7 @@ I need to parse the text carefully to extract details like alloy composition, pr
         "magnetic_properties": {
           "magnetic_susceptibility": null,
           "curie_temperature": null
-        },
-        "lattice_parameters": [
-          {
-            "phase": "Austenite",
-            "value": "0.3687 nm",
-            "condition": "solution_treatment"
-          },
-          {
-            "phase": "Austenite",
-            "value": "0.3689 nm",
-            "condition": "aging"
-          },
-          {
-            "phase": "κ-carbide",
-            "value": "0.3775 nm"
-          },
-          {
-            "phase": "Cu-rich phase",
-            "value": "0.3652 nm"
-          }
-        ]
-      },
-      "chemical": {
-        "corrosion_resistance": {
-          "test_medium": null,
-          "corrosion_rate": null,
-          "passivation_behavior": null
-        },
-        "oxidation_resistance": {
-          "oxidation_rate_constant": null,
-          "protective_scale": null
         }
-      },
-      "radiation_properties": {
-        "void_swelling": null,
-        "irradiation_hardening": null,
-        "helium_embrittlement": null
-      }
-    },
-    {
-      "property_set_id": "prop_3cu_01",
-      "sample_id": "sample_3cu_02",
-      "mechanical": {
-        "tensile_properties": {
-          "yield_strength": [],
-          "ultimate_tensile_strength": [],
-          "elongation": [],
-          "youngs_modulus": null,
-          "stress_strain_curves": null,
-          "stress_strain_distribution": [],
-          "strain_hardening_rate": []
-        },
-        "hardness": [],
-        "fracture_toughness": {
-          "value": null,
-          "unit": null
-        },
-        "fatigue_properties": {
-          "fatigue_limit": null,
-          "cycles_to_failure": null
-        },
-        "creep_properties": {
-          "steady_state_creep_rate": null,
-          "rupture_life": null
-        }
-      },
-      "physical": {
-        "density": {
-          "value": null,
-          "unit": null
-        },
-        "thermal_properties": {
-          "thermal_conductivity": null,
-          "thermal_expansion_coefficient": null,
-          "specific_heat": null
-        },
-        "electrical_properties": {
-          "electrical_conductivity": null,
-          "resistivity": null
-        },
-        "magnetic_properties": {
-          "magnetic_susceptibility": null,
-          "curie_temperature": null
-        },
-        "lattice_parameters": [
-          {
-            "phase": "Austenite",
-            "value": "0.3689 nm",
-            "condition": "aging"
-          },
-          {
-            "phase": "κ-carbide",
-            "value": "0.3775 nm"
-          },
-          {
-            "phase": "Cu-rich phase",
-            "value": "0.3652 nm"
-          }
-        ]
       },
       "chemical": {
         "corrosion_resistance": {
@@ -822,8 +635,8 @@ I need to parse the text carefully to extract details like alloy composition, pr
   ],
   "performance": [
     {
-      "performance_id": "perf_0cu_01",
-      "sample_id": "sample_0cu_02",
+      "performance_id": "perf_3cu",
+      "sample_id": "sample_3cu",
       "service_conditions": {
         "operating_temperature": {
           "min": null,
@@ -839,31 +652,7 @@ I need to parse the text carefully to extract details like alloy composition, pr
         "confidence_interval": null
       },
       "comparative_performance": {
-        "benchmark_alloy": null,
-        "benchmark_process_id": null,
-        "benchmark_sample_id": null,
-        "improvement_percentage": null
-      }
-    },
-    {
-      "performance_id": "perf_3cu_01",
-      "sample_id": "sample_3cu_02",
-      "service_conditions": {
-        "operating_temperature": {
-          "min": null,
-          "max": null,
-          "unit": null
-        },
-        "stress_state": null,
-        "environment": null
-      },
-      "lifetime_prediction": {
-        "model_used": null,
-        "predicted_lifetime": null,
-        "confidence_interval": null
-      },
-      "comparative_performance": {
-        "benchmark_alloy": null,
+        "benchmark_alloy": "Fe-28Mn-10Al-1C austenitic low-density steel",
         "benchmark_process_id": null,
         "benchmark_sample_id": null,
         "improvement_percentage": null
@@ -872,41 +661,41 @@ I need to parse the text carefully to extract details like alloy composition, pr
   ],
   "characterization_methods": [
     {
-      "characterization_id": "char_001",
-      "sample_id": "sample_0cu_02",
-      "microstructure_uuid": "uuid_0cu_01_01",
+      "characterization_id": "char_1",
+      "sample_id": "sample_3cu",
+      "microstructure_uuid": "uuid_matrix_001",
       "technique": "HR-TEM",
-      "purpose": "Microstructure examination and lattice parameter analysis.",
-      "key_findings": "Cu-rich phase is mainly irregular oval and has a small amount of bars shapes. κ-carbide are generally in the form of dots or bars."
+      "purpose": "Examine microstructure and precipitate morphology.",
+      "key_findings": "Cu-rich phase is irregular oval (~10nm) and bars (~30nm). κ-carbide is dots or bars."
     },
     {
-      "characterization_id": "char_002",
-      "sample_id": "sample_0cu_02",
-      "microstructure_uuid": "uuid_0cu_01_01",
+      "characterization_id": "char_2",
+      "sample_id": "sample_3cu",
+      "microstructure_uuid": "uuid_matrix_001",
       "technique": "EDS",
       "purpose": "Elemental mapping.",
-      "key_findings": "Fe, Mn and Al atoms exhibited brighter contrast within the white dashed box zone, while Cu atoms exhibit darker contrast. Cu atoms exhibit brighter contrast within the magenta line area."
+      "key_findings": "Fe, Mn, Al contrast in κ-carbide zone; Cu contrast in Cu-rich phase zone."
     },
     {
-      "characterization_id": "char_003",
-      "sample_id": "sample_0cu_02",
-      "microstructure_uuid": "uuid_0cu_01_01",
+      "characterization_id": "char_3",
+      "sample_id": "sample_3cu",
+      "microstructure_uuid": null,
       "technique": "SAED",
-      "purpose": "Crystal structure identification.",
-      "key_findings": "Cu-rich phase has BCC structure. κ-carbide and Cu-rich phase are coherent with the austenitic matrix."
+      "purpose": "Crystal structure analysis.",
+      "key_findings": "Cu-rich phase has FCC structure. Coherent with matrix."
     },
     {
-      "characterization_id": "char_004",
-      "sample_id": "sample_0cu_02",
+      "characterization_id": "char_4",
+      "sample_id": "sample_3cu",
       "microstructure_uuid": null,
       "technique": "XRD",
       "purpose": "Lattice parameter measurement.",
-      "key_findings": "Lattice parameter of austenitic matrix under solution treatment is a = 0.3689 nm."
+      "key_findings": "Lattice parameter of austenitic matrix is 0.3689 nm."
     }
   ],
   "computational_details": [
     {
-      "computation_id": "comp_001",
+      "computation_id": null,
       "sample_id": null,
       "simulation_method": null,
       "software_used": null,
@@ -917,23 +706,29 @@ I need to parse the text carefully to extract details like alloy composition, pr
           "model_name": "Lattice misfit formula",
           "equation_role": "Calculate lattice misfit between phases.",
           "parameters": [
-            "δ",
-            "a0",
-            "a1"
+            {
+              "name": "delta",
+              "value": "lattice misfit"
+            },
+            {
+              "name": "a0",
+              "value": "lattice parameter of phase 0"
+            },
+            {
+              "name": "a1",
+              "value": "lattice parameter of phase 1"
+            }
           ],
-          "model_note": "δ = |a0 - a1| / a0"
+          "model_note": "delta = |a0 - a1| / a0"
         }
       ]
     }
   ],
   "unmapped_findings": [
-    "Lattice misfit between κ-carbide and Cu-rich phase is 3.4%.",
-    "Lattice misfit between κ-carbide and austenitic matrix is 2.3%.",
-    "Lattice misfit between Cu-rich phase and austenitic matrix is 1.0%.",
-    "Interfacial energy of κ-carbide precipitates in Fe-Mn-Al-C steel is 0.025 J/m^2.",
-    "Interfacial energy of Cu in austenitic matrix is 0.086 J/m^2.",
-    "Critical lattice parameter of austenitic matrix for κ-carbide precipitation is about a = 0.3670 nm.",
-    "Composition boundary formula for precipitation of intragranular κ-carbides: 0.208 (wt.% C) + 0.098 (wt.% Al) = 1 - 0.0054 (wt.% Mn).",
-    "Critical Al content for κ-carbide precipitation in 0Cu steel is 6.52 wt%."
+    "General yield strength of Fe-Mn-Al-C austenitic low-density steel is reported as 360 ~ 540 MPa in the introduction, but specific tensile test results for the treated 3Cu steel samples are not provided in the text.",
+    "Critical lattice parameter of austenitic matrix for κ-carbide precipitation is approximately 0.3670 nm.",
+    "Composition boundary formula for intragranular κ-carbide precipitation: 0.208 (wt.% C) + 0.098 (wt.% Al) = 1 - 0.0054 (wt.% Mn).",
+    "Lattice misfit values: κ-carbide/Cu-rich phase ~3.4%, κ-carbide/Matrix ~2.3%, Cu-rich phase/Matrix ~1.0%.",
+    "Interface energy of κ-carbide is 0.025 J/m², Cu-rich phase is 0.086 J/m²."
   ]
 }
