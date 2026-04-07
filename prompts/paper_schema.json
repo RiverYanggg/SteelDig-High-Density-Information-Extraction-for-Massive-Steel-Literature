@@ -158,7 +158,10 @@
             {
               "direction": null,
               "value": null,
-              "unit": null
+              "unit": null,
+              "others": {
+                "uncertainty": null
+              }
             }
           ],
           "ultimate_tensile_strength": [

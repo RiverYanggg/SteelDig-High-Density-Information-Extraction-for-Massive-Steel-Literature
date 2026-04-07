@@ -84,9 +84,14 @@
       "sequence": null, // 步骤顺序；可为 "0"、"1" 或分支形式如 "5-H90"
       "type": null, // 步骤大类：heat_treatment / thermomechanical_processing / mechanical_processing 等
       "method": null, // 具体方法名，如 forging、annealing、solution treatment
-      "temperature": null, // 温度字符串
-      "unit": null, // 温度单位，如 "°C"、"K"
-      "duration": null, // 持续时间或保温时间，如 "1 h"
+      "temperature": { 
+        "value": null, // 温度字符串
+        "unit": null, // 温度单位，如 "°C"、"K"
+      },
+      "duration": { 
+        "value": null, // 持续时间或保温时间，如 "1 h"
+        "unit": null, // 时间单位，如 "h"、"min"
+      },
       "cooling_medium": null, // 冷却方式，如 water quenching / air cooling
       "reduction_ratio": null, // 压下量、变形量等
       "processing_steps_notes": null // 厚度、道次、设备、初始应变率等其余参数和注释说明
@@ -112,7 +117,9 @@
               "crystal_structure": null, // 晶体结构，如 FCC / BCC
               "volume_fraction": null, // 体积分数
               "morphology": null, // 形貌
-              "grain_size": null, // 晶粒尺寸
+              "grain_size": { "value": null, // 晶粒尺寸值
+                "unit": null // 晶粒尺寸单位
+              },
               "texture": null // 织构或取向信息
             }
           ],
@@ -161,6 +168,17 @@
           "microstructure_uuid": null, // 若与某个显微组织单元对应，则填 uuid
           "phase_1_name": null, // 第一相名称
           "phase_2_name": null, // 第二相名称
+          "inclusions": {
+            "type": null, // 夹杂物类型
+            "volume_fraction": {
+              "value": null, // 夹杂物体积分数值
+            },
+            "thickness": {
+              "value": null, // 夹杂物厚度值
+              "unit": null, // 夹杂物厚度单位
+            },
+            "distribution": null, // 夹杂物分布描述
+          },
           "coherence": null // 界面共格性
         }
       ],
@@ -195,7 +213,10 @@
             {
               "direction": null, // 测试方向
               "value": null, // 屈服强度值
-              "unit": null // 单位，通常 MPa
+              "unit": null, // 单位，通常 MPa
+              "others": {
+                "uncertainty": null // 不确定度或误差范围
+              }
             }
           ],
           "ultimate_tensile_strength": [

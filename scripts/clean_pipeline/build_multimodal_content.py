@@ -55,9 +55,15 @@ def encode_image(image_path: Path) -> str:
         return base64.b64encode(image_file.read()).decode("utf-8")
 
 
-def find_original_content_list_path(cleaned_filename: str) -> Optional[Path]:
-    """根据清洗后的文件名，在 paper_parsered 下查找同名的原始 content_list 路径。"""
-    for path in PAPER_PARSERED_DIR.rglob("*_content_list.json"):
+def find_original_content_list_path(
+    cleaned_filename: str,
+    search_root: Optional[Path] = None,
+) -> Optional[Path]:
+    """根据清洗后的文件名，在指定目录下查找同名的原始 content_list 路径。"""
+    root = search_root or PAPER_PARSERED_DIR
+    if not root.exists():
+        return None
+    for path in root.rglob("*_content_list.json"):
         if path.name == cleaned_filename:
             return path
     return None
@@ -223,6 +229,7 @@ def build_one_file(
     *,
     include_base64: bool = False,
     text_output_dir: Optional[Path] = None,
+    original_search_root: Optional[Path] = None,
 ) -> Optional[Path]:
     """对单个清洗后的 content_list JSON 构建多模态 content 并写入 output_dir。"""
     try:
@@ -237,7 +244,10 @@ def build_one_file(
         return None
 
     base_dir: Optional[Path] = None
-    original = find_original_content_list_path(input_path.name)
+    original = find_original_content_list_path(
+        input_path.name,
+        search_root=original_search_root,
+    )
     if original is not None:
         base_dir = original.parent
     else:
@@ -276,6 +286,7 @@ def build_all(
     *,
     include_base64: bool = False,
     text_output_dir: Optional[Path] = None,
+    original_search_root: Optional[Path] = None,
 ) -> List[Path]:
     """批量构建并写入多模态 content 与纯文本 LLM 输入 JSON。"""
     input_dir = input_dir or INPUT_CLEANED_DIR
@@ -298,6 +309,7 @@ def build_all(
                 output_dir,
                 include_base64=include_base64,
                 text_output_dir=text_output_dir,
+                original_search_root=original_search_root,
             )
             if out is not None:
                 results.append(out)

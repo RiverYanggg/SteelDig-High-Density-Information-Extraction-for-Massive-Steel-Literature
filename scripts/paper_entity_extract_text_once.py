@@ -71,7 +71,8 @@ if str(_SCRIPTS_DIR) not in sys.path:
 #   Path("/home/caep-xuben/chenchengbing/yzj/datasets/llm_baseline_366/output_hybrid_auto_text_llm_input")
 #   Path("/home/caep-xuben/chenchengbing/yzj/datasets/llm_baseline_366/xmls_to_markdown")
 USER_CONFIG_TEXT_INPUT: Path = Path(
-    "/home/caep-xuben/chenchengbing/yzj/datasets/llm_baseline_366/output_hybrid_auto_text_llm_input"
+    # "/home/caep-xuben/chenchengbing/yzj/datasets/llm_baseline_366/output_hybrid_auto_text_llm_input"
+    "/home/caep-xuben/chenchengbing/yzj/datasets/llm_baseline_366/xmls_to_markdown"
 )
 #
 # 输出目录：原始模型输出 *.raw.txt 写到这里

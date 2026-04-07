@@ -36,17 +36,17 @@ except ImportError:
 # 例如：
 #   /path/to/your_data/paper_parsered
 #   /path/to/another_dir
-USER_INPUT_DIR: Path = Path("/home/caep-xuben/chenchengbing/yzj/datasets/llm_baseline_366/output_hybrid_auto")
+USER_INPUT_DIR: Path = Path("/home/caep-xuben/chenchengbing/yzj/experiments/exp_0405/data/mineru_data")
 #
 # 你只需要修改上面这一行，即可切换输入数据路径。
 #
 # 输出目录（可按需修改）
 # - 清洗后的 *_content_list.json 输出到这里
-USER_CLEANED_OUTPUT_DIR: Path = Path("/home/caep-xuben/chenchengbing/yzj/datasets/llm_baseline_366/output_hybrid_auto_cleaned")
+USER_CLEANED_OUTPUT_DIR: Path = Path("/home/caep-xuben/chenchengbing/yzj/experiments/exp_0405/data/mineru_data_cleaned")
 # - 多模态 content 输出到这里
-USER_MULTIMODAL_OUTPUT_DIR: Path = Path("/home/caep-xuben/chenchengbing/yzj/datasets/llm_baseline_366/output_hybrid_auto_multimodal_input")
+USER_MULTIMODAL_OUTPUT_DIR: Path = Path("/home/caep-xuben/chenchengbing/yzj/experiments/exp_0405/data/mineru_data_multimodal_input")
 # - 纯文本 LLM 输入 JSON 输出到这里
-USER_TEXT_OUTPUT_DIR: Path = Path("/home/caep-xuben/chenchengbing/yzj/datasets/llm_baseline_366/output_hybrid_auto_text_llm_input")
+USER_TEXT_OUTPUT_DIR: Path = Path("/home/caep-xuben/chenchengbing/yzj/experiments/exp_0405/data/mineru_data_text_llm_input")
 
 
 def run_once() -> int:
@@ -68,6 +68,7 @@ def run_once() -> int:
         output_dir=USER_MULTIMODAL_OUTPUT_DIR,
         include_base64=False,
         text_output_dir=USER_TEXT_OUTPUT_DIR,
+        original_search_root=USER_INPUT_DIR,
     )
     if not built_files:
         logger.error("构建阶段未生成输出，流程终止。")
